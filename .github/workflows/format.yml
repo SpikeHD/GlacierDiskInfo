@@ -1,0 +1,55 @@
+name: Code quality and formatting
+
+on:
+  push:
+    paths:
+      - '.github/workflows/backend.yml'
+      - 'lib/**'
+      - 'cli/**'
+      - 'gui/**'
+      - 'Cargo.toml'
+      - 'Cargo.lock'
+  pull_request:
+    paths:
+      - '.github/workflows/backend.yml'
+      - 'lib/**'
+      - 'cli/**'
+      - 'gui/**'
+      - 'Cargo.toml'
+      - 'Cargo.lock'
+
+concurrency:
+  group: ${{ github.ref }}-${{ github.workflow }}
+  cancel-in-progress: true
+
+jobs:
+  rustfmt:
+    runs-on: ubuntu-latest
+
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions-rust-lang/setup-rust-toolchain@v1
+        with:
+          components: rustfmt
+
+      - name: Rustfmt check
+        run: cargo fmt --manifest-path ./Cargo.toml --all -- --check
+
+  clippy:
+    runs-on: ${{ matrix.platform }}
+
+    strategy:
+      fail-fast: false
+      matrix:
+        platform: [windows-latest, ubuntu-latest, macos-latest]
+
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions-rust-lang/setup-rust-toolchain@v1
+        with:
+          components: rustfmt
+
+      - name: Clippy check
+        run: cargo clippy --manifest-path ./Cargo.toml --all -- -D warnings
