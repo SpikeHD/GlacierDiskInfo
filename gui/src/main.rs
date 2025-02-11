@@ -1,3 +1,7 @@
+use ui::MainView;
+
+mod ui;
+
 fn main() {
-  println!("Not there yet :P");
+  iced::application::application("MiniDisk", MainView::update, MainView::view).run().expect("Failed to run application"); 
 }

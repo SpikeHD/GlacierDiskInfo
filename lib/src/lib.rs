@@ -4,6 +4,9 @@ use disk::get_disks;
 
 mod disk;
 
+// Re-export libatasmart
+pub use libatasmart;
+
 #[cfg(any(target_os = "linux"))]
 static DEV_PATH: &str = "/dev";
 
