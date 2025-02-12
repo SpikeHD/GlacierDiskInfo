@@ -1,2 +1,2 @@
-pub mod status;
 pub mod smart;
+pub mod status;

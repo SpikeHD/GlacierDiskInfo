@@ -29,5 +29,6 @@ pub fn smart_to_string(sk: SkSmartOverall) -> String {
     SkSmartOverall::SK_SMART_OVERALL_BAD_SECTOR_MANY => "Bad Sector Many",
     SkSmartOverall::SK_SMART_OVERALL_BAD_STATUS => "Bad Status",
     _ => "Unknown",
-  }.to_string()
+  }
+  .to_string()
 }

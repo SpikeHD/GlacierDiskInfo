@@ -2,7 +2,11 @@ use std::path::PathBuf;
 
 use dioxus::prelude::*;
 
-use crate::{data::smart::{smart_to_string, DriveStatus}, ui::drive_info_table::DriveInfoTable, util::conversion::bytes_to_readable};
+use crate::{
+  data::smart::{smart_to_string, DriveStatus},
+  ui::drive_info_table::DriveInfoTable,
+  util::conversion::bytes_to_readable,
+};
 
 static CSS: Asset = asset!("/assets/drive.css");
 
@@ -13,19 +17,28 @@ pub struct DriveProps {
 
 #[component]
 pub fn Drive(props: DriveProps) -> Element {
-  let mut drive = libminidisk::get_disk_info(PathBuf::from(props.selected_drive.clone())).expect("Failed to get disk info");
+  let mut drive = libminidisk::get_disk_info(PathBuf::from(props.selected_drive.clone()))
+    .expect("Failed to get disk info");
   let identity = drive.identify_parse().expect("Failed to get identify info");
   let size = drive.get_disk_size().expect("Failed to get disk size");
   let size = bytes_to_readable(size);
-  let status = smart_to_string(drive.smart_get_overall().expect("Failed to get smart status"));
+  let status = smart_to_string(
+    drive
+      .smart_get_overall()
+      .expect("Failed to get smart status"),
+  );
   let status_class = match DriveStatus::from_smart(status.as_str()) {
     DriveStatus::Good => "good",
     DriveStatus::Caution => "caution",
     DriveStatus::Bad => "bad",
   };
   let temp = drive.get_temperature().expect("Failed to get temperature");
-  let temp = (temp as f32  / 1000.) - 273.15;
-  let temp = if temp == 0. { "--".into() } else { temp.to_string() };
+  let temp = (temp as f32 / 1000.) - 273.15;
+  let temp = if temp == 0. {
+    "--".into()
+  } else {
+    temp.to_string()
+  };
 
   rsx! {
     document::Link { rel: "stylesheet", href: CSS },
@@ -43,7 +56,7 @@ pub fn Drive(props: DriveProps) -> Element {
 
         div {
           class: "drive-health-temp",
-          
+
           div {
             class: "drive-health-elm",
             span {

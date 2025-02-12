@@ -32,7 +32,7 @@ pub fn DriveTabs(props: DriveTabsProps) -> Element {
 
         div {
           class: "drive-tab-status",
-          
+
           img {
             class: "drive-tab-icon",
             src: match status.state.as_str() {

@@ -5,8 +5,8 @@ use dioxus::prelude::*;
 use ui::{drive::Drive, drive_tabs::DriveTabs};
 
 mod data;
-mod util;
 mod ui;
+mod util;
 
 const MAIN_CSS: Asset = asset!("/assets/main.css");
 
@@ -18,18 +18,24 @@ fn main() {
 #[component]
 fn App() -> Element {
   let drives = libminidisk::list_disks().expect("Failed to list disks");
-  let drives: Vec<(String, Status)> = drives.iter().map(|d| {
-    let mut status = libminidisk::get_disk_info(PathBuf::from(d)).expect("Failed to get disk info");
-    let smart = status.smart_get_overall().expect("Failed to get smart status");
-    let state = smart_to_string(smart);
+  let drives: Vec<(String, Status)> = drives
+    .iter()
+    .map(|d| {
+      let mut status =
+        libminidisk::get_disk_info(PathBuf::from(d)).expect("Failed to get disk info");
+      let smart = status
+        .smart_get_overall()
+        .expect("Failed to get smart status");
+      let state = smart_to_string(smart);
 
-    let temp = status.get_temperature().unwrap_or(0);
+      let temp = status.get_temperature().unwrap_or(0);
 
-    // convert mkelvin to celsius
-    let temp = (temp as f32  / 1000.) - 273.15;
+      // convert mkelvin to celsius
+      let temp = (temp as f32 / 1000.) - 273.15;
 
-    (d.to_string(), Status { temp, state })
-  }).collect();
+      (d.to_string(), Status { temp, state })
+    })
+    .collect();
 
   let mut selected_drive = use_signal(|| drives[0].0.clone());
 
