@@ -6,7 +6,13 @@ fn main() -> Result<(), Box<dyn std::error::Error>> {
   let disks = libglacierdisk::list_disks().unwrap();
   // Dump the first disk
   let path = PathBuf::from(disks[0].clone());
-  let mut disk = libglacierdisk::get_disk_info(path).unwrap();
+  let mut disk = match libglacierdisk::get_disk_info(path) {
+    Ok(d) => d,
+    Err(e) => {
+      eprintln!("Failed to get disk info: {e}");
+      return Ok(());
+    }
+  };
 
   disk.dump().unwrap();
 

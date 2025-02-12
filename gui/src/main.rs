@@ -30,12 +30,22 @@ fn App() -> Element {
   let drives = libglacierdisk::list_disks().expect("Failed to list disks");
   let drives: Vec<(String, Status)> = drives
     .iter()
-    .map(|d| {
-      let mut status =
-        libglacierdisk::get_disk_info(PathBuf::from(d)).expect("Failed to get disk info");
-      let smart = status
-        .smart_get_overall()
-        .expect("Failed to get smart status");
+    .filter_map(|d| {
+      let mut status = match libglacierdisk::get_disk_info(PathBuf::from(d)) {
+        Ok(d) => d,
+        Err(e) => {
+          eprintln!("Error fetching disk at {d}: {e}");
+          return None;
+        }
+      };
+      let smart = match status
+        .smart_get_overall() {
+          Ok(s) => s,
+          Err(e) => {
+            eprintln!("Error fetching smart status: {e}");
+            return None;
+          }
+        };
       let state = smart_to_string(smart);
 
       let temp = status.get_temperature().unwrap_or(0);
@@ -43,7 +53,7 @@ fn App() -> Element {
       // convert mkelvin to celsius
       let temp = (temp as f32 / 1000.) - 273.15;
 
-      (d.to_string(), Status { temp, state })
+      Some((d.to_string(), Status { temp, state }))
     })
     .collect();
 
