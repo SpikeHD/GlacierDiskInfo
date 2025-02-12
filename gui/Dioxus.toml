@@ -1,6 +1,4 @@
 [application]
-
-# App (Project) Name
 name = "GlacierDiskInfo"
 
 [bundle]
@@ -8,21 +6,12 @@ identifier = "dev.spikehd.glacierdiskinfo"
 publisher = "SpikeHD"
 
 [web.app]
-
-# HTML title tag content
 title = "GlacierDiskInfo"
 
 # include `assets` in web platform
 [web.resource]
-
-# Additional CSS style files
 style = []
-
-# Additional JavaScript files
 script = []
 
 [web.resource.dev]
-
-# Javascript code file
-# serve: [dev-server] only
 script = []
