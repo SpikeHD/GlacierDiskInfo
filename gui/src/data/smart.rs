@@ -1,4 +1,4 @@
-use libatasmart_sys::SkSmartOverall;
+use libglacierdisk::libatasmart_sys::SkSmartOverall;
 
 pub enum DriveStatus {
   Good,

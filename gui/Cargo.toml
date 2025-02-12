@@ -1,12 +1,11 @@
 [package]
 name = "glacierdisk-gui"
-version = "0.1.0"
+version = "0.1.1"
 authors = ["SpikeHD <25207995+SpikeHD@users.noreply.github.com>"]
 edition = "2021"
 
 [dependencies]
 dioxus = { version = "0.6.3", features = [] }
-libatasmart-sys = "0.2.0"
 libglacierdisk = { path = "../lib" }
 sudo = "0.6.0"
 

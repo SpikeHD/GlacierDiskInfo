@@ -2,10 +2,13 @@ use std::{error::Error, path::PathBuf};
 
 use disk::get_disks;
 
+pub mod attribute;
 mod disk;
 
 // Re-export libatasmart
 pub use libatasmart;
+// Re-export libatasmart-sys
+pub use libatasmart_sys;
 
 #[cfg(any(target_os = "linux"))]
 static DEV_PATH: &str = "/dev";
