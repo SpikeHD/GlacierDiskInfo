@@ -1,7 +1,7 @@
 use std::path::PathBuf;
 
 use data::{smart::smart_to_string, status::Status};
-use dioxus::{prelude::*, desktop::Config};
+use dioxus::{desktop::Config, prelude::*};
 use ui::{drive::Drive, drive_tabs::DriveTabs};
 
 mod data;
@@ -12,11 +12,11 @@ const MAIN_CSS: Asset = asset!("/assets/main.css");
 
 fn main() {
   sudo::escalate_if_needed().expect("Failed to escalate privileges");
-  let window = dioxus::desktop::tao::window::WindowBuilder::new().with_title("GlacierDiskInfo").with_resizable(true);
+  let window = dioxus::desktop::tao::window::WindowBuilder::new()
+    .with_title("GlacierDiskInfo")
+    .with_resizable(true);
   dioxus::LaunchBuilder::new()
-    .with_cfg(Config::default().with_menu(None).with_window(
-      window
-    ))
+    .with_cfg(Config::default().with_menu(None).with_window(window))
     .launch(App);
 }
 

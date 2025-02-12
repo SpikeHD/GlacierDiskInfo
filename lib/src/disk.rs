@@ -18,7 +18,7 @@ pub fn get_disks() -> Result<Vec<String>, Box<dyn Error>> {
       .to_str()
       .unwrap_or_default();
 
-    if meta.file_type().is_block_device() && fits_filter(&filename) {
+    if meta.file_type().is_block_device() && fits_filter(filename) {
       disks.push(filename.to_string());
     }
   }

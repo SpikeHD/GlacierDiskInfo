@@ -15,7 +15,8 @@ pub struct DriveAttrTableProps {
 
 #[component]
 pub fn DriveAttrTable(props: DriveAttrTableProps) -> Element {
-  let mut drive = libglacierdisk::get_disk_info(PathBuf::from(props.selected_drive.clone())).expect("Failed to get disk info");
+  let mut drive = libglacierdisk::get_disk_info(PathBuf::from(props.selected_drive.clone()))
+    .expect("Failed to get disk info");
   let attrs = attributes::get_all_attributes(&mut drive);
   let rows = attrs.iter().map(|attr| {
     rsx! {

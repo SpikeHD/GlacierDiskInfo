@@ -7,7 +7,7 @@ fn main() -> Result<(), Box<dyn std::error::Error>> {
   // Dump the first disk
   let path = PathBuf::from(disks[0].clone());
   let mut disk = libglacierdisk::get_disk_info(path).unwrap();
-  
+
   disk.dump().unwrap();
 
   Ok(())

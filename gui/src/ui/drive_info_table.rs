@@ -21,8 +21,14 @@ pub fn DriveInfoTable(props: DriveInfoTableProps) -> Element {
     ("Serial", identity.serial),
     ("Model", identity.model),
     ("Drive Path", props.selected_drive.clone()),
-    ("Powered On", ms_to_readable(drive.get_power_on().unwrap_or(0))),
-    ("Power On Count", drive.get_power_cycle_count().unwrap_or(0).to_string()),
+    (
+      "Powered On",
+      ms_to_readable(drive.get_power_on().unwrap_or(0)),
+    ),
+    (
+      "Power On Count",
+      drive.get_power_cycle_count().unwrap_or(0).to_string(),
+    ),
   ];
   let rows = table_values.iter().map(|(name, value)| {
     rsx! {

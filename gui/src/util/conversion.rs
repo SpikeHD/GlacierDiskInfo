@@ -1,6 +1,6 @@
 pub fn bytes_to_readable(bytes: u64) -> String {
   if bytes < 1024 {
-    return format!("{} B", bytes);
+    format!("{} B", bytes)
   } else if bytes < 1024 * 1024 {
     return format!("{:.2} KB", bytes as f64 / 1024.0);
   } else if bytes < 1024 * 1024 * 1024 {
@@ -12,7 +12,6 @@ pub fn bytes_to_readable(bytes: u64) -> String {
 
 pub fn ms_to_readable(ms: u64) -> String {
   const SECONDS_IN_MINUTE: f32 = 60.;
-  const SECONDS_IN_HOUR: f32 = 3600.;
 
   let ms = ms as f32;
 

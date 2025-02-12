@@ -41,10 +41,13 @@ pub fn get_all_attributes(disk: &mut Disk) -> Vec<Attribute> {
   let attributes: Vec<Attribute> = Vec::new();
   let mut a = Box::new(attributes);
 
-  let result = disk.parse_attributes(fetch_all_attributes, &mut *a as *mut Vec<Attribute> as *mut std::ffi::c_void);
+  let result = disk.parse_attributes(
+    fetch_all_attributes,
+    &mut *a as *mut Vec<Attribute> as *mut std::ffi::c_void,
+  );
 
   if result.is_ok() {
-    return *a
+    return *a;
   }
 
   Vec::new()
@@ -64,7 +67,11 @@ pub fn get_all_attributes(disk: &mut Disk) -> Vec<Attribute> {
 //   }
 // }
 
-extern "C" fn fetch_all_attributes(_disk: *mut SkDisk, a: *const SkSmartAttributeParsedData, ah: *mut std::ffi::c_void) {
+extern "C" fn fetch_all_attributes(
+  _disk: *mut SkDisk,
+  a: *const SkSmartAttributeParsedData,
+  ah: *mut std::ffi::c_void,
+) {
   let attributes = unsafe { &mut *(ah as *mut Vec<Attribute>) };
   let name = unsafe { CStr::from_ptr((*a).name) }.to_str().unwrap();
 
