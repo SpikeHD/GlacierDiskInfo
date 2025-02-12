@@ -1,31 +1,11 @@
 use dioxus::prelude::*;
 
-use crate::data::status::Status;
+use crate::data::{smart::DriveStatus, status::Status};
 
 static CSS: Asset = asset!("/assets/drivetabs.css");
 static GOOD: Asset = asset!("/assets/img/good.ico");
 static CAUTION: Asset = asset!("/assets/img/caution.ico");
 static BAD: Asset = asset!("/assets/img/bad.ico");
-
-pub enum DriveStatus {
-  Good,
-  Caution,
-  Bad,
-}
-
-impl DriveStatus {
-  pub fn from_smart(s: impl AsRef<str>) -> Self {
-    match s.as_ref() {
-      "Good" => DriveStatus::Good,
-      "Bad Attribute In The Past" => DriveStatus::Caution,
-      "Bad Sector" => DriveStatus::Bad,
-      "Bad Attribute Now" => DriveStatus::Caution,
-      "Bad Sector Many" => DriveStatus::Bad,
-      "Bad Status" => DriveStatus::Bad,
-      _ => DriveStatus::Bad,
-    }
-  }
-}
 
 #[derive(Props, PartialEq, Clone)]
 pub struct DriveTabsProps {

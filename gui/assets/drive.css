@@ -15,3 +15,58 @@
   font-size: 2rem;
   padding: 1rem;
 }
+
+.drive-info {
+  display: flex;
+  flex-direction: row;
+
+  height: 60%;
+  width: 100%;
+}
+
+.drive-health-temp {
+  display: flex;
+  flex-direction: column;
+  justify-content: space-evenly;
+  align-items: center;
+
+  height: 100%;
+  width: 30%;
+}
+
+.drive-health-elm {
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-start;
+  align-items: center;
+}
+
+.drive-health-status {
+  font-size: 2rem;
+  font-weight: bold;
+
+  padding: 2rem;
+}
+
+.drive-health-status.good {
+  background: linear-gradient(to top, #43bbee, #43bbee, #fff);
+  border: 1px solid #697ed5;
+}
+.drive-health-status.caution {
+  background: linear-gradient(to top, #fffe19, #fffe19, #fff);
+  border: 1px solid #fffe19;
+}
+.drive-health-status.bad {
+  background: linear-gradient(to top, #f44336, #f44336, #fff);
+  border: 1px solid #f44336;
+}
+
+.drive-info-table {
+  display: flex;
+  flex-direction: column;
+  justify-content: space-evenly;
+  align-items: center;
+
+  height: 100%;
+  width: 70%;
+}

@@ -7,7 +7,7 @@ edition = "2021"
 # See more keys and their definitions at https://doc.rust-lang.org/cargo/reference/manifest.html
 
 [dependencies]
-dioxus = { version = "0.6.0", features = [] }
+dioxus = { version = "0.6.3", features = [] }
 libatasmart-sys = "0.2.0"
 libminidisk = { path = "../lib" }
 sudo = "0.6.0"
