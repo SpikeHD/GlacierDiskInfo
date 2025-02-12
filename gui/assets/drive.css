@@ -7,7 +7,7 @@
   background-color: #202020;
   color: #fff;
 
-  height: 100%;
+  /* height: 100%; */
   width: 100%;
 }
 
@@ -31,7 +31,7 @@
   align-items: center;
 
   height: 100%;
-  width: 30%;
+  width: 25%;
 }
 
 .drive-health-elm {
@@ -41,9 +41,23 @@
   align-items: center;
 }
 
+.drive-health-elm span {
+  font-size: 1rem;
+  
+  margin-bottom: 1rem;
+}
+
+.drive-temp-status,
 .drive-health-status {
-  font-size: 2rem;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+
+  font-size: 1.5rem !important;
   font-weight: bold;
+
+  width: 80%;
 
   padding: 2rem;
 }
@@ -61,6 +75,15 @@
   border: 1px solid #f44336;
 }
 
+.drive-temp-status {
+  background: linear-gradient(to top, #43bbee, #43bbee, #fff);
+  border-radius: 58px;
+
+  height: 2rem;
+
+  padding: 2rem;
+}
+
 .drive-info-table {
   display: flex;
   flex-direction: column;
@@ -68,5 +91,5 @@
   align-items: center;
 
   height: 100%;
-  width: 70%;
+  width: 75%;
 }

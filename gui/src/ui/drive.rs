@@ -23,6 +23,9 @@ pub fn Drive(props: DriveProps) -> Element {
     DriveStatus::Caution => "caution",
     DriveStatus::Bad => "bad",
   };
+  let temp = drive.get_temperature().expect("Failed to get temperature");
+  let temp = (temp as f32  / 1000.) - 273.15;
+  let temp = if temp == 0. { "--".into() } else { temp.to_string() };
 
   rsx! {
     document::Link { rel: "stylesheet", href: CSS },
@@ -49,6 +52,17 @@ pub fn Drive(props: DriveProps) -> Element {
             span {
               class: "drive-health-status ".to_owned() + status_class,
               "{status}"
+            }
+          }
+
+          div {
+            class: "drive-health-elm",
+            span {
+              "Temperature"
+            }
+            span {
+              class: "drive-temp-status",
+              "{temp} °C"
             }
           }
         }
