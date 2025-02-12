@@ -10,6 +10,8 @@
   background: linear-gradient(to top, #080808, #272727);
 
   border-bottom: 1px solid #080808;
+
+  user-select: none;
 }
 
 .drive-tab {
@@ -24,7 +26,7 @@
 
   cursor: pointer;
 
-  margin-right: 1rem;
+  padding-right: 1rem;
 
   border-bottom: 1px solid transparent;
 }

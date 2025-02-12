@@ -38,6 +38,7 @@ pub struct DriveTabsProps {
 pub fn DriveTabs(props: DriveTabsProps) -> Element {
   let tab_renders = props.drives.iter().map(|(name, status)| {
     let evt_name = name.clone();
+    let temp = if status.temp == 0. { "--".into() } else { status.temp.to_string() };
     let status_class = match DriveStatus::from_smart(status.state.as_str()) {
       DriveStatus::Good => "good",
       DriveStatus::Caution => "caution",
@@ -75,7 +76,7 @@ pub fn DriveTabs(props: DriveTabsProps) -> Element {
 
           span {
             class: "drive-tab-temp",
-            "{status.temp} °C"
+            "{temp} °C"
           }
 
           span {

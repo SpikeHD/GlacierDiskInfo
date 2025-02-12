@@ -2,9 +2,10 @@ use std::path::PathBuf;
 
 use data::{smart::smart_to_string, status::Status};
 use dioxus::prelude::*;
-use ui::drive_tabs::DriveTabs;
+use ui::{drive::Drive, drive_tabs::DriveTabs};
 
 mod data;
+mod util;
 mod ui;
 
 const MAIN_CSS: Asset = asset!("/assets/main.css");
@@ -42,6 +43,10 @@ fn App() -> Element {
           println!("selected drive: {}", name);
           selected_drive.set(name);
         }
+      }
+
+      Drive {
+        selected_drive: selected_drive(),
       }
   }
 }

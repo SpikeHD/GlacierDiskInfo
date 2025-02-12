@@ -1,0 +1,17 @@
+.drive {
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-start;
+  align-items: center;
+
+  background-color: #202020;
+  color: #fff;
+
+  height: 100%;
+  width: 100%;
+}
+
+.drive-name {
+  font-size: 2rem;
+  padding: 1rem;
+}
