@@ -1,12 +1,12 @@
 [application]
 
 # App (Project) Name
-name = "gui"
+name = "GlacierDiskInfo"
 
 [web.app]
 
 # HTML title tag content
-title = "gui"
+title = "GlacierDiskInfo"
 
 # include `assets` in web platform
 [web.resource]

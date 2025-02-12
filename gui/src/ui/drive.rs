@@ -17,7 +17,7 @@ pub struct DriveProps {
 
 #[component]
 pub fn Drive(props: DriveProps) -> Element {
-  let mut drive = libminidisk::get_disk_info(PathBuf::from(props.selected_drive.clone()))
+  let mut drive = libglacierdisk::get_disk_info(PathBuf::from(props.selected_drive.clone()))
     .expect("Failed to get disk info");
   let identity = drive.identify_parse().expect("Failed to get identify info");
   let size = drive.get_disk_size().expect("Failed to get disk size");

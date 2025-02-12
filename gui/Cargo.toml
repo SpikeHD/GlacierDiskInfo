@@ -1,5 +1,5 @@
 [package]
-name = "minidisk-gui"
+name = "glacierdisk-gui"
 version = "0.1.0"
 authors = ["SpikeHD <25207995+SpikeHD@users.noreply.github.com>"]
 edition = "2021"
@@ -7,7 +7,7 @@ edition = "2021"
 [dependencies]
 dioxus = { version = "0.6.3", features = [] }
 libatasmart-sys = "0.2.0"
-libminidisk = { path = "../lib" }
+libglacierdisk = { path = "../lib" }
 sudo = "0.6.0"
 
 [features]

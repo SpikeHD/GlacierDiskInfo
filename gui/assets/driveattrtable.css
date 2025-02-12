@@ -1,0 +1,21 @@
+.drive-attr-table {
+  width: 100%;
+  border-collapse: collapse;
+  margin-top: 1em;
+
+  text-align: left;
+}
+
+.drive-attr-table thead {
+  background-color: #333;
+  color: white;
+}
+
+.drive-attr-table tr:nth-child(even) {
+  background-color: #333333;
+}
+
+.drive-attr-status {
+  display: flex;
+  justify-content: center;
+}

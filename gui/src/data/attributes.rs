@@ -1,8 +1,7 @@
 use std::ffi::CStr;
 
-use dioxus::Ok;
 use libatasmart_sys::{SkDisk, SkSmartAttributeParsedData};
-use libminidisk::libatasmart::Disk;
+use libglacierdisk::libatasmart::Disk;
 
 #[derive(Default, Debug)]
 pub struct Attribute {
@@ -37,6 +36,7 @@ pub fn raw_to_string(raw: [u8; 6]) -> String {
 //   None
 // }
 
+// TODO move ALL of this stuff to libglacierdisk
 pub fn get_all_attributes(disk: &mut Disk) -> Vec<Attribute> {
   let attributes: Vec<Attribute> = Vec::new();
   let mut a = Box::new(attributes);
@@ -71,10 +71,10 @@ extern "C" fn fetch_all_attributes(_disk: *mut SkDisk, a: *const SkSmartAttribut
   attributes.push(Attribute {
     name: name.to_string(),
     id: unsafe { (*a).id },
-    threshold: unsafe { if (*a).threshold_valid == 1 { (*a).threshold } else { 0 } },
+    threshold: unsafe { (*a).threshold },
     warn: unsafe { (*a).warn == 1 },
-    current: unsafe { if (*a).current_value_valid == 1 { (*a).current_value } else { 0 } },
-    worst: unsafe { if (*a).worst_value_valid == 1 { (*a).worst_value } else { 0 } },
+    current: unsafe { (*a).current_value },
+    worst: unsafe { (*a).worst_value },
     raw: unsafe { (*a).raw },
   });
 }

@@ -1,7 +1,7 @@
 use std::path::PathBuf;
 
 use data::{smart::smart_to_string, status::Status};
-use dioxus::prelude::*;
+use dioxus::{prelude::*, desktop::Config};
 use ui::{drive::Drive, drive_tabs::DriveTabs};
 
 mod data;
@@ -12,17 +12,22 @@ const MAIN_CSS: Asset = asset!("/assets/main.css");
 
 fn main() {
   sudo::escalate_if_needed().expect("Failed to escalate privileges");
-  dioxus::launch(App);
+  let window = dioxus::desktop::tao::window::WindowBuilder::new().with_title("GlacierDiskInfo").with_resizable(true);
+  dioxus::LaunchBuilder::new()
+    .with_cfg(Config::default().with_menu(None).with_window(
+      window
+    ))
+    .launch(App);
 }
 
 #[component]
 fn App() -> Element {
-  let drives = libminidisk::list_disks().expect("Failed to list disks");
+  let drives = libglacierdisk::list_disks().expect("Failed to list disks");
   let drives: Vec<(String, Status)> = drives
     .iter()
     .map(|d| {
       let mut status =
-        libminidisk::get_disk_info(PathBuf::from(d)).expect("Failed to get disk info");
+        libglacierdisk::get_disk_info(PathBuf::from(d)).expect("Failed to get disk info");
       let smart = status
         .smart_get_overall()
         .expect("Failed to get smart status");

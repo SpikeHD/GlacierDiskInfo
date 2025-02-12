@@ -13,7 +13,7 @@ pub struct DriveInfoTableProps {
 
 #[component]
 pub fn DriveInfoTable(props: DriveInfoTableProps) -> Element {
-  let mut drive = libminidisk::get_disk_info(PathBuf::from(props.selected_drive.clone()))
+  let mut drive = libglacierdisk::get_disk_info(PathBuf::from(props.selected_drive.clone()))
     .expect("Failed to get disk info");
   let identity = drive.identify_parse().expect("Failed to get identify info");
   let table_values = vec![

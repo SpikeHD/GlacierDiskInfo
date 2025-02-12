@@ -1747,6 +1747,20 @@ dependencies = [
 ]
 
 [[package]]
+name = "glacierdisk-cli"
+version = "0.1.0"
+
+[[package]]
+name = "glacierdisk-gui"
+version = "0.1.0"
+dependencies = [
+ "dioxus",
+ "libatasmart-sys",
+ "libglacierdisk",
+ "sudo",
+]
+
+[[package]]
 name = "glib"
 version = "0.18.5"
 source = "registry+https://github.com/rust-lang/crates.io-index"
@@ -2402,6 +2416,14 @@ source = "registry+https://github.com/rust-lang/crates.io-index"
 checksum = "b5aba8db14291edd000dfcc4d620c7ebfb122c613afb886ca8803fa4e128a20a"
 
 [[package]]
+name = "libglacierdisk"
+version = "0.1.0"
+dependencies = [
+ "libatasmart",
+ "sudo",
+]
+
+[[package]]
 name = "libloading"
 version = "0.7.4"
 source = "registry+https://github.com/rust-lang/crates.io-index"
@@ -2409,14 +2431,6 @@ checksum = "b67380fd3b2fbe7527a606e18729d21c6f3951633d0500574c4dc22d2d638b9f"
 dependencies = [
  "cfg-if",
  "winapi",
-]
-
-[[package]]
-name = "libminidisk"
-version = "0.1.0"
-dependencies = [
- "libatasmart",
- "sudo",
 ]
 
 [[package]]
@@ -2591,20 +2605,6 @@ checksum = "f7c44f8e672c00fe5308fa235f821cb4198414e1c77935c1ab6948d3fd78550e"
 dependencies = [
  "mime",
  "unicase",
-]
-
-[[package]]
-name = "minidisk-cli"
-version = "0.1.0"
-
-[[package]]
-name = "minidisk-gui"
-version = "0.1.0"
-dependencies = [
- "dioxus",
- "libatasmart-sys",
- "libminidisk",
- "sudo",
 ]
 
 [[package]]

@@ -1,6 +1,6 @@
-# minidisk
-Disk utility tool
+# GlacierDiskInfo
 
+A nostalgic SMART disk info tool for Linux computers.
 
 # Attributions
 
