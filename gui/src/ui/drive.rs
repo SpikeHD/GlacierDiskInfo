@@ -2,7 +2,7 @@ use std::path::PathBuf;
 
 use dioxus::prelude::*;
 
-use crate::{data::smart::{smart_to_string, DriveStatus}, util::conversion::bytes_to_readable};
+use crate::{data::smart::{smart_to_string, DriveStatus}, ui::drive_info_table::DriveInfoTable, util::conversion::bytes_to_readable};
 
 static CSS: Asset = asset!("/assets/drive.css");
 
@@ -67,9 +67,8 @@ pub fn Drive(props: DriveProps) -> Element {
           }
         }
 
-        div {
-          class: "drive-info-table",
-          // TODO
+        DriveInfoTable {
+          selected_drive: props.selected_drive.clone(),
         }
       }
     }

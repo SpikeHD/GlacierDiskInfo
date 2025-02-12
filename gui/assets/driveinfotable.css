@@ -1,0 +1,28 @@
+.drive-info-table {
+  display: flex;
+  flex-direction: column;
+  flex-wrap: wrap;
+  justify-content: space-evenly;
+  align-items: flex-start;
+
+  height: 100%;
+  width: 100%;
+}
+
+.drive-info-row {
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+  align-items: center;
+
+  height: 100%;
+  width: 45%;
+}
+
+.drive-info-value {
+  padding: 4px;
+  margin: 4px;
+
+  border: 1px solid #ccc;
+  width: 100%;
+}

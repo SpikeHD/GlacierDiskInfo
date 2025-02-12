@@ -1,0 +1,47 @@
+use std::path::PathBuf;
+
+use dioxus::prelude::*;
+
+static CSS: Asset = asset!("/assets/driveinfotable.css");
+
+#[derive(Props, PartialEq, Clone)]
+pub struct DriveInfoTableProps {
+  pub selected_drive: String,
+}
+
+#[component]
+pub fn DriveInfoTable(props: DriveInfoTableProps) -> Element {
+  let mut drive = libminidisk::get_disk_info(PathBuf::from(props.selected_drive.clone())).expect("Failed to get disk info");
+  let identity = drive.identify_parse().expect("Failed to get identify info");
+  let table_values = vec![
+    ("Firmware", identity.firmware),
+    ("Serial", identity.serial),
+    ("Model", identity.model),
+  ];
+  let rows = table_values.iter().map(|(name, value)| {
+    rsx! {
+      div {
+        class: "drive-info-row",
+        span {
+          "{name}"
+        }
+
+        span {
+          class: "drive-info-value",
+          "{value}"
+        }
+      }
+    }
+  });
+
+
+  rsx! {
+    document::Link { rel: "stylesheet", href: CSS },
+
+    div {
+      class: "drive-info-table",
+
+      {rows}
+    }
+  }
+}
