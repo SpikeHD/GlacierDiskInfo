@@ -5,6 +5,7 @@ html, body {
   padding: 0;
 
   user-select: none;
+  overflow-y: hidden;
 }
 
 #main {

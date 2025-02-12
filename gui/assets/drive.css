@@ -7,20 +7,23 @@
   background-color: #202020;
   color: #fff;
 
-  /* height: 100%; */
+  /* offset by drive tabe height */
+  height: calc(100% - 75px);
   width: 100%;
 }
 
 .drive-name {
+  height: 10%;
   font-size: 2rem;
   padding: 1rem;
+  text-align: center;
 }
 
 .drive-info {
   display: flex;
   flex-direction: row;
 
-  height: 60%;
+  height: 50%;
   width: 100%;
 }
 

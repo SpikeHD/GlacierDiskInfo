@@ -20,9 +20,10 @@ pub fn DriveAttrTable(props: DriveAttrTableProps) -> Element {
   let attrs = attributes::get_all_attributes(&mut drive);
   let rows = attrs.iter().map(|attr| {
     rsx! {
-      tr {
+      div {
+        class: "drive-attr-row",
         // Status
-        td {
+        span {
           class: "drive-attr-status",
 
           img {
@@ -32,12 +33,30 @@ pub fn DriveAttrTable(props: DriveAttrTableProps) -> Element {
             },
           }
         },
-        td { "{attr.id}" },
-        td { "{attr.name}" },
-        td { "{attr.current}" },
-        td { "{attr.worst}" },
-        td { "{attr.threshold}" },
-        td { "{attributes::raw_to_string(attr.raw)}" },
+        span {
+          class: "drive-attr-id",
+          "{attr.id}"
+        },
+        span {
+          class: "drive-attr-name",
+          "{attr.name}"
+        },
+        span {
+          class: "drive-attr-current",
+          "{attr.current}"
+        },
+        span {
+          class: "drive-attr-worst",
+          "{attr.worst}"
+        },
+        span {
+          class: "drive-attr-threshold",
+          "{attr.threshold}"
+        },
+        span {
+          class: "drive-attr-raw",
+          "{attributes::raw_to_string(attr.raw)}"
+        }
       }
     }
   });
@@ -45,23 +64,43 @@ pub fn DriveAttrTable(props: DriveAttrTableProps) -> Element {
   rsx! {
     document::Link { rel: "stylesheet", href: CSS },
 
-    table {
+    div {
       class: "drive-attr-table",
 
-      thead {
-        tr {
-          // Status
-          th { "" },
-          th { "ID" },
-          th { "Attribute Name" },
-          th { "Current" },
-          th { "Worst" },
-          th { "Threshold" },
-          th { "Raw" },
-        }
+      div {
+        class: "drive-attr-table-header",
+        span {
+          class: "drive-attr-status",
+          ""
+        },
+        span {
+          class: "drive-attr-id",
+          "ID"
+        },
+        span {
+          class: "drive-attr-name",
+          "Name"
+        },
+        span {
+          class: "drive-attr-current",
+          "Current"
+        },
+        span {
+          class: "drive-attr-worst",
+          "Worst"
+        },
+        span {
+          class: "drive-attr-threshold",
+          "Threshold"
+        },
+        span {
+          class: "drive-attr-raw",
+          "Raw"
+        },
       },
 
-      tbody {
+      div {
+        class: "drive-attr-table-body",
         {rows}
       }
     }

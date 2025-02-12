@@ -1,8 +1,7 @@
 .drive-info-table {
   display: flex;
   flex-direction: column;
-  flex-wrap: wrap;
-  justify-content: space-evenly;
+  justify-content: flex-start;
   align-items: flex-start;
 
   height: 100%;
@@ -30,4 +29,6 @@
   margin: 4px;
 
   border: 1px solid #ccc;
+
+  user-select: all;
 }

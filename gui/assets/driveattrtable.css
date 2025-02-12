@@ -1,21 +1,70 @@
 .drive-attr-table {
+  display: flex;
+  flex-direction: column;
+
   width: 100%;
+  height: 50%;
   border-collapse: collapse;
   margin-top: 1em;
 
   text-align: left;
+
+  user-select: all;
 }
 
-.drive-attr-table thead {
+.drive-attr-table .drive-attr-table-header {
   background-color: #333;
   color: white;
+  font-weight: bold;
 }
 
-.drive-attr-table tr:nth-child(even) {
+.drive-attr-table .drive-attr-table-body {
+  height: 100%;
+  overflow-y: scroll;
+}
+
+.drive-attr-table .drive-attr-table-body .drive-attr-row:nth-child(even) {
   background-color: #333333;
+}
+
+.drive-attr-table .drive-attr-table-header,
+.drive-attr-table .drive-attr-row {
+  display: flex;
+  flex-direction: row;
+  justify-content: space-around;
+  align-items: flex-start;
 }
 
 .drive-attr-status {
   display: flex;
   justify-content: center;
+}
+
+/* table field widths */
+.drive-attr-status {
+  width: 2%;
+}
+
+.drive-attr-id {
+  width: 10%;
+}
+
+.drive-attr-name {
+  width: 30%;
+}
+
+.drive-attr-current {
+  width: 10%;
+}
+
+.drive-attr-worst {
+  width: 10%;
+}
+
+.drive-attr-threshold {
+  width: 10%;
+}
+
+.drive-attr-raw {
+  width: 15%;
 }
