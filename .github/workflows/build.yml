@@ -141,19 +141,19 @@ jobs:
           dx bundle --package glacierdisk-gui --release --target ${{ matrix.config.target }}
 
       - name: Upload `.deb`
-        uses: actions/upload-artifact@v3
+        uses: actions/upload-artifact@v4
         with:
           name: glacierdisk-gui-${{ matrix.config.target }}-deb
           path: target/${{ matrix.config.target }}/dx/glacierdisk-gui/bundle/linux/deb/*.deb
 
       - name: Upload `.rpm`
-        uses: actions/upload-artifact@v3
+        uses: actions/upload-artifact@v4
         with:
           name: glacierdisk-gui-${{ matrix.config.target }}-deb
           path: target/${{ matrix.config.target }}/dx/glacierdisk-gui/bundle/linux/rpm/*.rpm
 
       - name: Upload `.AppImage`
-        uses: actions/upload-artifact@v3
+        uses: actions/upload-artifact@v4
         with:
           name: glacierdisk-gui-${{ matrix.config.target }}-AppImage
           path: target/${{ matrix.config.target }}/dx/glacierdisk-gui/bundle/linux/appimage/*.AppImage
