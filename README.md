@@ -3,6 +3,8 @@
   <span>A familiar-looking SMART disk info tool for Linux</span>
 </div>
 
+![preview](https://github.com/user-attachments/assets/0694dd07-0b6e-4844-a8bd-27a6843bde7e)
+
 > [!IMPORTANT]
 > This project is in no way associated with the [CrystalDiskInfo](https://github.com/hiyohiyo/CrystalDiskInfo) project.
 
