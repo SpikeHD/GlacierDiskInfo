@@ -3,6 +3,10 @@
 # App (Project) Name
 name = "GlacierDiskInfo"
 
+[bundle]
+identifier = "dev.spikehd.glacierdiskinfo"
+publisher = "SpikeHD"
+
 [web.app]
 
 # HTML title tag content
