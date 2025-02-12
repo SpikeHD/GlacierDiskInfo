@@ -1,10 +1,19 @@
 .drive-info-table {
   display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+  align-items: flex-start;
+
+  height: 100%;
+  width: 100%;
+}
+
+.drive-info-table-section{
+  display: flex;
   flex-direction: column;
   justify-content: flex-start;
   align-items: flex-start;
 
-  height: 100%;
   width: 100%;
 }
 
@@ -15,7 +24,7 @@
   align-items: center;
 
   height: 100%;
-  width: 45%;
+  width: 95%;
 }
 
 .drive-info-name {
