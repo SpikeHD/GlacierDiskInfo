@@ -30,15 +30,18 @@ fn App() -> Element {
     (d.to_string(), Status { temp, state })
   }).collect();
 
-  let selected_drive = use_signal(|| drives[0].0.clone());
+  let mut selected_drive = use_signal(|| drives[0].0.clone());
 
   rsx! {
       document::Link { rel: "stylesheet", href: MAIN_CSS }
 
       DriveTabs {
         drives,
+        selected_drive: selected_drive(),
+        on_select: move |name| {
+          println!("selected drive: {}", name);
+          selected_drive.set(name);
+        }
       }
-
-      
   }
 }

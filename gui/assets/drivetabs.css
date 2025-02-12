@@ -8,6 +8,8 @@
   max-height: 80px;
 
   background: linear-gradient(to top, #080808, #272727);
+
+  border-bottom: 1px solid #080808;
 }
 
 .drive-tab {
@@ -22,7 +24,21 @@
 
   cursor: pointer;
 
-  margin-right: 1rem
+  margin-right: 1rem;
+
+  border-bottom: 1px solid transparent;
+}
+
+.drive-tab.good.selected {
+  border-bottom: 2px solid #64bbf3;
+}
+
+.drive-tab.caution.selected {
+  border-bottom: 2px solid #fffe19;
+}
+
+.drive-tab.bad.selected {
+  border-bottom: 2px solid #f44336;
 }
 
 .drive-tab-status {

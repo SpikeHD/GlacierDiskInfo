@@ -7,18 +7,48 @@ static GOOD: Asset = asset!("/assets/img/good.ico");
 static CAUTION: Asset = asset!("/assets/img/caution.ico");
 static BAD: Asset = asset!("/assets/img/bad.ico");
 
+pub enum DriveStatus {
+  Good,
+  Caution,
+  Bad,
+}
+
+impl DriveStatus {
+  pub fn from_smart(s: impl AsRef<str>) -> Self {
+    match s.as_ref() {
+      "Good" => DriveStatus::Good,
+      "Bad Attribute In The Past" => DriveStatus::Caution,
+      "Bad Sector" => DriveStatus::Bad,
+      "Bad Attribute Now" => DriveStatus::Caution,
+      "Bad Sector Many" => DriveStatus::Bad,
+      "Bad Status" => DriveStatus::Bad,
+      _ => DriveStatus::Bad,
+    }
+  }
+}
+
 #[derive(Props, PartialEq, Clone)]
 pub struct DriveTabsProps {
   pub drives: Vec<(String, Status)>,
+  pub selected_drive: String,
+  pub on_select: EventHandler<String>,
 }
 
 #[component]
 pub fn DriveTabs(props: DriveTabsProps) -> Element {
-  println!("Rendering with drives: {:?}", props.drives);
   let tab_renders = props.drives.iter().map(|(name, status)| {
+    let evt_name = name.clone();
+    let status_class = match DriveStatus::from_smart(status.state.as_str()) {
+      DriveStatus::Good => "good",
+      DriveStatus::Caution => "caution",
+      DriveStatus::Bad => "bad",
+    };
+
     rsx! {
       div {
-        class: "drive-tab",
+        class: "drive-tab ".to_owned() + status_class + " " + (if name == &props.selected_drive { "selected" } else { "" }),
+        onclick: move |_| props.on_select.call(evt_name.clone()),
+
         div {
           class: "drive-tab-status",
           
