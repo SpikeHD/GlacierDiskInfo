@@ -1,10 +1,8 @@
 [package]
-name = "gui"
+name = "minidisk-gui"
 version = "0.1.0"
 authors = ["SpikeHD <25207995+SpikeHD@users.noreply.github.com>"]
 edition = "2021"
-
-# See more keys and their definitions at https://doc.rust-lang.org/cargo/reference/manifest.html
 
 [dependencies]
 dioxus = { version = "0.6.3", features = [] }

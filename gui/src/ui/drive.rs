@@ -4,7 +4,7 @@ use dioxus::prelude::*;
 
 use crate::{
   data::smart::{smart_to_string, DriveStatus},
-  ui::drive_info_table::DriveInfoTable,
+  ui::{drive_attr_table::DriveAttrTable, drive_info_table::DriveInfoTable},
   util::conversion::bytes_to_readable,
 };
 
@@ -83,6 +83,10 @@ pub fn Drive(props: DriveProps) -> Element {
         DriveInfoTable {
           selected_drive: props.selected_drive.clone(),
         }
+      },
+
+      DriveAttrTable {
+        selected_drive: props.selected_drive.clone(),
       }
     }
   }
