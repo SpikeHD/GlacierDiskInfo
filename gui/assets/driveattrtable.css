@@ -9,7 +9,7 @@
 
   text-align: left;
 
-  user-select: all;
+  user-select: auto;
 }
 
 .drive-attr-table .drive-attr-table-header {
