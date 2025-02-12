@@ -16,7 +16,10 @@
 
 # Installation
 
-TODO
+Releases are available via [GitHub Actions](https://github.com/SpikeHD/GlacierDiskInfo/actions/workflows/build.yml) artifacts. Actual release builds will be made eventually.
+
+> [!NOTE]
+> Maintaining GlacierDiskInfo in a package repository? [Let me know](https://github.com/SpikeHD/GlacierDiskInfo/issues/new) and I will make a list!
 
 # Building
 
@@ -35,6 +38,7 @@ TODO
 
 - `libglacierdisk`
   - [ ] Support more unix-like platforms (FreeBSD, OpenBSD, etc.)
+    - This would probably entail expanding the `libatasmart` library to support more platforms
 - `glacierdisk-gui`
   - [ ] Theming
   - [ ] Move to Dioxus [blitz](https://github.com/DioxusLabs/blitz) (whenever that's out/stable-ish)
