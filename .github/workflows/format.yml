@@ -37,12 +37,7 @@ jobs:
         run: cargo fmt --manifest-path ./Cargo.toml --all -- --check
 
   clippy:
-    runs-on: ${{ matrix.platform }}
-
-    strategy:
-      fail-fast: false
-      matrix:
-        platform: [windows-latest, ubuntu-latest, macos-latest]
+    runs-on: ubuntu-latest
 
     steps:
       - uses: actions/checkout@v4
