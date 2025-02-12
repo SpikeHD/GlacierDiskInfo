@@ -19,10 +19,15 @@
   width: 45%;
 }
 
+.drive-info-name {
+  width: 30%;
+}
+
 .drive-info-value {
+  width: 100%;
+
   padding: 4px;
   margin: 4px;
 
   border: 1px solid #ccc;
-  width: 100%;
 }

@@ -17,12 +17,14 @@ pub fn DriveInfoTable(props: DriveInfoTableProps) -> Element {
     ("Firmware", identity.firmware),
     ("Serial", identity.serial),
     ("Model", identity.model),
+    ("Drive Path", props.selected_drive.clone()),
   ];
   let rows = table_values.iter().map(|(name, value)| {
     rsx! {
       div {
         class: "drive-info-row",
         span {
+          class: "drive-info-name",
           "{name}"
         }
 
@@ -33,7 +35,6 @@ pub fn DriveInfoTable(props: DriveInfoTableProps) -> Element {
       }
     }
   });
-
 
   rsx! {
     document::Link { rel: "stylesheet", href: CSS },
