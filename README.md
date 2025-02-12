@@ -41,11 +41,19 @@ Releases are available via [GitHub Actions](https://github.com/SpikeHD/GlacierDi
 - `libglacierdisk`
   - [ ] Support more unix-like platforms (FreeBSD, OpenBSD, etc.)
     - This would probably entail expanding the `libatasmart` library to support more platforms
+  - [ ] Support more data
+    - [ ] Transfer mode
+    - [ ] HDD Rotation Rate
+    - [ ] Interface (eg. SATA, NVME, etc.)
 - `glacierdisk-gui`
   - [ ] Theming
   - [ ] Move to Dioxus [blitz](https://github.com/DioxusLabs/blitz) (whenever that's out/stable-ish)
 - `glacierdisk-cli`
-  - [ ] TUI
+  - [ ] All of it
+- `glaciermark-gui`
+  - [ ] All of it
+- `glaciermark-cli`
+  - [ ] All of it
 
 # Attributions
 
