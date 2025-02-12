@@ -1,34 +1,69 @@
-use iced::{widget::{button, row, text, Button, Row}, Element};
-use libminidisk::libatasmart::Disk;
+use dioxus::prelude::*;
 
-use super::Message;
+use crate::data::status::Status;
 
-#[derive(Clone, Default)]
-pub struct DriveTabs {
-  pub disks: Vec<String>,
+static CSS: Asset = asset!("/assets/drivetabs.css");
+static GOOD: Asset = asset!("/assets/img/good.ico");
+static CAUTION: Asset = asset!("/assets/img/caution.ico");
+static BAD: Asset = asset!("/assets/img/bad.ico");
+
+#[derive(Props, PartialEq, Clone)]
+pub struct DriveTabsProps {
+  pub drives: Vec<(String, Status)>,
 }
 
-impl DriveTabs {
-  pub fn new(disks: Vec<String>) -> Self {
-    Self { disks }
-  }
+#[component]
+pub fn DriveTabs(props: DriveTabsProps) -> Element {
+  println!("Rendering with drives: {:?}", props.drives);
+  let tab_renders = props.drives.iter().map(|(name, status)| {
+    rsx! {
+      div {
+        class: "drive-tab",
+        div {
+          class: "drive-tab-status",
+          
+          img {
+            class: "drive-tab-icon",
+            src: match status.state.as_str() {
+              "Good" => GOOD,
+              "Bad Attribute In The Past" => CAUTION,
+              "Bad Sector" => BAD,
+              "Bad Attribute Now" => CAUTION,
+              "Bad Sector Many" => BAD,
+              "Bad Status" => BAD,
+              _ => BAD,
+            },
+          }
+        }
+        div {
+          class: "drive-tab-info",
 
-  pub fn view(&self) -> Row<Message> {
-    let mut tabs = vec![];
+          span {
+            class: "drive-tab-state",
+            "{status.state}"
+          }
 
-    for disk in &self.disks {
-      tabs.push(tab_button(disk.clone()));
+          span {
+            class: "drive-tab-temp",
+            "{status.temp} °C"
+          }
+
+          span {
+            class: "drive-tab-name",
+            "{name}"
+          }
+        }
+      }
     }
+  });
 
-    Row::with_children(tabs)
-      .spacing(10)
+  rsx! {
+    document::Link { rel: "stylesheet", href: CSS }
+
+    div {
+      id: "drive-tabs",
+
+      {tab_renders}
+    }
   }
-}
-
-fn tab_button(disk: String) -> Element<'static, Message> {
-  button(text(disk.clone()))
-    .width(80)
-    .height(60)
-    .on_press(Message::SwitchDrive(disk))
-    .into()
 }

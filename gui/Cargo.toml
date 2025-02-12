@@ -1,8 +1,19 @@
 [package]
-name = "minidisk-gui"
+name = "gui"
 version = "0.1.0"
+authors = ["SpikeHD <25207995+SpikeHD@users.noreply.github.com>"]
 edition = "2021"
 
+# See more keys and their definitions at https://doc.rust-lang.org/cargo/reference/manifest.html
+
 [dependencies]
-iced = "0.13.1"
+dioxus = { version = "0.6.0", features = [] }
+libatasmart-sys = "0.2.0"
 libminidisk = { path = "../lib" }
+sudo = "0.6.0"
+
+[features]
+default = ["desktop"]
+web = ["dioxus/web"]
+desktop = ["dioxus/desktop"]
+mobile = ["dioxus/mobile"]

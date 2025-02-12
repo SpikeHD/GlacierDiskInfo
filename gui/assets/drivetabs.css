@@ -1,0 +1,49 @@
+#drive-tabs {
+  display: flex;
+  flex-direction: row;
+  height: 10%;
+  width: 100%;
+
+  min-height: 60px;
+  max-height: 80px;
+
+  background: linear-gradient(to top, #080808, #272727);
+}
+
+.drive-tab {
+  display: flex;
+  flex-direction: row;
+  height: 100%;
+  width: 20%;
+
+  max-width: 6rem;
+
+  color: #fff;
+
+  cursor: pointer;
+
+  margin-right: 1rem
+}
+
+.drive-tab-status {
+  display: flex;
+  flex-direction: column;
+  height: 100%;
+  width: 20%;
+}
+
+.drive-tab-icon {
+  width: 100%;
+}
+
+.drive-tab-info {
+  display: flex;
+  flex-direction: column;
+  justify-content: space-evenly;
+  align-items: center;
+
+  height: 100%;
+  width: 80%;
+
+  text-align: center;
+}
