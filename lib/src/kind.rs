@@ -7,6 +7,17 @@ pub enum DiskKind {
   USB,
 }
 
+impl ToString for DiskKind {
+  fn to_string(&self) -> String {
+    match self {
+      Self::SSD => "SSD",
+      Self::HDD => "HDD",
+      Self::NVME => "NVMe",
+      Self::USB => "USB",
+    }.to_string()
+  }
+}
+
 pub fn disk_class(disk: &Path) -> DiskKind {
   let drive = disk
     .file_name()
@@ -33,6 +44,7 @@ pub fn disk_class(disk: &Path) -> DiskKind {
   // 1 = HDD, 0 = SSD
   if sys_class.exists() {
     let rotational = std::fs::read_to_string(sys_class).unwrap_or_default();
+    let rotational = rotational.trim();
     if rotational == "1" {
       return DiskKind::HDD;
     }

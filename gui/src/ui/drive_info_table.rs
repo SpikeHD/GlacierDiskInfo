@@ -3,7 +3,7 @@ use std::path::PathBuf;
 use dioxus::prelude::*;
 use libglacierdisk::{
   ata::DiskAtaLink,
-  attribute::{get_attribute, Convertable},
+  attribute::{get_attribute, Convertable}, kind::disk_class,
 };
 
 use crate::util::conversion::{bytes_to_readable, ms_to_readable};
@@ -28,6 +28,7 @@ pub fn DriveInfoTable(props: DriveInfoTableProps) -> Element {
     ("Model", identity.model),
     ("Drive Path", props.selected_drive.clone()),
     ("SATA Speed", ata.speed),
+    ("Kind", disk_class(&disk_path).to_string())
   ];
   let right_values = [
     (
