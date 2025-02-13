@@ -9,6 +9,7 @@ dioxus = { version = "0.6.3", features = [] }
 dioxus-desktop = "0.6.3"
 dirs = "6.0.0"
 libglacierdisk = { path = "../lib" }
+open = "5.3.2"
 regex = "1.11.1"
 serde = "1.0.217"
 sudo = "0.6.0"

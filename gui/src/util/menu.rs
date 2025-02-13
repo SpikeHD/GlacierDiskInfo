@@ -1,7 +1,6 @@
-use std::path::PathBuf;
 
 use dioxus::desktop::muda::{
-  IsMenuItem, Menu, MenuItem, PredefinedMenuItem, Submenu, SubmenuBuilder,
+  Menu, MenuItem, PredefinedMenuItem, Submenu,
 };
 
 use crate::util::theme;
@@ -76,7 +75,7 @@ fn generate_theme_items() -> Vec<Submenu> {
   let none = Submenu::new("None", true);
   none
     .append(&MenuItem::with_id(
-      format!("apply-none"),
+      "apply-none".to_string(),
       "Apply",
       true,
       None,

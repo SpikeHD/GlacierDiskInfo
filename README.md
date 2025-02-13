@@ -46,7 +46,7 @@ Releases are available via [GitHub Actions](https://github.com/SpikeHD/GlacierDi
     - [ ] HDD Rotation Rate
     - [ ] Interface (eg. SATA, NVME, etc.)
 - `glacierdisk-gui`
-  - [ ] Theming
+  - [x] Theming
   - [ ] Move to Dioxus [blitz](https://github.com/DioxusLabs/blitz) (whenever that's out/stable-ish)
 - `glacierdisk-cli`
   - [ ] All of it

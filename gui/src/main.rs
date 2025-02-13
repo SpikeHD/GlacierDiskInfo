@@ -1,7 +1,6 @@
-use data::{drives_and_status, smart::smart_to_string, status::Status};
+use data::drives_and_status;
 use dioxus::{
   desktop::{
-    muda::MenuEvent,
     tao::{dpi::LogicalSize, window::WindowBuilder},
     Config,
   },
@@ -9,7 +8,11 @@ use dioxus::{
 };
 use dioxus_desktop::muda::MenuId;
 use ui::{drive::Drive, drive_tabs::DriveTabs};
-use util::{config::load_config, menu, theme::read_theme_contents};
+use util::{
+  config::load_config,
+  menu,
+  theme::{self, read_theme_contents},
+};
 
 mod data;
 mod ui;
@@ -24,7 +27,7 @@ fn main() {
   let window = WindowBuilder::new()
     .with_title("GlacierDiskInfo")
     .with_resizable(true)
-    .with_min_inner_size(LogicalSize::new(1000, 800));
+    .with_min_inner_size(LogicalSize::new(1500, 800));
 
   let config = Config::default()
     .with_menu(Some(menu::create_menu()))
@@ -70,6 +73,9 @@ fn App() -> Element {
       }
     } else if id.starts_with("delete-") {
       // TODO
+    } else if id == "add-theme" {
+      let theme_path = theme::theme_path();
+      open::that(theme_path).unwrap_or_default();
     }
   });
 
