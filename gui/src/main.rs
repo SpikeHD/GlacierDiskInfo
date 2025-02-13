@@ -4,6 +4,7 @@ use dioxus::{
   prelude::*,
 };
 use ui::{drive::Drive, drive_tabs::DriveTabs};
+use util::menu;
 
 mod data;
 mod ui;
@@ -12,13 +13,15 @@ mod util;
 const MAIN_CSS: Asset = asset!("/assets/main.css");
 
 fn main() {
+  util::scaffold_folders();
+
   sudo::escalate_if_needed().expect("Failed to escalate privileges");
   let window = WindowBuilder::new()
     .with_title("GlacierDiskInfo")
     .with_resizable(true)
-    .with_min_inner_size(LogicalSize::new(1000, 600));
+    .with_min_inner_size(LogicalSize::new(1000, 800));
   dioxus::LaunchBuilder::new()
-    .with_cfg(Config::default().with_menu(None).with_window(window))
+    .with_cfg(Config::default().with_menu(Some(menu::create_menu())).with_window(window))
     .launch(App);
 }
 
