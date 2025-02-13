@@ -45,6 +45,7 @@ Example themes can be found in the `themes` directory. Below is a screenshot of 
 * `dioxus-cli`
   * This can be installed with `cargo install dioxus-cli`
 * `libatasmart-dev`
+* Dioxus [prerequisites](https://dioxuslabs.com/learn/0.6/getting_started/#linux)
 
 ## Build Steps
 1. Clone the repository
