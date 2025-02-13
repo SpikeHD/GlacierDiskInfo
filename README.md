@@ -3,7 +3,7 @@
   <span>A familiar-looking SMART disk info tool for Linux</span>
 </div>
 
-![preview](https://github.com/user-attachments/assets/0694dd07-0b6e-4844-a8bd-27a6843bde7e)
+![preview](https://github.com/user-attachments/assets/f8043262-8761-49ce-af4a-2ee82746e19f)
 
 > [!IMPORTANT]
 > This project is in no way associated with the [CrystalDiskInfo](https://github.com/hiyohiyo/CrystalDiskInfo) project.
@@ -34,7 +34,9 @@ Then, restart and the theme should be somewhere under the "Theme" menu item. Hov
 Themes are built in regular ol' CSS. The easiest way to build themes is with the assistance of devtools, which are only available when developing, so you may want to consider [cloning the project](#building).
 You can, of course, also just reference the CSS files themselves, located in the `gui/assets` directory.
 
-Example themes can be found in the `themes` directory.
+Example themes can be found in the `themes` directory. Below is a screenshot of `kurei_kei_unofficial.css`:
+![kurei_preview](https://github.com/user-attachments/assets/65053d55-5443-4f22-bf63-855a6ae6d9c8)
+
 
 # Building
 
