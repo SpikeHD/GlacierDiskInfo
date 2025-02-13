@@ -44,7 +44,23 @@ jobs:
 
       - uses: actions-rust-lang/setup-rust-toolchain@v1
         with:
-          components: rustfmt
+          components: clippy
+
+      # Required for dependencies that use external libs
+      - name: Install dependencies
+        run: |
+          sudo apt update 
+          sudo apt-get install -y \
+            libwebkit2gtk-4.1-dev \
+            build-essential \
+            curl \
+            wget \
+            file \
+            libatasmart-dev \
+            libxdo-dev \
+            libssl-dev \
+            libayatana-appindicator3-dev \
+            librsvg2-dev
 
       - name: Clippy check
         run: cargo clippy --manifest-path ./Cargo.toml --all -- -D warnings

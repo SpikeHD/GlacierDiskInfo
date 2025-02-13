@@ -144,6 +144,9 @@ jobs:
       - name: Build
         run: |
           dx bundle --package glacierdisk-gui --package-types "deb" --package-types "rpm" --release --target ${{ matrix.config.target }}
+        env:
+          # Warning are fine
+          RUSTFLAGS: -D warnings
 
       - name: Upload `.deb`
         uses: actions/upload-artifact@v4
