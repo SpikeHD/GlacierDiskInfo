@@ -130,9 +130,12 @@ jobs:
       - name: Add target
         run: rustup target add ${{ matrix.config.target }}
 
+      - name: Install binstall
+        run: curl -L --proto '=https' --tlsv1.2 -sSf https://raw.githubusercontent.com/cargo-bins/cargo-binstall/main/install-from-binstall-release.sh | bash
+
       - name: Install Dioxus CLI
         run: |
-          cargo install dioxus-cli
+          cargo binstall dioxus-cli
 
       - name: Build
         run: |
