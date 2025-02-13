@@ -8,13 +8,21 @@
   width: 100%;
 }
 
-.drive-info-table-section{
+.drive-info-table-section {
   display: flex;
   flex-direction: column;
   justify-content: flex-start;
   align-items: flex-start;
 
   width: 100%;
+}
+
+.drive-info-table-section.right .drive-info-value {
+  width: 30%;
+}
+
+.drive-info-table-section.right .drive-info-name {
+  width: 70%;
 }
 
 .drive-info-row {

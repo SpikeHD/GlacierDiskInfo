@@ -1,11 +1,6 @@
 use dioxus::prelude::*;
 
-use crate::data::{smart::DriveStatus, status::Status};
-
-static CSS: Asset = asset!("/assets/drivetabs.css");
-static GOOD: Asset = asset!("/assets/img/good.ico");
-static CAUTION: Asset = asset!("/assets/img/caution.ico");
-static BAD: Asset = asset!("/assets/img/bad.ico");
+use crate::{assets::{ico_to_data_uri, BAD_ICO, CAUTION_ICO, GOOD_ICO}, data::{smart::DriveStatus, status::Status}};
 
 #[derive(Props, PartialEq, Clone)]
 pub struct DriveTabsProps {
@@ -24,6 +19,15 @@ pub fn DriveTabs(props: DriveTabsProps) -> Element {
       DriveStatus::Caution => "caution",
       DriveStatus::Bad => "bad",
     };
+    let ico = match status.state.as_str() {
+      "Good" => GOOD_ICO,
+      "Bad Attribute In The Past" => CAUTION_ICO,
+      "Bad Sector" => BAD_ICO,
+      "Bad Attribute Now" => CAUTION_ICO,
+      "Bad Sector Many" => BAD_ICO,
+      "Bad Status" => BAD_ICO,
+      _ => BAD_ICO,
+    };
 
     rsx! {
       div {
@@ -35,15 +39,7 @@ pub fn DriveTabs(props: DriveTabsProps) -> Element {
 
           img {
             class: "drive-tab-icon",
-            src: match status.state.as_str() {
-              "Good" => GOOD,
-              "Bad Attribute In The Past" => CAUTION,
-              "Bad Sector" => BAD,
-              "Bad Attribute Now" => CAUTION,
-              "Bad Sector Many" => BAD,
-              "Bad Status" => BAD,
-              _ => BAD,
-            },
+            src: ico_to_data_uri(ico),
           }
         }
         div {
@@ -69,8 +65,6 @@ pub fn DriveTabs(props: DriveTabsProps) -> Element {
   });
 
   rsx! {
-    document::Link { rel: "stylesheet", href: CSS }
-
     div {
       id: "drive-tabs",
 

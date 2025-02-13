@@ -5,6 +5,7 @@ authors = ["SpikeHD <25207995+SpikeHD@users.noreply.github.com>"]
 edition = "2021"
 
 [dependencies]
+base64 = "0.22.1"
 dioxus = { version = "0.6.3", features = [] }
 dioxus-desktop = "0.6.3"
 dirs = "6.0.0"

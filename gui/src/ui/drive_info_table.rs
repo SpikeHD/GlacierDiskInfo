@@ -8,8 +8,6 @@ use libglacierdisk::{
 
 use crate::util::conversion::{bytes_to_readable, ms_to_readable};
 
-static CSS: Asset = asset!("/assets/driveinfotable.css");
-
 #[derive(Props, PartialEq, Clone)]
 pub struct DriveInfoTableProps {
   pub selected_drive: String,
@@ -97,8 +95,6 @@ pub fn DriveInfoTable(props: DriveInfoTableProps) -> Element {
   });
 
   rsx! {
-    document::Link { rel: "stylesheet", href: CSS },
-
     div {
       class: "drive-info-table",
 

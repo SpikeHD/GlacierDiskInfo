@@ -3,9 +3,7 @@ use std::path::PathBuf;
 use dioxus::prelude::*;
 use libglacierdisk::attribute;
 
-static CSS: Asset = asset!("/assets/driveattrtable.css");
-static GOOD: Asset = asset!("/assets/img/good.ico");
-static CAUTION: Asset = asset!("/assets/img/caution.ico");
+use crate::assets::{ico_to_data_uri, CAUTION_ICO, GOOD_ICO};
 
 #[derive(Props, PartialEq, Clone)]
 pub struct DriveAttrTableProps {
@@ -18,6 +16,8 @@ pub fn DriveAttrTable(props: DriveAttrTableProps) -> Element {
     .expect("Failed to get disk info");
   let attrs = attribute::get_all_attributes(&mut drive);
   let rows = attrs.iter().map(|attr| {
+    let ico = if attr.warn { CAUTION_ICO } else { GOOD_ICO }; 
+
     rsx! {
       div {
         class: "drive-attr-row",
@@ -26,10 +26,7 @@ pub fn DriveAttrTable(props: DriveAttrTableProps) -> Element {
           class: "drive-attr-status",
 
           img {
-            src: match attr.warn {
-              true => CAUTION,
-              false => GOOD,
-            },
+            src: ico_to_data_uri(ico),
           }
         },
         span {
@@ -61,8 +58,6 @@ pub fn DriveAttrTable(props: DriveAttrTableProps) -> Element {
   });
 
   rsx! {
-    document::Link { rel: "stylesheet", href: CSS },
-
     div {
       class: "drive-attr-table",
 

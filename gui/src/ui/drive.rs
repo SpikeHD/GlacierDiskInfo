@@ -8,8 +8,6 @@ use crate::{
   util::conversion::bytes_to_readable,
 };
 
-static CSS: Asset = asset!("/assets/drive.css");
-
 #[derive(Props, PartialEq, Clone)]
 pub struct DriveProps {
   pub selected_drive: String,
@@ -50,8 +48,6 @@ pub fn Drive(props: DriveProps) -> Element {
   };
 
   rsx! {
-    document::Link { rel: "stylesheet", href: CSS },
-
     div {
       class: "drive",
 

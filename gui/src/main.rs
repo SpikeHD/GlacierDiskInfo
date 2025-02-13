@@ -14,11 +14,12 @@ use util::{
   theme::{self, read_theme_contents},
 };
 
+use crate::assets::CSS;
+
+mod assets;
 mod data;
 mod ui;
 mod util;
-
-const MAIN_CSS: Asset = asset!("/assets/main.css");
 
 fn main() {
   util::scaffold_folders();
@@ -84,7 +85,9 @@ fn App() -> Element {
   let mut selected_drive = use_signal(|| drives[0].0.clone());
 
   rsx! {
-      document::Link { rel: "stylesheet", href: MAIN_CSS }
+      style {
+        r#"{CSS.join("\n")}"#
+      }
 
       style {
         "{theme_css}"
