@@ -1,0 +1,34 @@
+# TODO unfinished
+id: dev.spikehd.GlacierDiskInfo
+
+runtime: org.gnome.Platform
+runtime-version: '46'
+sdk: org.gnome.Sdk
+
+command: glacierdisk-gui
+
+finish-args:
+  - --share=ipc
+  - --socket=fallback-x11
+  - --socket=wayland
+  - --device=all
+  - --filesystem=home
+  - --filesystem=host
+  - --talk-name=org.freedesktop.Notifications
+  - --talk-name=org.gnome.Shell
+
+modules:
+  - name: binary
+    buildsystem: simple
+    sources:
+      - type: file
+        url: https://github.com/SpikeHD/GlacierDiskInfo/releases/download/0.3.0/glacierdisk-gui-x86_64-unknown-linux-gnu-deb.zip
+        sha256: bd3808768b6753c51fe5f2b064f847cd204f0da654139895ce45b6463694bdb1
+        dest-filename: glacierdisk-gui.zip
+        only-arches: [x86_64]
+    build-commands:
+      - unzip glacierdisk-gui.zip
+      - ar -x *.deb
+      - tar -xf data.tar.gz
+      - install -Dm755 usr/bin/glacierdisk-gui /app/bin/glacierdisk-gui
+      - install -Dm644 usr/share/applications/GlacierdiskGui.desktop /app/share/applications/glacierdisk-gui.desktop 
