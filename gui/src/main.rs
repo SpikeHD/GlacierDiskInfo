@@ -75,7 +75,7 @@ fn App() -> Element {
       // TODO
     } else if id == "add-theme" {
       let theme_path = theme::theme_path();
-      open::that(theme_path).unwrap_or_default();
+      open::that_detached(theme_path).unwrap_or_default();
     }
   });
 
