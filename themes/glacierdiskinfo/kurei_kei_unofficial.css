@@ -39,3 +39,8 @@ body {
 .drive-attr-table .drive-attr-table-body .drive-attr-row:nth-child(even) {
   background-color: rgba(255, 255, 255, 0.3);
 }
+
+.drive-attr-table-header {
+  background-color: rgba(255, 255, 255, 0.3);
+  color: #000;
+}
