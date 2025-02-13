@@ -26,6 +26,10 @@ Releases are available via [GitHub Actions](https://github.com/SpikeHD/GlacierDi
 
 # Theming
 
+To add a theme, click the "Theme" menu item, then click "Add theme". This will take you to your themes folder, where you can put any `*.css` files. 
+
+## Building themes
+
 Themes are built in regular ol' CSS. The easiest way to build themes is with the assistance of devtools, which are only available when developing, so you may want to consider [cloning the project](#building).
 You can, of course, also just reference the CSS files themselves, located in the `gui/assets` directory.
 
