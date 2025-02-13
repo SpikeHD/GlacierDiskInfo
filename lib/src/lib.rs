@@ -1,4 +1,4 @@
-use std::{error::Error, path::PathBuf};
+use std::{error::Error, path::{Path, PathBuf}};
 
 use disk::get_disks;
 
@@ -13,7 +13,7 @@ pub use libatasmart;
 // Re-export libatasmart-sys
 pub use libatasmart_sys;
 
-#[cfg(any(target_os = "linux"))]
+#[cfg(target_os = "linux",)]
 static DEV_PATH: &str = "/dev";
 
 pub fn get_disks_info() -> Result<Vec<libatasmart::Disk>, Box<dyn Error>> {
@@ -31,8 +31,8 @@ pub fn get_disks_info() -> Result<Vec<libatasmart::Disk>, Box<dyn Error>> {
   Ok(list)
 }
 
-pub fn get_disk_info(disk: &PathBuf) -> Result<libatasmart::Disk, Box<dyn Error>> {
-  let disk = libatasmart::Disk::new(&disk)?;
+pub fn get_disk_info(disk: &Path) -> Result<libatasmart::Disk, Box<dyn Error>> {
+  let disk = libatasmart::Disk::new(disk)?;
   Ok(disk)
 }
 
@@ -42,9 +42,7 @@ pub fn list_disks() -> Result<Vec<PathBuf>, Box<dyn Error>> {
 
   for disk in disks {
     // TODO other platforms
-    list.push(
-      PathBuf::from(format!("{}/{}", DEV_PATH, disk))
-    );
+    list.push(PathBuf::from(format!("{}/{}", DEV_PATH, disk)));
   }
 
   Ok(list)

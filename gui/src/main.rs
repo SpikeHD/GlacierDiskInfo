@@ -1,9 +1,8 @@
 use data::{smart::smart_to_string, status::Status};
-use dioxus::{desktop::{
-  Config,
-  tao::window::WindowBuilder,
-  tao::dpi::LogicalSize
-}, prelude::*};
+use dioxus::{
+  desktop::{tao::dpi::LogicalSize, tao::window::WindowBuilder, Config},
+  prelude::*,
+};
 use ui::{drive::Drive, drive_tabs::DriveTabs};
 
 mod data;
@@ -36,14 +35,13 @@ fn App() -> Element {
           return None;
         }
       };
-      let smart = match status
-        .smart_get_overall() {
-          Ok(s) => s,
-          Err(e) => {
-            eprintln!("Error fetching smart status: {e}");
-            return None;
-          }
-        };
+      let smart = match status.smart_get_overall() {
+        Ok(s) => s,
+        Err(e) => {
+          eprintln!("Error fetching smart status: {e}");
+          return None;
+        }
+      };
       let state = smart_to_string(smart);
 
       let temp = status.get_temperature().unwrap_or(0);
@@ -57,7 +55,13 @@ fn App() -> Element {
 
   // If drives is empty, we have to create a dummy
   if drives.is_empty() {
-    drives.push(("No Disks Found".to_string(), Status { temp: 0., state: "Good".to_string() }));
+    drives.push((
+      "No Disks Found".to_string(),
+      Status {
+        temp: 0.,
+        state: "Good".to_string(),
+      },
+    ));
   }
 
   let mut selected_drive = use_signal(|| drives[0].0.clone());

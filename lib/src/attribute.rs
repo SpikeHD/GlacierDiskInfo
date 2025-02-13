@@ -16,18 +16,23 @@ pub struct Attribute {
 
 pub fn raw_to_string(raw: [u8; 6]) -> String {
   let mut s = String::new();
-  for i in 0..6 {
-    s.push_str(&format!("{:02x}", raw[i]));
+  for r in raw  {
+    s.push_str(&format!("{:02x}", r));
   }
   s
 }
 
 pub fn get_attribute(name: impl AsRef<str>, disk: &mut Disk) -> Option<Attribute> {
-  let mut attribute = Attribute::default();
-  attribute.name = name.as_ref().to_string();
+  let attribute = Attribute {
+    name: name.as_ref().to_string(),
+    ..Default::default()
+  };
   // Create poitner to attribute
   let mut a = Box::new(attribute);
-  let result = disk.parse_attributes(fetch_attribute, &mut *a as *mut Attribute as *mut std::ffi::c_void);
+  let result = disk.parse_attributes(
+    fetch_attribute,
+    &mut *a as *mut Attribute as *mut std::ffi::c_void,
+  );
 
   if result.is_ok() {
     return Some(*a);
@@ -53,7 +58,11 @@ pub fn get_all_attributes(disk: &mut Disk) -> Vec<Attribute> {
   Vec::new()
 }
 
-extern "C" fn fetch_attribute(_disk: *mut SkDisk, a: *const SkSmartAttributeParsedData, ah: *mut std::ffi::c_void) {
+extern "C" fn fetch_attribute(
+  _disk: *mut SkDisk,
+  a: *const SkSmartAttributeParsedData,
+  ah: *mut std::ffi::c_void,
+) {
   let name = unsafe { CStr::from_ptr((*a).name) }.to_str().unwrap();
   let attribute = unsafe { &mut *(ah as *mut Attribute) };
 

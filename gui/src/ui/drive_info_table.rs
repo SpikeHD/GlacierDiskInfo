@@ -1,7 +1,10 @@
 use std::path::PathBuf;
 
 use dioxus::prelude::*;
-use libglacierdisk::{ata::DiskAtaLink, sysfs::{sector_size, DiskStat}};
+use libglacierdisk::{
+  ata::DiskAtaLink,
+  sysfs::{sector_size, DiskStat},
+};
 
 use crate::util::conversion::{bytes_to_readable, ms_to_readable};
 
@@ -15,28 +18,26 @@ pub struct DriveInfoTableProps {
 #[component]
 pub fn DriveInfoTable(props: DriveInfoTableProps) -> Element {
   let disk_path = PathBuf::from(props.selected_drive.clone());
-  let mut drive = libglacierdisk::get_disk_info(&disk_path)
-    .expect("Failed to get disk info");
+  let mut drive = libglacierdisk::get_disk_info(&disk_path).expect("Failed to get disk info");
   let identity = drive.identify_parse().expect("Failed to get identify info");
   let stats = DiskStat::from_disk(&disk_path).unwrap_or_default();
   let sector_size = sector_size(&disk_path);
-  let ata = match DiskAtaLink::for_disk(&disk_path) {
-    Ok(ata) => ata,
-    Err(_) => DiskAtaLink::default(),
-  };
-  let left_values = vec![
+  let ata = DiskAtaLink::for_disk(&disk_path).unwrap_or_default();
+  let left_values = [
     ("Firmware", identity.firmware),
     ("Serial", identity.serial),
     ("Model", identity.model),
     ("Drive Path", props.selected_drive.clone()),
     ("SATA Speed", ata.speed),
   ];
-  let right_values = vec![
+  let right_values = [
     (
+      // Currently wrong
       "Total Read",
       bytes_to_readable(stats.read_sectors * sector_size),
     ),
     (
+      // Currently wrong
       "Total Write",
       bytes_to_readable(stats.write_sectors * sector_size),
     ),
@@ -50,7 +51,9 @@ pub fn DriveInfoTable(props: DriveInfoTableProps) -> Element {
     ),
     (
       "Average Power On Time",
-      ms_to_readable(drive.get_power_on().unwrap_or(0) / drive.get_power_cycle_count().unwrap_or(0)),
+      ms_to_readable(
+        drive.get_power_on().unwrap_or(0) / drive.get_power_cycle_count().unwrap_or(0),
+      ),
     ),
   ];
   let left_rows = left_values.iter().map(|(name, value)| {

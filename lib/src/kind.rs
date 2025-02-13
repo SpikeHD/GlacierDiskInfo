@@ -1,16 +1,18 @@
-use std::path::PathBuf;
-
-use libatasmart::Disk;
+use std::path::{Path, PathBuf};
 
 pub enum DiskKind {
   SSD,
   HDD,
   NVME,
-  USB
+  USB,
 }
 
-pub fn disk_class(disk: &PathBuf) -> DiskKind {
-  let drive = disk.file_name().unwrap_or_default().to_str().unwrap_or_default();
+pub fn disk_class(disk: &Path) -> DiskKind {
+  let drive = disk
+    .file_name()
+    .unwrap_or_default()
+    .to_str()
+    .unwrap_or_default();
 
   // Read disk type
   if drive.starts_with("nvme") {
