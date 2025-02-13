@@ -2,8 +2,7 @@ use std::path::PathBuf;
 
 use dioxus::prelude::*;
 use libglacierdisk::{
-  ata::DiskAtaLink,
-  sysfs::{sector_size, DiskStat},
+  ata::DiskAtaLink, attribute::{get_attribute, Convertable}, sysfs::{sector_size, DiskStat}
 };
 
 use crate::util::conversion::{bytes_to_readable, ms_to_readable};
@@ -20,9 +19,10 @@ pub fn DriveInfoTable(props: DriveInfoTableProps) -> Element {
   let disk_path = PathBuf::from(props.selected_drive.clone());
   let mut drive = libglacierdisk::get_disk_info(&disk_path).expect("Failed to get disk info");
   let identity = drive.identify_parse().expect("Failed to get identify info");
-  let stats = DiskStat::from_disk(&disk_path).unwrap_or_default();
-  let sector_size = sector_size(&disk_path);
   let ata = DiskAtaLink::for_disk(&disk_path).unwrap_or_default();
+  let lbas_read = get_attribute("total-lbas-read", &mut drive).unwrap_or_default();
+  let lbas_written = get_attribute("total-lbas-written", &mut drive).unwrap_or_default();
+
   let left_values = [
     ("Firmware", identity.firmware),
     ("Serial", identity.serial),
@@ -32,14 +32,12 @@ pub fn DriveInfoTable(props: DriveInfoTableProps) -> Element {
   ];
   let right_values = [
     (
-      // Currently wrong
       "Total Read",
-      bytes_to_readable(stats.read_sectors * sector_size),
+      bytes_to_readable(lbas_read.pretty_unit.convert_to_base(lbas_read.pretty_value)),
     ),
     (
-      // Currently wrong
       "Total Write",
-      bytes_to_readable(stats.write_sectors * sector_size),
+      bytes_to_readable(lbas_written.pretty_unit.convert_to_base(lbas_written.pretty_value)),
     ),
     (
       "Powered On",

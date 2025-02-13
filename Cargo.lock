@@ -2453,7 +2453,7 @@ dependencies = [
 [[package]]
 name = "libatasmart"
 version = "0.3.1"
-source = "git+https://github.com/SpikeHD/libatasmart?branch=master#7958e05304f95a51392c8aa747bb133ede88dc18"
+source = "git+https://github.com/SpikeHD/libatasmart?branch=master#eacb0071f4a6edf4440d47852189295859e60235"
 dependencies = [
  "libatasmart-sys",
  "nix",
@@ -2462,7 +2462,7 @@ dependencies = [
 [[package]]
 name = "libatasmart-sys"
 version = "0.2.0"
-source = "git+https://github.com/cholcombe973/libatasmart-sys?branch=master#a291b7b0e59130b94de7e25657504c0fed9b6c6b"
+source = "git+https://github.com/SpikeHD/libatasmart-sys?branch=master#6ff75594bcc50b9d30b56fc4e5eacaf8cfec5436"
 dependencies = [
  "c2rust-bitfields",
  "libc",
