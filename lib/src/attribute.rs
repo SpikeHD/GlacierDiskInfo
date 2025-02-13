@@ -1,7 +1,7 @@
 use std::ffi::CStr;
 
-use libatasmart::Disk;
 use libatasmart::libatasmart_sys::{SkDisk, SkSmartAttributeParsedData, SkSmartAttributeUnit};
+use libatasmart::Disk;
 
 // Handles SkSmartAttributUnit, so that we can convert whatever number to the "base" and then do formatting on that
 pub trait Convertable {

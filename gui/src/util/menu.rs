@@ -1,7 +1,4 @@
-
-use dioxus::desktop::muda::{
-  Menu, MenuItem, PredefinedMenuItem, Submenu,
-};
+use dioxus::desktop::muda::{Menu, MenuItem, PredefinedMenuItem, Submenu};
 
 use crate::util::theme;
 

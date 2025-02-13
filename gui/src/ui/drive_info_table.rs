@@ -2,7 +2,8 @@ use std::path::PathBuf;
 
 use dioxus::prelude::*;
 use libglacierdisk::{
-  ata::DiskAtaLink, attribute::{get_attribute, Convertable},
+  ata::DiskAtaLink,
+  attribute::{get_attribute, Convertable},
 };
 
 use crate::util::conversion::{bytes_to_readable, ms_to_readable};
@@ -33,11 +34,19 @@ pub fn DriveInfoTable(props: DriveInfoTableProps) -> Element {
   let right_values = [
     (
       "Total Read",
-      bytes_to_readable(lbas_read.pretty_unit.convert_to_base(lbas_read.pretty_value)),
+      bytes_to_readable(
+        lbas_read
+          .pretty_unit
+          .convert_to_base(lbas_read.pretty_value),
+      ),
     ),
     (
       "Total Write",
-      bytes_to_readable(lbas_written.pretty_unit.convert_to_base(lbas_written.pretty_value)),
+      bytes_to_readable(
+        lbas_written
+          .pretty_unit
+          .convert_to_base(lbas_written.pretty_value),
+      ),
     ),
     (
       "Powered On",

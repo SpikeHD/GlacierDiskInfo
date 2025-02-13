@@ -14,7 +14,7 @@ fn main() -> Result<(), Box<dyn std::error::Error>> {
         continue;
       }
     };
-    
+
     dump_attributes(&mut disk);
   }
 
