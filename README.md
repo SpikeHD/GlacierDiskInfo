@@ -1,6 +1,6 @@
 <div align="center">
   <h1>GlacierDiskInfo</h1>
-  <span>A familiar-looking SMART disk info tool for Linux</span>
+  <span>A familiar-looking, customizable SMART disk info tool for Linux</span>
 
   <div align="center">
     <img src="https://img.shields.io/github/actions/workflow/status/SpikeHD/GlacierDiskInfo/build.yml" />
@@ -9,7 +9,7 @@
   </div>
 </div>
 
-![preview](https://github.com/user-attachments/assets/f8043262-8761-49ce-af4a-2ee82746e19f)
+![preview](https://github.com/user-attachments/assets/18515e3b-7d97-4931-aa45-459afb552040)
 
 > [!IMPORTANT]
 > This project is in no way associated with the [CrystalDiskInfo](https://github.com/hiyohiyo/CrystalDiskInfo) project.
@@ -41,8 +41,7 @@ Themes are built in regular ol' CSS. The easiest way to build themes is with the
 You can, of course, also just reference the CSS files themselves, located in the `gui/assets` directory.
 
 Example themes can be found in the `themes` directory. Below is a screenshot of `kurei_kei_unofficial.css`:
-![kurei_preview](https://github.com/user-attachments/assets/65053d55-5443-4f22-bf63-855a6ae6d9c8)
-
+![kurei_preview](https://github.com/user-attachments/assets/21675890-108a-4a31-a280-d4a2f894053b)
 
 # Building
 
