@@ -2433,8 +2433,7 @@ dependencies = [
 [[package]]
 name = "libatasmart"
 version = "0.3.1"
-source = "registry+https://github.com/rust-lang/crates.io-index"
-checksum = "244fe011dea9b0ae0df6f8e7aa3c54c6aeb92307bf19e8d75740121638fdb284"
+source = "git+https://github.com/cholcombe973/libatasmart?branch=master#d899b4910175c059e6dac7f50d7596d2c7dd153a"
 dependencies = [
  "libatasmart-sys",
  "nix 0.26.4",
