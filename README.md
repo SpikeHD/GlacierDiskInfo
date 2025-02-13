@@ -10,6 +10,7 @@
 
 # Table of Contents
 * [Installation](#installation)
+* [Theming](theming)
 * [Building](#building)
   * [Requirements](#requirements)
   * [Build Steps](#build-steps)
@@ -22,6 +23,13 @@ Releases are available via [GitHub Actions](https://github.com/SpikeHD/GlacierDi
 
 > [!NOTE]
 > Maintaining GlacierDiskInfo in a package repository? [Let me know](https://github.com/SpikeHD/GlacierDiskInfo/issues/new) and I will make a list!
+
+# Theming
+
+Themes are built in regular ol' CSS. The easiest way to build themes is with the assistance of devtools, which are only available when developing, so you may want to consider [cloning the project](#building).
+You can, of course, also just reference the CSS files themselves, located in the `gui/assets` directory.
+
+Example themes can be found in the `themes` directory.
 
 # Building
 
