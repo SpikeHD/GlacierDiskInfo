@@ -1,0 +1,40 @@
+/* Unofficial Kurei Kei Edition */
+
+body {
+  background-image: url(https://i0.wp.com/pronama.jp/wp-content/uploads/2017/08/B2.jpg?ssl=1);
+  background-size: 100%;
+  background-position: -140px 0;
+}
+
+body {
+  display: flex;
+  flex-direction: row;
+  justify-content: flex-end;
+}
+
+#main {
+  width: 65%;
+  color: #000 !important;
+}
+
+#drive-tabs {
+  background: linear-gradient(to top, #fff, #eee, #fff) !important;
+  opacity: 0.85;
+  
+  border-bottom: 2px solid #fff;
+}
+
+.drive-tab {
+  color: #000;
+}
+
+.drive {
+  background: rgba(255,255,255,0.85);
+  -webkit-backdrop-filter: blur(12px);
+  
+  color: #000;
+}
+
+.drive-attr-table .drive-attr-table-body .drive-attr-row:nth-child(even) {
+  background-color: rgba(255, 255, 255, 0.3);
+}
