@@ -90,6 +90,7 @@ jobs:
             curl \
             wget \
             file \
+            libatasmart-dev \
             libxdo-dev \
             libssl-dev \
             libayatana-appindicator3-dev \
@@ -106,6 +107,7 @@ jobs:
             curl \
             wget \
             file \
+            libatasmart-dev \
             libxdo-dev \
             libssl-dev \
             libayatana-appindicator3-dev \
@@ -122,6 +124,7 @@ jobs:
             curl \
             wget \
             file \
+            libatasmart-dev \
             libxdo-dev \
             libssl-dev \
             libayatana-appindicator3-dev \
