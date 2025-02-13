@@ -9,7 +9,7 @@ static NUMBERS: [&str; 10] = ["0", "1", "2", "3", "4", "5", "6", "7", "8", "9"];
 pub fn get_disks() -> Result<Vec<String>, Box<dyn Error>> {
   let mut disks = vec![];
 
-  for entry in fs::read_dir("/dev").unwrap() {
+  for entry in fs::read_dir("/dev")? {
     let path = entry?.path();
     let meta = path.metadata()?;
     let filename = path

@@ -1,6 +1,6 @@
 [package]
 name = "glacierdisk-gui"
-version = "0.1.1"
+version = "0.1.2"
 authors = ["SpikeHD <25207995+SpikeHD@users.noreply.github.com>"]
 edition = "2021"
 

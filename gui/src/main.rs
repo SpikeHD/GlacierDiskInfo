@@ -1,5 +1,3 @@
-use std::path::PathBuf;
-
 use data::{smart::smart_to_string, status::Status};
 use dioxus::{desktop::{
   Config,
@@ -28,13 +26,13 @@ fn main() {
 #[component]
 fn App() -> Element {
   let drives = libglacierdisk::list_disks().expect("Failed to list disks");
-  let drives: Vec<(String, Status)> = drives
+  let mut drives: Vec<(String, Status)> = drives
     .iter()
     .filter_map(|d| {
-      let mut status = match libglacierdisk::get_disk_info(PathBuf::from(d)) {
+      let mut status = match libglacierdisk::get_disk_info(d) {
         Ok(d) => d,
         Err(e) => {
-          eprintln!("Error fetching disk at {d}: {e}");
+          eprintln!("Error fetching disk at {:?}: {e}", d);
           return None;
         }
       };
@@ -53,9 +51,14 @@ fn App() -> Element {
       // convert mkelvin to celsius
       let temp = (temp as f32 / 1000.) - 273.15;
 
-      Some((d.to_string(), Status { temp, state }))
+      Some((d.to_string_lossy().to_string(), Status { temp, state }))
     })
     .collect();
+
+  // If drives is empty, we have to create a dummy
+  if drives.is_empty() {
+    drives.push(("No Disks Found".to_string(), Status { temp: 0., state: "Good".to_string() }));
+  }
 
   let mut selected_drive = use_signal(|| drives[0].0.clone());
 

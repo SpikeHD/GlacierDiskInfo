@@ -2,8 +2,11 @@ use std::{error::Error, path::PathBuf};
 
 use disk::get_disks;
 
+pub mod ata;
 pub mod attribute;
 mod disk;
+pub mod kind;
+pub mod sysfs;
 
 // Re-export libatasmart
 pub use libatasmart;
@@ -28,21 +31,19 @@ pub fn get_disks_info() -> Result<Vec<libatasmart::Disk>, Box<dyn Error>> {
   Ok(list)
 }
 
-pub fn get_disk_info(disk: PathBuf) -> Result<libatasmart::Disk, Box<dyn Error>> {
+pub fn get_disk_info(disk: &PathBuf) -> Result<libatasmart::Disk, Box<dyn Error>> {
   let disk = libatasmart::Disk::new(&disk)?;
   Ok(disk)
 }
 
-pub fn list_disks() -> Result<Vec<String>, Box<dyn Error>> {
+pub fn list_disks() -> Result<Vec<PathBuf>, Box<dyn Error>> {
   let mut list = vec![];
   let disks = get_disks()?;
 
   for disk in disks {
+    // TODO other platforms
     list.push(
       PathBuf::from(format!("{}/{}", DEV_PATH, disk))
-        .to_str()
-        .unwrap_or_default()
-        .to_string(),
     );
   }
 

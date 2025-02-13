@@ -7,7 +7,7 @@ fn main() -> Result<(), Box<dyn std::error::Error>> {
   
   for disk in disks {
     let path = PathBuf::from(disk.clone());
-    let mut disk = match libglacierdisk::get_disk_info(path) {
+    let mut disk = match libglacierdisk::get_disk_info(&path) {
       Ok(d) => d,
       Err(e) => {
         eprintln!("Failed to get disk info: {e}");

@@ -1,6 +1,6 @@
 [package]
 name = "libglacierdisk"
-version = "0.2.0"
+version = "0.3.0"
 edition = "2021"
 
 [patch.crates-io]
@@ -9,4 +9,6 @@ libatasmart = { git = "https://github.com/SpikeHD/libatasmart", branch = "master
 [dependencies]
 libatasmart = "0.3.1"
 libatasmart-sys = "0.2.0"
+
+[dev-dependencies]
 sudo = "0.6.0"
