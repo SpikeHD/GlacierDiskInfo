@@ -135,7 +135,7 @@ jobs:
 
       - name: Install Dioxus CLI
         run: |
-          cargo binstall dioxus-cli
+          cargo binstall dioxus-cli --force
 
       - name: Build
         run: |
