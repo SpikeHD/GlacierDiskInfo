@@ -148,10 +148,10 @@ jobs:
         uses: actions/upload-artifact@v4
         with:
           name: glacierdisk-gui-${{ matrix.config.target }}-deb
-          path: target/${{ matrix.config.target }}/dx/glacierdisk-gui/bundle/linux/deb/*.deb
+          path: target/dx/glacierdisk-gui/bundle/linux/bundle/deb/*.deb
 
       - name: Upload `.rpm`
         uses: actions/upload-artifact@v4
         with:
           name: glacierdisk-gui-${{ matrix.config.target }}-deb
-          path: target/${{ matrix.config.target }}/dx/glacierdisk-gui/bundle/linux/rpm/*.rpm
+          path: target/dx/glacierdisk-gui/bundle/linux/bundle/rpm/*.rpm
