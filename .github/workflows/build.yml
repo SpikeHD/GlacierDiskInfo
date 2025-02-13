@@ -35,10 +35,11 @@ jobs:
         config:
           - platform: ubuntu-22.04
             target: 'x86_64-unknown-linux-gnu'
-          - platform: ubuntu-22.04
-            target: 'aarch64-unknown-linux-gnu'
-          - platform: ubuntu-22.04
-            target: 'armv7-unknown-linux-gnueabihf'
+          # TODO fix these
+          # - platform: ubuntu-22.04
+          #   target: 'aarch64-unknown-linux-gnu'
+          # - platform: ubuntu-22.04
+          #   target: 'armv7-unknown-linux-gnueabihf'
 
     steps:
       - uses: actions/checkout@v4

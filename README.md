@@ -1,6 +1,12 @@
 <div align="center">
   <h1>GlacierDiskInfo</h1>
   <span>A familiar-looking SMART disk info tool for Linux</span>
+
+  <div align="center">
+    <img src="https://img.shields.io/github/actions/workflow/status/SpikeHD/GlacierDiskInfo/build.yml" />
+    <img src="https://img.shields.io/github/actions/workflow/status/SpikeHD/GlacierDiskInfo/format.yml?label=code quality" />
+    <img src="https://img.shields.io/github/repo-size/SpikeHD/GlacierDiskInfo" />
+  </div>
 </div>
 
 ![preview](https://github.com/user-attachments/assets/f8043262-8761-49ce-af4a-2ee82746e19f)
@@ -56,6 +62,7 @@ Example themes can be found in the `themes` directory. Below is a screenshot of 
 
 - `libglacierdisk`
   - [ ] Publish on [crates.io](https://crates.io)
+  - [ ] Fix attribute fetching
   - [ ] Support more unix-like platforms (FreeBSD, OpenBSD, etc.)
     - This would probably entail expanding the `libatasmart` library to support more platforms
   - [ ] Support more data
