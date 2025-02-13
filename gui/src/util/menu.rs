@@ -1,6 +1,8 @@
 use std::path::PathBuf;
 
-use dioxus::desktop::muda::{Menu, MenuItem, Submenu, SubmenuBuilder, IsMenuItem, PredefinedMenuItem};
+use dioxus::desktop::muda::{
+  IsMenuItem, Menu, MenuItem, PredefinedMenuItem, Submenu, SubmenuBuilder,
+};
 
 use crate::util::theme;
 
@@ -17,22 +19,22 @@ pub fn create_menu() -> Menu {
     });
   }
 
-  submenu.append(
-    &PredefinedMenuItem::separator()
-  ).unwrap_or_else(|e| {
-    eprintln!("Failed to append menu item: {e}");
-  });
+  submenu
+    .append(&PredefinedMenuItem::separator())
+    .unwrap_or_else(|e| {
+      eprintln!("Failed to append menu item: {e}");
+    });
 
-  submenu.append(
-    &MenuItem::new("Add theme", true, None)
-  ).unwrap_or_else(|e| {
-    eprintln!("Failed to append menu item: {e}");
-  });
+  submenu
+    .append(&MenuItem::with_id("add-theme", "Add theme", true, None))
+    .unwrap_or_else(|e| {
+      eprintln!("Failed to append menu item: {e}");
+    });
 
   menu.append(&submenu).unwrap_or_else(|e| {
     eprintln!("Failed to append menu item: {e}");
   });
-  
+
   menu
 }
 
@@ -70,14 +72,43 @@ fn generate_theme_items() -> Vec<Submenu> {
     items.push(submenu);
   }
 
+  // Create a special "None" theme
+  let none = Submenu::new("None", true);
+  none
+    .append(&MenuItem::with_id(
+      format!("apply-none"),
+      "Apply",
+      true,
+      None,
+    ))
+    .unwrap_or_default();
+
+  items.push(none);
+
   items
 }
 
 fn generate_theme_controls(theme: Theme) -> Vec<MenuItem> {
   let mut items = vec![];
+  let filename = theme
+    .path
+    .file_name()
+    .unwrap_or_default()
+    .to_str()
+    .unwrap_or_default();
 
-  items.push(MenuItem::new("Apply", true, None));
-  items.push(MenuItem::new("Delete", true, None));
+  items.push(MenuItem::with_id(
+    format!("apply-{filename}"),
+    "Apply",
+    true,
+    None,
+  ));
+  items.push(MenuItem::with_id(
+    format!("delete-{filename}"),
+    "Delete",
+    true,
+    None,
+  ));
 
   items
 }

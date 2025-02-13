@@ -1,4 +1,7 @@
-use std::{error::Error, path::{Path, PathBuf}};
+use std::{
+  error::Error,
+  path::{Path, PathBuf},
+};
 
 use disk::get_disks;
 
@@ -13,7 +16,7 @@ pub use libatasmart;
 // Re-export libatasmart-sys
 pub use libatasmart_sys;
 
-#[cfg(target_os = "linux",)]
+#[cfg(target_os = "linux")]
 static DEV_PATH: &str = "/dev";
 
 pub fn get_disks_info() -> Result<Vec<libatasmart::Disk>, Box<dyn Error>> {

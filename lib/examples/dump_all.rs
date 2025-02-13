@@ -1,4 +1,3 @@
-
 fn main() -> Result<(), Box<dyn std::error::Error>> {
   sudo::escalate_if_needed().expect("Failed to escalate privileges");
 

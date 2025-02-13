@@ -1,10 +1,15 @@
-use data::{smart::smart_to_string, status::Status};
+use data::{drives_and_status, smart::smart_to_string, status::Status};
 use dioxus::{
-  desktop::{tao::dpi::LogicalSize, tao::window::WindowBuilder, Config},
+  desktop::{
+    muda::MenuEvent,
+    tao::{dpi::LogicalSize, window::WindowBuilder},
+    Config,
+  },
   prelude::*,
 };
+use dioxus_desktop::muda::MenuId;
 use ui::{drive::Drive, drive_tabs::DriveTabs};
-use util::menu;
+use util::{config::load_config, menu, theme::read_theme_contents};
 
 mod data;
 mod ui;
@@ -14,63 +19,70 @@ const MAIN_CSS: Asset = asset!("/assets/main.css");
 
 fn main() {
   util::scaffold_folders();
-
   sudo::escalate_if_needed().expect("Failed to escalate privileges");
+
   let window = WindowBuilder::new()
     .with_title("GlacierDiskInfo")
     .with_resizable(true)
     .with_min_inner_size(LogicalSize::new(1000, 800));
-  dioxus::LaunchBuilder::new()
-    .with_cfg(Config::default().with_menu(Some(menu::create_menu())).with_window(window))
-    .launch(App);
+
+  let config = Config::default()
+    .with_menu(Some(menu::create_menu()))
+    .with_window(window);
+
+  dioxus::LaunchBuilder::new().with_cfg(config).launch(App);
 }
 
 #[component]
 fn App() -> Element {
-  let drives = libglacierdisk::list_disks().expect("Failed to list disks");
-  let mut drives: Vec<(String, Status)> = drives
-    .iter()
-    .filter_map(|d| {
-      let mut status = match libglacierdisk::get_disk_info(d) {
-        Ok(d) => d,
-        Err(e) => {
-          eprintln!("Error fetching disk at {:?}: {e}", d);
-          return None;
-        }
-      };
-      let smart = match status.smart_get_overall() {
-        Ok(s) => s,
-        Err(e) => {
-          eprintln!("Error fetching smart status: {e}");
-          return None;
-        }
-      };
-      let state = smart_to_string(smart);
+  let mut theme_css = use_signal(|| {
+    let config = load_config().unwrap_or_default();
+    let theme = config.get_theme();
 
-      let temp = status.get_temperature().unwrap_or(0);
+    match theme {
+      Some(t) => read_theme_contents(&t).unwrap_or_default(),
+      None => "".to_string(),
+    }
+  });
 
-      // convert mkelvin to celsius
-      let temp = (temp as f32 / 1000.) - 273.15;
+  // Submenu handler
+  dioxus::desktop::use_muda_event_handler(move |e| {
+    let id = match e.id() {
+      MenuId(s) => s,
+    }
+    .to_owned();
 
-      Some((d.to_string_lossy().to_string(), Status { temp, state }))
-    })
-    .collect();
+    if id.starts_with("apply-") {
+      let mut config = util::config::load_config().unwrap_or_default();
+      let name = id.strip_prefix("apply-").unwrap_or_default();
 
-  // If drives is empty, we have to create a dummy
-  if drives.is_empty() {
-    drives.push((
-      "No Disks Found".to_string(),
-      Status {
-        temp: 0.,
-        state: "Good".to_string(),
-      },
-    ));
-  }
+      println!("Applying theme: {name}");
+
+      config.theme = name.to_string();
+      util::config::save_config(&config).unwrap_or_default();
+
+      // Apply the CSS
+      if let Some(theme) = config.get_theme() {
+        let contents = read_theme_contents(&theme).unwrap_or_default();
+        theme_css.set(contents);
+      } else {
+        theme_css.set("".to_string());
+      }
+    } else if id.starts_with("delete-") {
+      // TODO
+    }
+  });
+
+  let drives = drives_and_status();
 
   let mut selected_drive = use_signal(|| drives[0].0.clone());
 
   rsx! {
       document::Link { rel: "stylesheet", href: MAIN_CSS }
+
+      style {
+        "{theme_css}"
+      }
 
       DriveTabs {
         drives,

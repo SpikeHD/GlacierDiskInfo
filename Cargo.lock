@@ -1776,6 +1776,7 @@ name = "glacierdisk-gui"
 version = "0.1.2"
 dependencies = [
  "dioxus",
+ "dioxus-desktop",
  "dirs 6.0.0",
  "libglacierdisk",
  "regex",

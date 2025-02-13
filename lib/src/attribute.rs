@@ -16,7 +16,7 @@ pub struct Attribute {
 
 pub fn raw_to_string(raw: [u8; 6]) -> String {
   let mut s = String::new();
-  for r in raw  {
+  for r in raw {
     s.push_str(&format!("{:02x}", r));
   }
   s

@@ -38,18 +38,18 @@ pub fn theme_path() -> PathBuf {
 
 /**
  * Themes should have a comment with a line like this:
- * // @NAME: MyTheme
+ * /* ThemeName */
  */
 pub fn read_theme_data(filename: String) -> Result<Theme, Box<dyn std::error::Error>> {
   let root = theme_path();
   let path = root.join(&filename);
   let contents = std::fs::read_to_string(&path)?;
-  let reg = Regex::new(r"\/\/( |)@NAME:( |)(.*)").unwrap();
+  let reg = Regex::new(r"\/\*( |)(.*)( |)\*\/").unwrap();
   let mut name = String::new();
 
   for cap in reg.captures_iter(&contents) {
-    if cap.len() > 3 {
-      name = cap[3].to_string();
+    if cap.len() > 2 {
+      name = cap[2].to_string();
     }
   }
 
@@ -62,4 +62,13 @@ pub fn read_theme_data(filename: String) -> Result<Theme, Box<dyn std::error::Er
     path: path.to_path_buf(),
     name,
   })
+}
+
+pub fn read_theme_contents(theme: &Theme) -> Result<String, Box<dyn std::error::Error>> {
+  if theme.name == "none" {
+    return Ok("".to_string());
+  }
+
+  let contents = std::fs::read_to_string(&theme.path)?;
+  Ok(contents)
 }
