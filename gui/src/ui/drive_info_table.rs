@@ -2,7 +2,7 @@ use std::path::PathBuf;
 
 use dioxus::prelude::*;
 use libglacierdisk::{
-  ata::DiskAtaLink, attribute::{get_attribute, Convertable}, sysfs::{sector_size, DiskStat}
+  ata::DiskAtaLink, attribute::{get_attribute, Convertable},
 };
 
 use crate::util::conversion::{bytes_to_readable, ms_to_readable};
