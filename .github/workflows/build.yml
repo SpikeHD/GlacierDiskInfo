@@ -136,7 +136,7 @@ jobs:
 
       - name: Build
         run: |
-          dx bundle --package glacierdisk-gui --package-type "deb" --package-type "rpm" --release --target ${{ matrix.config.target }}
+          dx bundle --package glacierdisk-gui --package-types "deb" --package-types "rpm" --release --target ${{ matrix.config.target }}
 
       - name: Upload `.deb`
         uses: actions/upload-artifact@v4
