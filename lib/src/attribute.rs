@@ -1,7 +1,7 @@
 use std::ffi::CStr;
 
 use libatasmart::Disk;
-use libatasmart_sys::{SkDisk, SkSmartAttributeParsedData};
+use libatasmart::libatasmart_sys::{SkDisk, SkSmartAttributeParsedData};
 
 #[derive(Default, Debug)]
 pub struct Attribute {
@@ -20,6 +20,14 @@ pub fn raw_to_string(raw: [u8; 6]) -> String {
     s.push_str(&format!("{:02x}", r));
   }
   s
+}
+
+pub fn dump_attributes(disk: &mut Disk) {
+  let r = get_all_attributes(disk);
+
+  for a in r {
+    println!("{:?}", a);
+  }
 }
 
 pub fn get_attribute(name: impl AsRef<str>, disk: &mut Disk) -> Option<Attribute> {
@@ -41,7 +49,6 @@ pub fn get_attribute(name: impl AsRef<str>, disk: &mut Disk) -> Option<Attribute
   None
 }
 
-// TODO move ALL of this stuff to libglacierdisk
 pub fn get_all_attributes(disk: &mut Disk) -> Vec<Attribute> {
   let attributes: Vec<Attribute> = Vec::new();
   let mut a = Box::new(attributes);
@@ -69,7 +76,7 @@ extern "C" fn fetch_attribute(
   if name == attribute.name {
     attribute.id = unsafe { (*a).id };
     attribute.threshold = unsafe { (*a).threshold };
-    attribute.warn = unsafe { (*a).warn == 1 };
+    attribute.warn = unsafe { (*a).warn() == 1 };
     attribute.current = unsafe { (*a).current_value };
     attribute.worst = unsafe { (*a).worst_value };
     attribute.raw = unsafe { (*a).raw };
@@ -88,7 +95,7 @@ extern "C" fn fetch_all_attributes(
     name: name.to_string(),
     id: unsafe { (*a).id },
     threshold: unsafe { (*a).threshold },
-    warn: unsafe { (*a).warn == 1 },
+    warn: unsafe { (*a).warn() == 1 },
     current: unsafe { (*a).current_value },
     worst: unsafe { (*a).worst_value },
     raw: unsafe { (*a).raw },

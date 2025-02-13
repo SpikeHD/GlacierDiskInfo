@@ -13,8 +13,6 @@ pub mod sysfs;
 
 // Re-export libatasmart
 pub use libatasmart;
-// Re-export libatasmart-sys
-pub use libatasmart_sys;
 
 #[cfg(target_os = "linux")]
 static DEV_PATH: &str = "/dev";

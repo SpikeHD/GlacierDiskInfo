@@ -57,8 +57,6 @@ fn generate_theme_items() -> Vec<Submenu> {
       }
     };
 
-    println!("Theme data: {:?}", theme);
-
     let submenu = Submenu::new(theme.name.clone(), true);
     let controls = generate_theme_controls(theme);
 

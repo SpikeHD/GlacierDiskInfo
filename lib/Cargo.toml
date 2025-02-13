@@ -4,8 +4,7 @@ version = "0.3.0"
 edition = "2021"
 
 [dependencies]
-libatasmart = { git = "https://github.com/cholcombe973/libatasmart", branch = "master" }
-libatasmart-sys = "0.2.0"
+libatasmart = { git = "https://github.com/SpikeHD/libatasmart", branch = "master" }
 
 [dev-dependencies]
 sudo = "0.6.0"
