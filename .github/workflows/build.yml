@@ -136,7 +136,7 @@ jobs:
 
       - name: Build
         run: |
-          dx bundle --package glacierdisk-gui --release --target ${{ matrix.config.target }}
+          dx bundle --package glacierdisk-gui --package-type "deb" --package-type "rpm" --release --target ${{ matrix.config.target }}
 
       - name: Upload `.deb`
         uses: actions/upload-artifact@v4
@@ -149,9 +149,3 @@ jobs:
         with:
           name: glacierdisk-gui-${{ matrix.config.target }}-deb
           path: target/${{ matrix.config.target }}/dx/glacierdisk-gui/bundle/linux/rpm/*.rpm
-
-      - name: Upload `.AppImage`
-        uses: actions/upload-artifact@v4
-        with:
-          name: glacierdisk-gui-${{ matrix.config.target }}-AppImage
-          path: target/${{ matrix.config.target }}/dx/glacierdisk-gui/bundle/linux/appimage/*.AppImage
