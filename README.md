@@ -23,6 +23,7 @@
   * [Build Steps](#build-steps)
 * [TODO](#todo)
 * [Attributions](#attributions)
+* [Contributing](#contributing)
 
 # Installation
 
@@ -89,3 +90,7 @@ The following image files were sourced from [CrystalDiskInfo](https://github.com
 * `gui/assets/img/bad.ico`
 
 Colors, design, etc. are also (purposefully) heavily inspired by the CrystalDiskInfo project.
+
+# Contributing
+
+Issues, PRs, etc. are all welcome!
