@@ -26,7 +26,7 @@
 
 # Installation
 
-Releases are available via [GitHub Actions](https://github.com/SpikeHD/GlacierDiskInfo/actions/workflows/build.yml) artifacts. Actual release builds will be made eventually.
+Releases are available on the [releases page](https://github.com/SpikeHD/GlacierDiskInfo/releases) or via [GitHub Actions](https://github.com/SpikeHD/GlacierDiskInfo/actions/workflows/build.yml) artifacts.
 
 > [!NOTE]
 > Maintaining GlacierDiskInfo in a package repository? [Let me know](https://github.com/SpikeHD/GlacierDiskInfo/issues/new) and I will make a list!
