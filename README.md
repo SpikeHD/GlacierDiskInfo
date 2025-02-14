@@ -62,14 +62,14 @@ Example themes can be found in the `themes` directory. Below is a screenshot of 
 
 - `libglacierdisk`
   - [ ] Publish on [crates.io](https://crates.io)
-  - [ ] Fix attribute fetching
+  - [x] Fix attribute fetching
   - [ ] Support more unix-like platforms (FreeBSD, OpenBSD, etc.)
     - This would probably entail expanding the `libatasmart` library to support more platforms
   - [ ] Support whatever can be read from USB drives
   - [ ] Support more data
     - [ ] Transfer mode
     - [ ] HDD Rotation Rate
-    - [ ] Interface (eg. SATA, NVME, etc.)
+    - [x] Interface (eg. SATA, NVME, etc.)
 - `glacierdisk-gui`
   - [x] Theming
   - [ ] Flatpak
