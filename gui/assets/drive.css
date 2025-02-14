@@ -80,6 +80,7 @@
 
 .drive-temp-status {
   background: linear-gradient(to top, #43bbee, #43bbee, #fff);
+  border: 1px solid #697ed5;
   border-radius: 58px;
 
   height: 2rem;
