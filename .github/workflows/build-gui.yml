@@ -1,9 +1,11 @@
 name: Build GUI
 
 on:
+  workflow_dispatch:
   push:
     paths:
-      - '.github/workflows/build.yml'
+      - '.github/workflows/build-gui.yml'
+      - '.github/workflows/publish-gui.yml'
       - 'lib/**'
       - 'cli/**'
       - 'gui/**'
