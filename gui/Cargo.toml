@@ -6,6 +6,7 @@ edition = "2021"
 
 [dependencies]
 base64 = "0.22.1"
+dialog = "0.3.0"
 dioxus = { version = "0.6.3", features = [] }
 dioxus-desktop = "0.6.3"
 dirs = "6.0.0"

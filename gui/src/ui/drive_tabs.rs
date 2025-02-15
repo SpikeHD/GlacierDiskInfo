@@ -15,7 +15,6 @@ pub struct DriveTabsProps {
 
 #[component]
 pub fn DriveTabs(props: DriveTabsProps) -> Element {
-  println!("begin drive tabs");
   let tab_renders = props.drives.iter().map(|(disk, status)| {
     let disk = disk.clone();
     let selected_name = props.selected_drive.path.to_string_lossy().to_string();

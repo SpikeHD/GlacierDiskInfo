@@ -5,6 +5,7 @@ use config::Config;
 pub mod config;
 pub mod conversion;
 pub mod menu;
+pub mod root;
 pub mod theme;
 
 pub fn dot_config() -> PathBuf {
