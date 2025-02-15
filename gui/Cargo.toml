@@ -4,6 +4,11 @@ version = "0.4.2"
 authors = ["SpikeHD <25207995+SpikeHD@users.noreply.github.com>"]
 edition = "2021"
 
+[profile.release]
+lto = true
+strip = "debuginfo"
+opt-level = 3
+
 [dependencies]
 base64 = "0.22.1"
 dialog = "0.3.0"
