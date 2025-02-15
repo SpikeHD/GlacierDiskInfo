@@ -1,5 +1,6 @@
 use std::path::{Path, PathBuf};
 
+/// A struct containing kernel-provided disk statistics, by reading from `/sys/block/<disk>/stat`.
 #[derive(Clone, Default, Debug)]
 pub struct DiskStat {
   pub read_io: u64,

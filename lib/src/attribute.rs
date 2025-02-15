@@ -3,13 +3,14 @@ use std::ffi::CStr;
 use libatasmart::libatasmart_sys::{SkDisk, SkSmartAttributeParsedData, SkSmartAttributeUnit};
 use libatasmart::Disk;
 
-// Handles SkSmartAttributUnit, so that we can convert whatever number to the "base" and then do formatting on that
+/// Handles SkSmartAttributUnit, so that we can convert whatever number to the "base" and then do formatting on that
 pub trait Convertable {
   fn to_base_number(&self) -> u64;
   fn convert_to_base(&self, value: u64) -> u64;
 }
 
 impl Convertable for SkSmartAttributeUnit {
+  /// Take a value and return what would need to be multiplied by the base to get the "right" value
   fn to_base_number(&self) -> u64 {
     match self {
       SkSmartAttributeUnit::SK_SMART_ATTRIBUTE_UNIT_MB => 1000 * 1000,
@@ -18,22 +19,26 @@ impl Convertable for SkSmartAttributeUnit {
     }
   }
 
+  /// Convert a number of some unit to the "base" unit
   fn convert_to_base(&self, value: u64) -> u64 {
     let base = self.to_base_number();
     value * base
   }
 }
 
+/// A struct representing a SMART attribute
 #[derive(Debug)]
 pub struct Attribute {
+  /// Numerical ID of the attribute
   pub id: u8,
+  /// Name of the attribute
   pub name: String,
   pub threshold: u8,
   pub warn: bool,
   pub current: u8,
   pub worst: u8,
 
-  // These are sometimes the "right" value to use
+  // Pretty unit and value are sometimes the "right" thing to use
   pub pretty_unit: SkSmartAttributeUnit,
   pub pretty_value: u64,
 
@@ -56,22 +61,18 @@ impl Default for Attribute {
   }
 }
 
-pub fn raw_to_string(raw: [u8; 6]) -> String {
-  let mut s = String::new();
-  for r in raw {
-    s.push_str(&format!("{:02x}", r));
-  }
-  s
-}
-
-pub fn dump_attributes(disk: &mut Disk) {
-  let r = get_all_attributes(disk);
-
-  for a in r {
-    println!("{:?}", a);
+impl Attribute {
+  /// Convert the raw attribute value to a string
+  pub fn raw_str(&self) -> String {
+    let mut s = String::new();
+    for r in self.raw {
+      s.push_str(&format!("{:02x}", r));
+    }
+    s
   }
 }
 
+/// Get an [`Attribute`] from a [`Disk`] by name
 pub fn get_attribute(disk: &mut Disk, name: impl AsRef<str>) -> Option<Attribute> {
   let attribute = Attribute {
     name: name.as_ref().to_string(),
@@ -91,6 +92,7 @@ pub fn get_attribute(disk: &mut Disk, name: impl AsRef<str>) -> Option<Attribute
   None
 }
 
+/// Get all [`Attribute`]s from a [`Disk`]
 pub fn get_all_attributes(disk: &mut Disk) -> Vec<Attribute> {
   let attributes: Vec<Attribute> = Vec::new();
   let mut a = Box::new(attributes);

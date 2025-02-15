@@ -1,7 +1,6 @@
-use std::path::PathBuf;
 
 use dioxus::prelude::*;
-use libglacierdisk::{attribute, disk::Disk};
+use libglacierdisk::disk::Disk;
 
 use crate::assets::{ico_to_data_uri, CAUTION_ICO, GOOD_ICO};
 
@@ -49,7 +48,7 @@ pub fn DriveAttrTable(mut props: DriveAttrTableProps) -> Element {
         },
         span {
           class: "drive-attr-raw",
-          "{attribute::raw_to_string(attr.raw)}"
+          "{attr.raw_str()}"
         }
       }
     }

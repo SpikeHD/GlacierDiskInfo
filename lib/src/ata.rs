@@ -16,7 +16,8 @@ impl Default for DiskAtaLink {
 }
 
 impl DiskAtaLink {
-  pub fn for_disk(disk: &Path) -> Result<Self, Box<dyn std::error::Error>> {
+  pub fn for_disk(disk: impl AsRef<Path>) -> Result<Self, Box<dyn std::error::Error>> {
+    let disk = disk.as_ref();
     let disk = disk
       .file_name()
       .unwrap_or_default()

@@ -1,8 +1,7 @@
-use std::path::PathBuf;
 
 use dioxus::prelude::*;
 use libglacierdisk::{
-  ata::DiskAtaLink, attribute::{get_attribute, Convertable}, disk::Disk, kind::disk_class
+  attribute::{get_attribute, Convertable}, disk::Disk
 };
 
 use crate::util::conversion::{bytes_to_readable, ms_to_readable};

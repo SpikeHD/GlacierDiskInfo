@@ -1,4 +1,3 @@
-use std::path::PathBuf;
 
 use dioxus::prelude::*;
 use libglacierdisk::disk::Disk;
@@ -16,7 +15,7 @@ pub struct DriveProps {
 
 #[component]
 pub fn Drive(mut props: DriveProps) -> Element {
-  let mut drive = props.selected_drive.raw_disk();
+  let drive = props.selected_drive.raw_disk();
   let identity = drive.identify_parse().expect("Failed to get identify info");
   let size = drive.get_disk_size().expect("Failed to get disk size");
   let size = bytes_to_readable(size);

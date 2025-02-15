@@ -1,4 +1,4 @@
-use libglacierdisk::{disk::Disk, attribute};
+use libglacierdisk::disk::Disk;
 use smart::smart_to_string;
 use status::Status;
 

@@ -1,5 +1,6 @@
 use std::{fmt::Display, path::{Path, PathBuf}};
 
+/// A struct representing the kind of disk (SSD, HDD, etc.)
 #[derive(Clone, PartialEq, Debug)]
 pub enum DiskKind {
   SSD,
@@ -19,7 +20,9 @@ impl Display for DiskKind {
   }
 }
 
-pub fn disk_class(disk: &Path) -> DiskKind {
+/// Get the kind of disk from a path or [`super::Disk`]
+pub fn disk_class(disk: impl AsRef<Path>) -> DiskKind {
+  let disk = disk.as_ref();
   let drive = disk
     .file_name()
     .unwrap_or_default()
