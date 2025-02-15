@@ -149,6 +149,19 @@ jobs:
           # Warning are fine
           RUSTFLAGS: -D warnings
 
+      - name: Build portable
+        run: |
+          dx build --package glacierdisk-gui --release --target ${{ matrix.config.target }}
+
+      - name: Get version
+        id: version
+        run: |
+          VERSION=$(grep '^version =' gui/Cargo.toml | sed 's/version = "\(.*\)"/\1/')
+
+      - name: Compress portable
+        run: |
+          tar -czvf GlacierdiskGui-${{ steps.version.outputs.version }}-${{ matrix.config.target }}.tar.gz target/dx/glacierdisk-gui/release/linux/app/*
+
       - name: Upload `.deb`
         uses: actions/upload-artifact@v4
         with:
@@ -160,6 +173,12 @@ jobs:
         with:
           name: glacierdisk-gui-${{ matrix.config.target }}-rpm
           path: target/dx/glacierdisk-gui/bundle/linux/bundle/rpm/*.rpm
+
+      - name: Upload portable
+        uses: actions/upload-artifact@v4
+        with:
+          name: glacierdisk-gui-${{ matrix.config.target }}-portable
+          path: GlacierdiskGui-${{ steps.version.outputs.version }}-${{ matrix.config.target }}.tar.gz
 
   check-version:
     runs-on: ubuntu-latest
