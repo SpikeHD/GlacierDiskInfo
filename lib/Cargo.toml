@@ -1,8 +1,8 @@
 [package]
 name = "libglacierdisk"
-version = "0.5.0"
+version = "0.5.1"
 edition = "2021"
-readme = "../README.md"
+readme = "README.md"
 license = "MIT"
 description = "A linux library for reading SMART (and other) data from disks"
 repository = "https://github.com/SpikeHD/GlacierDiskInfo"
