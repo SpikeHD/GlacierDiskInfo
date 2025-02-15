@@ -1,6 +1,7 @@
 use std::{env, path::PathBuf};
 
 use config::Config;
+use users::User;
 
 pub mod config;
 pub mod conversion;
@@ -14,7 +15,17 @@ pub fn dot_config() -> PathBuf {
 
   // If we aren't running as SUDO, it could be that we ran with pkexec
   if user.is_empty() {
-    user = env::var("USER").unwrap_or_default();
+    // Get the PKEXEC_UID
+    let uid = env::var("PKEXEC_UID")
+      .unwrap_or_default()
+      .parse::<u32>()
+      .unwrap_or_default();
+    // Then get the username
+    user = users::get_user_by_uid(uid)
+      .unwrap_or(User::new(0, "root", 0))
+      .name()
+      .to_string_lossy()
+      .to_string();
   }
 
   let path = format!("/home/{user}/.config");

@@ -6,30 +6,43 @@ use super::theme::Theme;
 
 pub fn create_menu() -> Menu {
   let menu = Menu::new();
-  let submenu = Submenu::new("Theme", true);
+  let themes = Submenu::new("Theme", true);
   let items = generate_theme_items();
 
   for item in items {
-    submenu.append(&item).unwrap_or_else(|e| {
+    themes.append(&item).unwrap_or_else(|e| {
       eprintln!("Failed to append menu item: {e}");
     });
   }
 
-  submenu
+  themes
     .append(&PredefinedMenuItem::separator())
     .unwrap_or_else(|e| {
       eprintln!("Failed to append menu item: {e}");
     });
 
-  submenu
+  themes
     .append(&MenuItem::with_id("add-theme", "Add theme", true, None))
     .unwrap_or_else(|e| {
       eprintln!("Failed to append menu item: {e}");
     });
 
-  menu.append(&submenu).unwrap_or_else(|e| {
+  menu.append(&themes).unwrap_or_else(|e| {
     eprintln!("Failed to append menu item: {e}");
   });
+
+  menu
+    .append(
+      &Submenu::with_items(
+        "Help",
+        true,
+        &[&MenuItem::with_id("about", "About", true, None)],
+      )
+      .expect("Failed to append help menu"),
+    )
+    .unwrap_or_else(|e| {
+      eprintln!("Failed to append menu item: {e}");
+    });
 
   menu
 }

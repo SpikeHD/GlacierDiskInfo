@@ -1,4 +1,5 @@
 use data::drives_and_status;
+use dialog::{DialogBox, Message};
 use dioxus::{
   desktop::{
     tao::{dpi::LogicalSize, window::WindowBuilder},
@@ -24,8 +25,6 @@ mod util;
 
 fn main() {
   util::scaffold_folders();
-
-  println!("{:?}", sudo::check());
 
   match sudo::check() {
     sudo::RunningAs::Root => (),
@@ -87,6 +86,14 @@ fn App() -> Element {
     } else if id == "add-theme" {
       let theme_path = theme::theme_path();
       open::that_detached(theme_path).unwrap_or_default();
+    } else if id == "about" {
+      let version = env!("CARGO_PKG_VERSION");
+      let git_sha = option_env!("GIT_SHA").unwrap_or("unknown revision");
+
+      Message::new(format!("GlacierDiskInfo GUI v{version} ({git_sha})\n\nhttps://github.com/SpikeHD/GlacierDiskInfo\n\nCreated by SpikeHD, inspired by CrystalDiskInfo"))
+        .title("About")
+        .show()
+        .expect("Failed to show dialog");
     }
   });
 
