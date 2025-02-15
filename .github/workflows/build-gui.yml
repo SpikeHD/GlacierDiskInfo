@@ -159,7 +159,7 @@ jobs:
 
       - name: Compress portable
         run: |
-          tar -czvf GlacierdiskGui-${{ steps.version.outputs.version }}-${{ matrix.config.target }}.tar.gz target/dx/glacierdisk-gui/bundle/linux/glacierdisk-gui
+          tar -czvf GlacierDiskInfo-${{ steps.version.outputs.version }}-${{ matrix.config.target }}.tar.gz target/dx/glacierdisk-gui/bundle/linux/glacierdisk-gui
 
       - name: Upload `.deb`
         uses: actions/upload-artifact@v4
@@ -177,7 +177,7 @@ jobs:
         uses: actions/upload-artifact@v4
         with:
           name: glacierdisk-gui-${{ matrix.config.target }}-portable
-          path: GlacierdiskGui-${{ steps.version.outputs.version }}-${{ matrix.config.target }}.tar.gz
+          path: GlacierDiskInfo-${{ steps.version.outputs.version }}-${{ matrix.config.target }}.tar.gz
 
   check-version:
     runs-on: ubuntu-latest

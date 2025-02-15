@@ -1820,11 +1820,7 @@ dependencies = [
 ]
 
 [[package]]
-name = "glacierdisk-cli"
-version = "0.1.0"
-
-[[package]]
-name = "glacierdisk-gui"
+name = "glacier-disk-info"
 version = "0.4.2"
 dependencies = [
  "base64",
@@ -1840,6 +1836,10 @@ dependencies = [
  "toml",
  "uzers",
 ]
+
+[[package]]
+name = "glacierdisk-cli"
+version = "0.1.0"
 
 [[package]]
 name = "glib"
