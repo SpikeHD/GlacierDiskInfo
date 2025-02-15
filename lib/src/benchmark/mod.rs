@@ -1,4 +1,7 @@
-use std::{fs::File, io::{Read, Write}};
+use std::{
+  fs::File,
+  io::{Read, Write},
+};
 
 pub mod read_sequential;
 
@@ -45,7 +48,13 @@ impl BlockConfig {
 }
 
 pub trait Benchmark {
-  fn new(disk: crate::Disk, mount: usize, block_config: BlockConfig) -> Result<Self, Box<dyn std::error::Error>> where Self: Sized;
+  fn new(
+    disk: crate::Disk,
+    mount: usize,
+    block_config: BlockConfig,
+  ) -> Result<Self, Box<dyn std::error::Error>>
+  where
+    Self: Sized;
   /// Run the benchmark. When the benchmark is done, it will both emit and return the final progress.
   fn run(&mut self) -> Result<BenchmarkProgress, Box<dyn std::error::Error>>;
   /// Provide a function to run when the benchmark progress changes
@@ -54,12 +63,12 @@ pub trait Benchmark {
 
 fn random_fill(file: &mut File, size: usize) -> Result<(), Box<dyn std::error::Error>> {
   let mut urand = File::open("/dev/urandom")?;
-  
+
   // Calculate a reasonable chunk size for the buffer
   let chunk_size = size / 1024;
   let mut buf = vec![0; chunk_size];
 
-  for _ in 0..(size/chunk_size) {
+  for _ in 0..(size / chunk_size) {
     urand.read_exact(&mut buf)?;
     file.write_all(&buf[0..chunk_size])?;
   }

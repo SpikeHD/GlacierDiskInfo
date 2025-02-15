@@ -1,10 +1,5 @@
 use std::{
-  error::Error,
-  fmt::{Debug, Display},
-  fs,
-  os::unix::fs::FileTypeExt,
-  path::{Path, PathBuf},
-  sync::{Arc, Mutex, MutexGuard},
+  error::Error, fmt::{Debug, Display}, fs, os::unix::fs::FileTypeExt, path::{Path, PathBuf}, rc::Rc, sync::{Mutex, MutexGuard}
 };
 
 use crate::{
@@ -24,7 +19,7 @@ pub struct Disk {
   pub path: PathBuf,
   pub kind: DiskKind,
   pub ata_link: DiskAtaLink,
-  disk: Arc<Mutex<libatasmart::Disk>>,
+  disk: Rc<Mutex<libatasmart::Disk>>,
 }
 
 #[derive(Clone, Debug)]
@@ -73,7 +68,7 @@ impl Disk {
       path,
       kind,
       ata_link,
-      disk: Arc::new(Mutex::new(disk)),
+      disk: Rc::new(Mutex::new(disk)),
     })
   }
 

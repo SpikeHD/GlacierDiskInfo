@@ -3,8 +3,6 @@ use std::{
   fs,
   io::{Read, Seek, SeekFrom},
   path::PathBuf,
-  sync::{Arc, Mutex},
-  thread,
   time::Instant,
 };
 
@@ -79,10 +77,7 @@ impl Benchmark for ReadSequentialBenchmark {
       .open(&file_path)?;
 
     // Fill with random data
-    random_fill(
-      &mut file,
-      self.block_config.total_size(),
-    )?;
+    random_fill(&mut file, self.block_config.total_size())?;
 
     // Seek to start
     file.seek(SeekFrom::Start(0))?;
