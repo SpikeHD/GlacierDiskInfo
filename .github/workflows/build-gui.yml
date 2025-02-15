@@ -193,7 +193,7 @@ jobs:
         id: version_check
         run: |
           VERSION=$(grep '^version =' gui/Cargo.toml | sed 's/version = "\(.*\)"/\1/')
-          echo "New version: $VERSION"
+          echo "Version: $VERSION"
           if git tag -l | grep -q "glacier-disk-info-v$VERSION"; then
             echo "No new version!"
             echo "changed=false" >> $GITHUB_OUTPUT
@@ -206,7 +206,7 @@ jobs:
   create-release:
     runs-on: ubuntu-latest
     needs: check-version
-    if: needs.check-version.outputs.changed == 'true'
+    if: needs.check-version.outputs.version_changed == 'true'
     steps:
       - name: Checkout repository
         uses: actions/checkout@v4
