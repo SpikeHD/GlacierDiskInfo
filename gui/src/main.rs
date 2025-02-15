@@ -7,6 +7,7 @@ use dioxus::{
   prelude::*,
 };
 use dioxus_desktop::muda::MenuId;
+use libglacierdisk::disk::Disk;
 use ui::{drive::Drive, drive_tabs::DriveTabs};
 use util::{
   config::load_config,
@@ -81,7 +82,6 @@ fn App() -> Element {
   });
 
   let drives = drives_and_status();
-
   let mut selected_drive = use_signal(|| drives[0].0.clone());
 
   rsx! {
@@ -96,9 +96,9 @@ fn App() -> Element {
       DriveTabs {
         drives,
         selected_drive: selected_drive(),
-        on_select: move |name| {
-          println!("selected drive: {}", name);
-          selected_drive.set(name);
+        on_select: move |disk: Disk| {
+          println!("selected drive: {:?}", disk.path());
+          selected_drive.set(disk);
         }
       }
 

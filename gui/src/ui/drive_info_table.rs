@@ -2,33 +2,31 @@ use std::path::PathBuf;
 
 use dioxus::prelude::*;
 use libglacierdisk::{
-  ata::DiskAtaLink,
-  attribute::{get_attribute, Convertable}, kind::disk_class,
+  ata::DiskAtaLink, attribute::{get_attribute, Convertable}, disk::Disk, kind::disk_class
 };
 
 use crate::util::conversion::{bytes_to_readable, ms_to_readable};
 
 #[derive(Props, PartialEq, Clone)]
 pub struct DriveInfoTableProps {
-  pub selected_drive: String,
+  pub selected_drive: Disk,
 }
 
 #[component]
-pub fn DriveInfoTable(props: DriveInfoTableProps) -> Element {
-  let disk_path = PathBuf::from(props.selected_drive.clone());
-  let mut drive = libglacierdisk::get_disk_info(&disk_path).expect("Failed to get disk info");
+pub fn DriveInfoTable(mut props: DriveInfoTableProps) -> Element {
+  let ata = props.selected_drive.ata_link.clone();
+  let mut drive = props.selected_drive.raw_disk().clone();
   let identity = drive.identify_parse().expect("Failed to get identify info");
-  let ata = DiskAtaLink::for_disk(&disk_path).unwrap_or_default();
-  let lbas_read = get_attribute("total-lbas-read", &mut drive).unwrap_or_default();
-  let lbas_written = get_attribute("total-lbas-written", &mut drive).unwrap_or_default();
+  let lbas_read = get_attribute(&mut drive, "total-lbas-read").unwrap_or_default();
+  let lbas_written = get_attribute( &mut drive, "total-lbas-written").unwrap_or_default();
 
   let left_values = [
     ("Firmware", identity.firmware),
     ("Serial", identity.serial),
     ("Model", identity.model),
-    ("Drive Path", props.selected_drive.clone()),
+    ("Drive Path", props.selected_drive.path().to_string_lossy().to_string()),
     ("SATA Speed", ata.speed),
-    ("Kind", disk_class(&disk_path).to_string())
+    ("Kind", props.selected_drive.kind.to_string())
   ];
   let right_values = [
     (

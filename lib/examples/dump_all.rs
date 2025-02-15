@@ -3,16 +3,8 @@ fn main() -> Result<(), Box<dyn std::error::Error>> {
 
   let disks = libglacierdisk::list_disks().unwrap();
 
-  for disk in disks {
-    let path = disk.clone();
-    let mut disk = match libglacierdisk::get_disk_info(&path) {
-      Ok(d) => d,
-      Err(e) => {
-        eprintln!("Failed to get disk info: {e}");
-        continue;
-      }
-    };
-    disk.dump().unwrap();
+  for mut disk in disks {
+    disk.raw_disk().dump().unwrap();
   }
 
   Ok(())

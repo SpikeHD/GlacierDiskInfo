@@ -1,5 +1,6 @@
-use std::path::{Path, PathBuf};
+use std::{fmt::Display, path::{Path, PathBuf}};
 
+#[derive(Clone, PartialEq, Debug)]
 pub enum DiskKind {
   SSD,
   HDD,
@@ -7,14 +8,14 @@ pub enum DiskKind {
   USB,
 }
 
-impl ToString for DiskKind {
-  fn to_string(&self) -> String {
+impl Display for DiskKind {
+  fn fmt(&self, f: &mut std::fmt::Formatter<'_>) -> std::fmt::Result {
     match self {
-      Self::SSD => "SSD",
-      Self::HDD => "HDD",
-      Self::NVME => "NVMe",
-      Self::USB => "USB",
-    }.to_string()
+      DiskKind::SSD => write!(f, "SSD"),
+      DiskKind::HDD => write!(f, "HDD"),
+      DiskKind::NVME => write!(f, "NVME"),
+      DiskKind::USB => write!(f, "USB"),
+    }
   }
 }
 

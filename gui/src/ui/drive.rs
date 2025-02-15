@@ -1,6 +1,7 @@
 use std::path::PathBuf;
 
 use dioxus::prelude::*;
+use libglacierdisk::disk::Disk;
 
 use crate::{
   data::smart::{smart_to_string, DriveStatus},
@@ -10,22 +11,12 @@ use crate::{
 
 #[derive(Props, PartialEq, Clone)]
 pub struct DriveProps {
-  pub selected_drive: String,
+  pub selected_drive: Disk,
 }
 
 #[component]
-pub fn Drive(props: DriveProps) -> Element {
-  let mut drive = match libglacierdisk::get_disk_info(&PathBuf::from(props.selected_drive.clone()))
-  {
-    Ok(drive) => drive,
-    Err(_) => {
-      return rsx! {
-        div {
-          "Failed to get drive info"
-        }
-      }
-    }
-  };
+pub fn Drive(mut props: DriveProps) -> Element {
+  let mut drive = props.selected_drive.raw_disk();
   let identity = drive.identify_parse().expect("Failed to get identify info");
   let size = drive.get_disk_size().expect("Failed to get disk size");
   let size = bytes_to_readable(size);
@@ -53,7 +44,7 @@ pub fn Drive(props: DriveProps) -> Element {
 
       div {
         class: "drive-name",
-        "{identity.model} {size} ({props.selected_drive})"
+        "{identity.model} {size} ({props.selected_drive.path().to_string_lossy()})"
       }
 
       div {

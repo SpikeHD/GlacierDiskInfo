@@ -1,20 +1,18 @@
 use std::path::PathBuf;
 
 use dioxus::prelude::*;
-use libglacierdisk::attribute;
+use libglacierdisk::{attribute, disk::Disk};
 
 use crate::assets::{ico_to_data_uri, CAUTION_ICO, GOOD_ICO};
 
 #[derive(Props, PartialEq, Clone)]
 pub struct DriveAttrTableProps {
-  pub selected_drive: String,
+  pub selected_drive: Disk,
 }
 
 #[component]
-pub fn DriveAttrTable(props: DriveAttrTableProps) -> Element {
-  let mut drive = libglacierdisk::get_disk_info(&PathBuf::from(props.selected_drive.clone()))
-    .expect("Failed to get disk info");
-  let attrs = attribute::get_all_attributes(&mut drive);
+pub fn DriveAttrTable(mut props: DriveAttrTableProps) -> Element {
+  let attrs = props.selected_drive.get_all_attributes();
   let rows = attrs.iter().map(|attr| {
     let ico = if attr.warn { CAUTION_ICO } else { GOOD_ICO }; 
 

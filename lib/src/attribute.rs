@@ -72,7 +72,7 @@ pub fn dump_attributes(disk: &mut Disk) {
   }
 }
 
-pub fn get_attribute(name: impl AsRef<str>, disk: &mut Disk) -> Option<Attribute> {
+pub fn get_attribute(disk: &mut Disk, name: impl AsRef<str>) -> Option<Attribute> {
   let attribute = Attribute {
     name: name.as_ref().to_string(),
     ..Default::default()

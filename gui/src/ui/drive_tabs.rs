@@ -1,18 +1,22 @@
 use dioxus::prelude::*;
+use libglacierdisk::disk::Disk;
 
 use crate::{assets::{ico_to_data_uri, BAD_ICO, CAUTION_ICO, GOOD_ICO}, data::{smart::DriveStatus, status::Status}};
 
 #[derive(Props, PartialEq, Clone)]
 pub struct DriveTabsProps {
-  pub drives: Vec<(String, Status)>,
-  pub selected_drive: String,
-  pub on_select: EventHandler<String>,
+  pub drives: Vec<(Disk, Status)>,
+  pub selected_drive: Disk,
+  pub on_select: EventHandler<Disk>,
 }
 
 #[component]
 pub fn DriveTabs(props: DriveTabsProps) -> Element {
-  let tab_renders = props.drives.iter().map(|(name, status)| {
-    let evt_name = name.clone();
+  println!("begin drive tabs");
+  let tab_renders = props.drives.iter().map(|(disk, status)| {
+    let disk = disk.clone();
+    let selected_name = props.selected_drive.path().to_string_lossy().to_string();
+    let evt_name = disk.path().to_string_lossy().to_string();
     let temp = if status.temp == 0. { "--".into() } else { status.temp.to_string() };
     let status_class = match DriveStatus::from_smart(status.state.as_str()) {
       DriveStatus::Good => "good",
@@ -31,8 +35,8 @@ pub fn DriveTabs(props: DriveTabsProps) -> Element {
 
     rsx! {
       div {
-        class: "drive-tab ".to_owned() + status_class + " " + (if name == &props.selected_drive { "selected" } else { "" }),
-        onclick: move |_| props.on_select.call(evt_name.clone()),
+        class: "drive-tab ".to_owned() + status_class + " " + (if evt_name == selected_name { "selected" } else { "" }),
+        onclick: move |_| props.on_select.call(disk.clone()),
 
         div {
           class: "drive-tab-status",
@@ -57,7 +61,7 @@ pub fn DriveTabs(props: DriveTabsProps) -> Element {
 
           span {
             class: "drive-tab-name",
-            "{name}"
+            "{evt_name}"
           }
         }
       }

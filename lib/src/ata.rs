@@ -1,5 +1,6 @@
 use std::{fs, path::Path};
 
+#[derive(Clone, PartialEq, Debug)]
 pub struct DiskAtaLink {
   pub port: u8,
   pub speed: String,
