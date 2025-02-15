@@ -4,6 +4,7 @@ use std::{
 };
 
 pub mod read_sequential;
+pub mod write_sequential;
 
 pub enum BenchmarkMessage {
   Progress(BenchmarkProgress),
