@@ -10,7 +10,9 @@ use dioxus_desktop::muda::MenuId;
 use libglacierdisk::disk::Disk;
 use ui::{drive::Drive, drive_tabs::DriveTabs};
 use util::{
-  config::load_config, menu, root, theme::{self, read_theme_contents}
+  config::load_config,
+  menu, root,
+  theme::{self, read_theme_contents},
 };
 
 use crate::assets::CSS;
@@ -22,7 +24,7 @@ mod util;
 
 fn main() {
   util::scaffold_folders();
-  
+
   println!("{:?}", sudo::check());
 
   match sudo::check() {
@@ -30,7 +32,7 @@ fn main() {
     sudo::RunningAs::User => root::pk_reopen(),
     sudo::RunningAs::Suid => {
       sudo::escalate_if_needed().expect("Failed to escalate privileges");
-    },
+    }
   };
 
   let window = WindowBuilder::new()
