@@ -10,7 +10,13 @@ pub mod theme;
 
 pub fn dot_config() -> PathBuf {
   // We run as sudo so get the OG user
-  let user = env::var("SUDO_USER").unwrap_or_default();
+  let mut user = env::var("SUDO_USER").unwrap_or_default();
+
+  // If we aren't running as SUDO, it could be that we ran with pkexec
+  if user.is_empty() {
+    user = env::var("USER").unwrap_or_default();
+  }
+
   let path = format!("/home/{user}/.config");
   PathBuf::from(path)
 }
