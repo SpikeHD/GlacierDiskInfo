@@ -4,8 +4,7 @@ use std::{
   fs,
   os::unix::fs::FileTypeExt,
   path::{Path, PathBuf},
-  rc::Rc,
-  sync::{Mutex, MutexGuard},
+  sync::{Arc, Mutex, MutexGuard},
 };
 
 use crate::{
@@ -25,7 +24,14 @@ pub struct Disk {
   pub path: PathBuf,
   pub kind: DiskKind,
   pub ata_link: DiskAtaLink,
-  disk: Rc<Mutex<libatasmart::Disk>>,
+  disk: Arc<Mutex<libatasmart::Disk>>,
+}
+
+#[derive(Clone, Debug)]
+pub struct ShallowDisk {
+  pub path: PathBuf,
+  pub kind: DiskKind,
+  pub ata_link: DiskAtaLink,
 }
 
 impl Debug for Disk {
@@ -67,7 +73,7 @@ impl Disk {
       path,
       kind,
       ata_link,
-      disk: Rc::new(Mutex::new(disk)),
+      disk: Arc::new(Mutex::new(disk)),
     })
   }
 
@@ -89,6 +95,56 @@ impl Disk {
   /// Get a reference to the raw [`libatasmart::Disk`] struct
   pub fn raw_disk(&self) -> MutexGuard<libatasmart::Disk> {
     self.disk.lock().unwrap()
+  }
+
+  /// Get the mount locations of the disk. A disk may have multiple if there are multiple partitions, or a disk may have none if it is not mounted.
+  pub fn mounts(&self) -> Vec<PathBuf> {
+    let path = self.path.to_string_lossy().to_string();
+    let mounts = fs::read_to_string("/proc/mounts").unwrap_or_default();
+    let mounts = mounts.split("\n");
+
+    mounts
+      .filter_map(|mount| {
+        // We use starts_with as it's possible for multiple mounts to use the same disk, eg:
+        // /dev/sda1
+        // /dev/sda2
+        if !mount.starts_with(&path) {
+          return None;
+        }
+
+        let mount = mount.split_whitespace().collect::<Vec<&str>>();
+
+        mount[1].parse::<PathBuf>().ok()
+      })
+      .collect()
+  }
+}
+
+impl AsRef<Path> for ShallowDisk {
+  fn as_ref(&self) -> &Path {
+    &self.path
+  }
+}
+
+impl PartialEq for ShallowDisk {
+  fn eq(&self, other: &Self) -> bool {
+    self.path == other.path
+  }
+}
+
+impl Display for ShallowDisk {
+  fn fmt(&self, f: &mut std::fmt::Formatter<'_>) -> std::fmt::Result {
+    write!(f, "{}", self.path.display())
+  }
+}
+
+impl From<Disk> for ShallowDisk {
+  fn from(disk: Disk) -> Self {
+    Self {
+      path: disk.path,
+      kind: disk.kind,
+      ata_link: disk.ata_link,
+    }
   }
 }
 

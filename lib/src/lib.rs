@@ -6,6 +6,7 @@ use disk::{get_disk_paths, Disk};
 
 pub mod ata;
 pub mod attribute;
+pub mod benchmark;
 pub mod disk;
 pub mod kind;
 pub mod sysfs;
