@@ -12,6 +12,14 @@
 //!  }
 //! ```
 //! 
+//! ## Get a specific disk
+//! ```rust
+//! use libglacierdisk;
+//! 
+//! let disk = libglacierdisk::disk::Disk::new("/dev/sda").unwrap();
+//! println!("{:?}", disk);
+//! ```
+//! 
 //! ## Get the temperature of a disk
 //! 
 //! ```rust
