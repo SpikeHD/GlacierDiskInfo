@@ -127,7 +127,7 @@ impl Benchmark for ReadSequentialBenchmark {
     }
 
     // Cleanup
-    // fs::remove_file(file_path).unwrap_or_default();
+    fs::remove_file(file_path).unwrap_or_default();
 
     self.running = false;
 
