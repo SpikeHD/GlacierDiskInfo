@@ -1,10 +1,11 @@
 name: Release GUI
 
 on:
-  push:
-    paths:
-      - "gui/Cargo.toml"
-      - ".github/workflows/publish-gui.yml"
+  workflow_run:
+    workflows: ["Build GUI"]
+    branches: [main]
+    types:
+      - completed
 
 jobs:
   check-version:

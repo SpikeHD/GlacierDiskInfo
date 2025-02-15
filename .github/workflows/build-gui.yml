@@ -1,4 +1,4 @@
-name: Build and Bundle
+name: Build GUI
 
 on:
   push:
