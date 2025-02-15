@@ -195,8 +195,10 @@ jobs:
           VERSION=$(grep '^version =' gui/Cargo.toml | sed 's/version = "\(.*\)"/\1/')
           echo "New version: $VERSION"
           if git tag -l | grep -q "glacier-disk-info-v$VERSION"; then
+            echo "No new version!"
             echo "changed=false" >> $GITHUB_OUTPUT
           else
+            echo "New version!"
             echo "changed=true" >> $GITHUB_OUTPUT
             echo "version=$VERSION" >> $GITHUB_OUTPUT
           fi
