@@ -183,26 +183,7 @@ jobs:
             echo "version=$VERSION" >> $GITHUB_OUTPUT
           fi
 
-  create-tag:
-    needs: check-version
-    runs-on: ubuntu-latest
-    steps:
-      - name: Checkout repository
-        uses: actions/checkout@v4
-
-      - name: Create tag
-        uses: actions/github-script@v5
-        with:
-          script: |
-            github.rest.git.createRef({
-              owner: context.repo.owner,
-              repo: context.repo.repo,
-              ref: 'refs/tags/glacierdisk-gui-v${{ needs.check-version.outputs.new_version }}',
-              sha: context.sha
-            })
-
   create-release:
-    needs: create-tag
     runs-on: ubuntu-latest
     steps:
       - name: Checkout repository
@@ -218,7 +199,7 @@ jobs:
         uses: softprops/action-gh-release@v2
         with:
           files: artifacts/**
-          tag_name: v${{ needs.check-version.outputs.new_version }}
+          tag_name: glacierdisk-gui-v${{ needs.check-version.outputs.new_version }}
           release_name: GlacierDiskInfo GUI v${{ needs.check-version.outputs.new_version }}
           draft: false
           prerelease: false
