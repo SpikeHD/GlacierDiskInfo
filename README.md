@@ -71,6 +71,12 @@ Example themes can be found in the `themes` directory. Below is a screenshot of 
     - [ ] Transfer mode
     - [ ] HDD Rotation Rate
     - [x] Interface (eg. SATA, NVME, etc.)
+  - [ ] Benchmark support
+    - [x] Sequential read
+    - [x] Sequential write
+    - [ ] Random read
+    - [ ] Random write
+    - [ ] Multiple queue depth
 - `glacier-disk-info`
   - [x] Theming
   - [ ] Flatpak
