@@ -1,5 +1,11 @@
 use std::{
-  error::Error, fmt::{Debug, Display}, fs, os::unix::fs::FileTypeExt, path::{Path, PathBuf}, rc::Rc, sync::{Mutex, MutexGuard}
+  error::Error,
+  fmt::{Debug, Display},
+  fs,
+  os::unix::fs::FileTypeExt,
+  path::{Path, PathBuf},
+  rc::Rc,
+  sync::{Mutex, MutexGuard},
 };
 
 use crate::{

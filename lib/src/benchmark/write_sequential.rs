@@ -8,7 +8,7 @@ use std::{
 
 use crate::disk::ShallowDisk;
 
-use super::{random_fill, Benchmark, BenchmarkProgress};
+use super::{Benchmark, BenchmarkProgress};
 
 const FILENAME: &str = "glacierdisk-test.bin";
 
@@ -76,7 +76,6 @@ impl Benchmark for WriteSequentialBenchmark {
       .truncate(true)
       .open(&file_path)?;
 
-
     self.running = true;
 
     let start = Instant::now();
@@ -84,9 +83,8 @@ impl Benchmark for WriteSequentialBenchmark {
     // Benchmark
     let mut urand = File::open("/dev/urandom")?;
     let mut buf = vec![0; self.block_config.block_size];
-    let mut total_writes = 0;
-  
-    for _ in 0..self.block_config.block_count {
+
+    for (total_writes, _) in (0..self.block_config.block_count).enumerate() {
       urand.read_exact(&mut buf)?;
       file.write_all(&buf)?;
 
@@ -99,8 +97,6 @@ impl Benchmark for WriteSequentialBenchmark {
       if let Some(f) = self.on_progress.as_mut() {
         f(self.progress.clone());
       }
-
-      total_writes += 1;
     }
 
     // Seek to start
