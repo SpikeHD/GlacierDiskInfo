@@ -37,6 +37,7 @@ fn main() {
   let window = WindowBuilder::new()
     .with_title("GlacierDiskInfo")
     .with_resizable(true)
+    .with_inner_size(LogicalSize::new(1500, 800))
     .with_min_inner_size(LogicalSize::new(1500, 800));
 
   let config = Config::default()
@@ -81,8 +82,6 @@ fn App() -> Element {
       } else {
         theme_css.set("".to_string());
       }
-    } else if id.starts_with("delete-") {
-      // TODO
     } else if id == "add-theme" {
       let theme_path = theme::theme_path();
       open::that_detached(theme_path).unwrap_or_default();

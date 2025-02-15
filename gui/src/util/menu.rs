@@ -110,12 +110,6 @@ fn generate_theme_controls(theme: Theme) -> Vec<MenuItem> {
     true,
     None,
   ));
-  items.push(MenuItem::with_id(
-    format!("delete-{filename}"),
-    "Delete",
-    true,
-    None,
-  ));
 
   items
 }
