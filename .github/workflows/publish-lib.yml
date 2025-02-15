@@ -4,6 +4,7 @@ on:
   push:
     paths:
       - "lib/Cargo.toml"
+      - ".github/workflows/publish-lib.yml"
 
 jobs:
   check-version:
