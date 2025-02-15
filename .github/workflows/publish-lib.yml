@@ -1,0 +1,60 @@
+name: Publish Library
+
+on:
+  push:
+    paths:
+      - "lib/Cargo.toml"
+
+jobs:
+  check-version:
+    runs-on: ubuntu-latest
+    outputs:
+      version_changed: ${{ steps.version_check.outputs.changed }}
+      new_version: ${{ steps.version_check.outputs.version }}
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Extract new version
+        id: version_check
+        run: |
+          VERSION=$(grep '^version =' lib/Cargo.toml | sed 's/version = "\(.*\)"/\1/')
+          echo "New version: $VERSION"
+          if git tag -l | grep -q "libglacierdisk-v$VERSION"; then
+            echo "changed=false" >> $GITHUB_ENV
+          else
+            echo "changed=true" >> $GITHUB_ENV
+            echo "version=$VERSION" >> $GITHUB_ENV
+          fi
+
+  create-tag:
+    needs: check-version
+    if: needs.check-version.outputs.version_changed == 'true'
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Create tag
+        uses: actions/github-script@v5
+        with:
+          script: |
+            github.rest.git.createRef({
+              owner: context.repo.owner,
+              repo: context.repo.repo,
+              ref: 'refs/tags/libglacierdisk-v${{ needs.check-version.outputs.new_version }}',
+              sha: context.sha
+            })
+
+  publish:
+    needs: create-tag
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions-rust-lang/setup-rust-toolchain@v1
+
+      - name: Login to crates.io
+        run: cargo login ${{ secrets.CARGO_TOKEN }}
+
+      - name: Publish Library
+        run: cargo publish -p libglacierdisk

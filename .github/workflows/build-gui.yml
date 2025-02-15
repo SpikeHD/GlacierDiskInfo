@@ -159,3 +159,47 @@ jobs:
         with:
           name: glacierdisk-gui-${{ matrix.config.target }}-rpm
           path: target/dx/glacierdisk-gui/bundle/linux/bundle/rpm/*.rpm
+
+  check-version:
+    runs-on: ubuntu-latest
+    outputs:
+      new_version: ${{ steps.version.outputs.version }}
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Extract new version
+        id: version
+        run: |
+          VERSION=$(grep '^version =' gui/Cargo.toml | sed 's/version = "\(.*\)"/\1/')
+          echo "new_version=$VERSION" >> $GITHUB_ENV
+
+  create-tag:
+    needs: check-version
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Create Git Tag
+        run: |
+          git config --global user.name "GitHub Actions"
+          git config --global user.email "actions@github.com"
+          git tag -a v${{ needs.check-version.outputs.new_version }} -m "GUI release v${{ needs.check-version.outputs.new_version }}"
+          git push origin v${{ needs.check-version.outputs.new_version }}
+
+  create-release:
+    needs: create-tag
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Create GitHub Release
+        uses: softprops/action-gh-release@v2
+        with:
+          tag_name: v${{ needs.check-version.outputs.new_version }}
+          release_name: GUI v${{ needs.check-version.outputs.new_version }}
+          draft: false
+          prerelease: false
+          body: "New release of the GUI application."
