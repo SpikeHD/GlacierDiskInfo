@@ -3,7 +3,7 @@
   <span>A familiar-looking, customizable SMART disk info tool for Linux</span>
 
   <div align="center">
-    <img src="https://img.shields.io/github/actions/workflow/status/SpikeHD/GlacierDiskInfo/build.yml" />
+    <img src="https://img.shields.io/github/actions/workflow/status/SpikeHD/GlacierDiskInfo/build-gui.yml?label=gui build" />
     <img src="https://img.shields.io/github/actions/workflow/status/SpikeHD/GlacierDiskInfo/format.yml?label=code quality" />
     <img src="https://img.shields.io/github/repo-size/SpikeHD/GlacierDiskInfo" />
   </div>
