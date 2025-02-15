@@ -185,6 +185,7 @@ jobs:
 
   create-release:
     runs-on: ubuntu-latest
+    needs: check-version
     steps:
       - name: Checkout repository
         uses: actions/checkout@v4
@@ -200,7 +201,7 @@ jobs:
         with:
           files: artifacts/**
           tag_name: glacierdisk-gui-v${{ needs.check-version.outputs.new_version }}
-          release_name: GlacierDiskInfo GUI v${{ needs.check-version.outputs.new_version }}
+          name: GlacierDiskInfo GUI v${{ needs.check-version.outputs.new_version }}
           draft: false
           prerelease: false
           body: "This release was automatically created by GitHub Actions."
