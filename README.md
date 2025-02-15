@@ -81,11 +81,7 @@ Example themes can be found in the `themes` directory. Below is a screenshot of 
   - [x] Theming
   - [ ] Flatpak
   - [ ] Move to Dioxus [blitz](https://github.com/DioxusLabs/blitz) (whenever that's out/stable-ish)
-- `glacierdisk-cli`
-  - [ ] All of it
-- `glaciermark-gui`
-  - [ ] All of it
-- `glaciermark-cli`
+- `glacier-disk-mark`
   - [ ] All of it
 
 # Attributions
