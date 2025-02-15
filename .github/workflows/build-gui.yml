@@ -5,7 +5,6 @@ on:
   push:
     paths:
       - '.github/workflows/build-gui.yml'
-      - '.github/workflows/publish-gui.yml'
       - 'lib/**'
       - 'cli/**'
       - 'gui/**'
@@ -165,16 +164,23 @@ jobs:
   check-version:
     runs-on: ubuntu-latest
     outputs:
-      new_version: ${{ steps.version.outputs.version }}
+      version_changed: ${{ steps.version_check.outputs.changed }}
+      new_version: ${{ steps.version_check.outputs.version }}
     steps:
       - name: Checkout repository
         uses: actions/checkout@v4
 
       - name: Extract new version
-        id: version
+        id: version_check
         run: |
           VERSION=$(grep '^version =' gui/Cargo.toml | sed 's/version = "\(.*\)"/\1/')
-          echo "new_version=$VERSION" >> $GITHUB_ENV
+          echo "New version: $VERSION"
+          if git tag -l | grep -q "glacierdisk-gui-v$VERSION"; then
+            echo "changed=false" >> $GITHUB_OUTPUT
+          else
+            echo "changed=true" >> $GITHUB_OUTPUT
+            echo "version=$VERSION" >> $GITHUB_OUTPUT
+          fi
 
   create-tag:
     needs: check-version
@@ -183,12 +189,16 @@ jobs:
       - name: Checkout repository
         uses: actions/checkout@v4
 
-      - name: Create Git Tag
-        run: |
-          git config --global user.name "GitHub Actions"
-          git config --global user.email "actions@github.com"
-          git tag -a v${{ needs.check-version.outputs.new_version }} -m "GUI release v${{ needs.check-version.outputs.new_version }}"
-          git push origin v${{ needs.check-version.outputs.new_version }}
+      - name: Create tag
+        uses: actions/github-script@v5
+        with:
+          script: |
+            github.rest.git.createRef({
+              owner: context.repo.owner,
+              repo: context.repo.repo,
+              ref: 'refs/tags/glacierdisk-gui-v${{ needs.check-version.outputs.new_version }}',
+              sha: context.sha
+            })
 
   create-release:
     needs: create-tag
@@ -197,11 +207,18 @@ jobs:
       - name: Checkout repository
         uses: actions/checkout@v4
 
+      # Download all artifacts from the build job
+      - name: Download artifacts
+        uses: actions/download-artifact@v4
+        with:
+          path: artifacts
+
       - name: Create GitHub Release
         uses: softprops/action-gh-release@v2
         with:
+          files: artifacts/**
           tag_name: v${{ needs.check-version.outputs.new_version }}
-          release_name: GUI v${{ needs.check-version.outputs.new_version }}
+          release_name: GlacierDiskInfo GUI v${{ needs.check-version.outputs.new_version }}
           draft: false
           prerelease: false
-          body: "New release of the GUI application."
+          body: "This release was automatically created by GitHub Actions."
