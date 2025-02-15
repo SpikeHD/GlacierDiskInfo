@@ -1,7 +1,7 @@
 use std::{env, path::PathBuf};
 
 use config::Config;
-use users::User;
+use uzers::User;
 
 pub mod config;
 pub mod conversion;
@@ -21,7 +21,7 @@ pub fn dot_config() -> PathBuf {
       .parse::<u32>()
       .unwrap_or_default();
     // Then get the username
-    user = users::get_user_by_uid(uid)
+    user = uzers::get_user_by_uid(uid)
       .unwrap_or(User::new(0, "root", 0))
       .name()
       .to_string_lossy()
