@@ -97,7 +97,7 @@ fn App() -> Element {
         drives,
         selected_drive: selected_drive(),
         on_select: move |disk: Disk| {
-          println!("selected drive: {:?}", disk.path());
+          println!("selected drive: {:?}", disk.path);
           selected_drive.set(disk);
         }
       }

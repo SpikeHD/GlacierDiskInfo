@@ -1,7 +1,7 @@
-
 use dioxus::prelude::*;
 use libglacierdisk::{
-  attribute::{get_attribute, Convertable}, disk::Disk
+  attribute::{get_attribute, Convertable},
+  disk::Disk,
 };
 
 use crate::util::conversion::{bytes_to_readable, ms_to_readable};
@@ -12,20 +12,23 @@ pub struct DriveInfoTableProps {
 }
 
 #[component]
-pub fn DriveInfoTable(mut props: DriveInfoTableProps) -> Element {
+pub fn DriveInfoTable(props: DriveInfoTableProps) -> Element {
   let ata = props.selected_drive.ata_link.clone();
-  let mut drive = props.selected_drive.raw_disk().clone();
+  let mut drive = props.selected_drive.raw_disk();
   let identity = drive.identify_parse().expect("Failed to get identify info");
   let lbas_read = get_attribute(&mut drive, "total-lbas-read").unwrap_or_default();
-  let lbas_written = get_attribute( &mut drive, "total-lbas-written").unwrap_or_default();
+  let lbas_written = get_attribute(&mut drive, "total-lbas-written").unwrap_or_default();
 
   let left_values = [
     ("Firmware", identity.firmware),
     ("Serial", identity.serial),
     ("Model", identity.model),
-    ("Drive Path", props.selected_drive.path().to_string_lossy().to_string()),
+    (
+      "Drive Path",
+      props.selected_drive.path.to_string_lossy().to_string(),
+    ),
     ("SATA Speed", ata.speed),
-    ("Kind", props.selected_drive.kind.to_string())
+    ("Kind", props.selected_drive.kind.to_string()),
   ];
   let right_values = [
     (

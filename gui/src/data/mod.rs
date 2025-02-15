@@ -11,7 +11,7 @@ pub fn drives_and_status() -> Vec<(Disk, Status)> {
   let drives: Vec<(Disk, Status)> = drives
     .iter_mut()
     .filter_map(|d| {
-      let disk = d.raw_disk();
+      let mut disk = d.raw_disk();
       let smart = match disk.smart_get_overall() {
         Ok(s) => s,
         Err(e) => {

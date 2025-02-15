@@ -1,4 +1,3 @@
-
 fn main() {
   sudo::escalate_if_needed().expect("Failed to escalate privileges");
 

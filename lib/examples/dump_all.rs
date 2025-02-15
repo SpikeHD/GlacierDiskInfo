@@ -3,7 +3,7 @@ fn main() -> Result<(), Box<dyn std::error::Error>> {
 
   let disks = libglacierdisk::list_disks().unwrap();
 
-  for mut disk in disks {
+  for disk in disks {
     disk.raw_disk().dump().unwrap();
   }
 

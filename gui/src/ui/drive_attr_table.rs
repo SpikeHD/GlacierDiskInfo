@@ -1,4 +1,3 @@
-
 use dioxus::prelude::*;
 use libglacierdisk::disk::Disk;
 
@@ -13,7 +12,7 @@ pub struct DriveAttrTableProps {
 pub fn DriveAttrTable(mut props: DriveAttrTableProps) -> Element {
   let attrs = props.selected_drive.get_all_attributes();
   let rows = attrs.iter().map(|attr| {
-    let ico = if attr.warn { CAUTION_ICO } else { GOOD_ICO }; 
+    let ico = if attr.warn { CAUTION_ICO } else { GOOD_ICO };
 
     rsx! {
       div {

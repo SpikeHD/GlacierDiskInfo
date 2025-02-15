@@ -1,4 +1,3 @@
-
 use dioxus::prelude::*;
 use libglacierdisk::disk::Disk;
 
@@ -14,8 +13,8 @@ pub struct DriveProps {
 }
 
 #[component]
-pub fn Drive(mut props: DriveProps) -> Element {
-  let drive = props.selected_drive.raw_disk();
+pub fn Drive(props: DriveProps) -> Element {
+  let mut drive = props.selected_drive.raw_disk();
   let identity = drive.identify_parse().expect("Failed to get identify info");
   let size = drive.get_disk_size().expect("Failed to get disk size");
   let size = bytes_to_readable(size);
@@ -43,7 +42,7 @@ pub fn Drive(mut props: DriveProps) -> Element {
 
       div {
         class: "drive-name",
-        "{identity.model} {size} ({props.selected_drive.path().to_string_lossy()})"
+        "{identity.model} {size} ({props.selected_drive.path.to_string_lossy()})"
       }
 
       div {

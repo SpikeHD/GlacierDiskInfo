@@ -1,4 +1,7 @@
-use std::{fmt::Display, path::{Path, PathBuf}};
+use std::{
+  fmt::Display,
+  path::{Path, PathBuf},
+};
 
 /// A struct representing the kind of disk (SSD, HDD, etc.)
 #[derive(Clone, PartialEq, Debug)]

@@ -3,7 +3,7 @@ fn main() -> Result<(), Box<dyn std::error::Error>> {
 
   let disks = libglacierdisk::list_disks().unwrap();
   // Dump the first disk
-  let mut disk = disks[0].clone();
+  let disk = disks[0].clone();
 
   disk.raw_disk().dump().unwrap();
 
