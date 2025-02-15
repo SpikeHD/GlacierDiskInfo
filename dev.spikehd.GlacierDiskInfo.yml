@@ -5,7 +5,7 @@ runtime: org.gnome.Platform
 runtime-version: '46'
 sdk: org.gnome.Sdk
 
-command: glacierdisk-gui
+command: glacier-disk-info
 
 finish-args:
   - --share=ipc
@@ -22,13 +22,13 @@ modules:
     buildsystem: simple
     sources:
       - type: file
-        url: https://github.com/SpikeHD/GlacierDiskInfo/releases/download/0.3.0/glacierdisk-gui-x86_64-unknown-linux-gnu-deb.zip
+        url: https://github.com/SpikeHD/GlacierDiskInfo/releases/download/0.3.0/glacier-disk-info-x86_64-unknown-linux-gnu-deb.zip
         sha256: bd3808768b6753c51fe5f2b064f847cd204f0da654139895ce45b6463694bdb1
-        dest-filename: glacierdisk-gui.zip
+        dest-filename: glacier-disk-info.zip
         only-arches: [x86_64]
     build-commands:
-      - unzip glacierdisk-gui.zip
+      - unzip glacier-disk-info.zip
       - ar -x *.deb
       - tar -xf data.tar.gz
-      - install -Dm755 usr/bin/glacierdisk-gui /app/bin/glacierdisk-gui
-      - install -Dm644 usr/share/applications/GlacierdiskGui.desktop /app/share/applications/glacierdisk-gui.desktop 
+      - install -Dm755 usr/bin/glacier-disk-info /app/bin/glacier-disk-info
+      - install -Dm644 usr/share/applications/GlacierdiskGui.desktop /app/share/applications/glacier-disk-info.desktop 

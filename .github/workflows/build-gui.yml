@@ -147,7 +147,7 @@ jobs:
 
       - name: Build
         run: |
-          dx bundle --package glacierdisk-gui --package-types "deb" --package-types "rpm" --release --target ${{ matrix.config.target }}
+          dx bundle --package glacier-disk-info --package-types "deb" --package-types "rpm" --release --target ${{ matrix.config.target }}
         env:
           # Warning are fine
           RUSTFLAGS: -D warnings
@@ -159,24 +159,24 @@ jobs:
 
       - name: Compress portable
         run: |
-          tar -czvf GlacierDiskInfo-${{ steps.version.outputs.version }}-${{ matrix.config.target }}.tar.gz target/dx/glacierdisk-gui/bundle/linux/glacierdisk-gui
+          tar -czvf GlacierDiskInfo-${{ steps.version.outputs.version }}-${{ matrix.config.target }}.tar.gz target/dx/glacier-disk-info/bundle/linux/glacier-disk-info
 
       - name: Upload `.deb`
         uses: actions/upload-artifact@v4
         with:
-          name: glacierdisk-gui-${{ matrix.config.target }}-deb
-          path: target/dx/glacierdisk-gui/bundle/linux/bundle/deb/*.deb
+          name: glacier-disk-info-${{ matrix.config.target }}-deb
+          path: target/dx/glacier-disk-info/bundle/linux/bundle/deb/*.deb
 
       - name: Upload `.rpm`
         uses: actions/upload-artifact@v4
         with:
-          name: glacierdisk-gui-${{ matrix.config.target }}-rpm
-          path: target/dx/glacierdisk-gui/bundle/linux/bundle/rpm/*.rpm
+          name: glacier-disk-info-${{ matrix.config.target }}-rpm
+          path: target/dx/glacier-disk-info/bundle/linux/bundle/rpm/*.rpm
 
       - name: Upload portable
         uses: actions/upload-artifact@v4
         with:
-          name: glacierdisk-gui-${{ matrix.config.target }}-portable
+          name: glacier-disk-info-${{ matrix.config.target }}-portable
           path: GlacierDiskInfo-${{ steps.version.outputs.version }}-${{ matrix.config.target }}.tar.gz
 
   check-version:
@@ -194,7 +194,7 @@ jobs:
         run: |
           VERSION=$(grep '^version =' gui/Cargo.toml | sed 's/version = "\(.*\)"/\1/')
           echo "New version: $VERSION"
-          if git tag -l | grep -q "glacierdisk-gui-v$VERSION"; then
+          if git tag -l | grep -q "glacier-disk-info-v$VERSION"; then
             echo "changed=false" >> $GITHUB_OUTPUT
           else
             echo "changed=true" >> $GITHUB_OUTPUT
@@ -219,7 +219,7 @@ jobs:
         uses: softprops/action-gh-release@v2
         with:
           files: artifacts/**
-          tag_name: glacierdisk-gui-v${{ needs.check-version.outputs.new_version }}
+          tag_name: glacier-disk-info-v${{ needs.check-version.outputs.new_version }}
           name: GlacierDiskInfo GUI v${{ needs.check-version.outputs.new_version }}
           draft: false
           prerelease: false
