@@ -1,0 +1,17 @@
+[application]
+name = "GlacierDiskMark"
+
+[bundle]
+identifier = "dev.spikehd.glacierdiskmark"
+publisher = "SpikeHD"
+
+[web.app]
+title = "GlacierDiskMark"
+
+# include `assets` in web platform
+[web.resource]
+style = []
+script = []
+
+[web.resource.dev]
+script = []
