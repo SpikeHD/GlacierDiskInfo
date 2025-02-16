@@ -1,7 +1,10 @@
 use std::{
   fs::File,
   io::{Read, Write},
+  path::PathBuf,
 };
+
+use crate::disk::ShallowDisk;
 
 pub mod read_sequential;
 pub mod write_sequential;
@@ -24,25 +27,31 @@ pub struct BenchmarkProgress {
 }
 
 #[derive(Clone, Debug)]
-pub struct BlockConfig {
+pub struct BenchmarkConfig {
   /// Block size in bytes
   pub block_size: usize,
   /// Block count
   pub block_count: usize,
+  /// Set a custom file path
+  pub file_path: Option<PathBuf>,
+  /// Delete the created test file after the benchmark is complete
+  pub delete_after: bool,
 }
 
-impl Default for BlockConfig {
+impl Default for BenchmarkConfig {
   fn default() -> Self {
     Self {
       // 4kb blocks
       block_size: 4 * 1024,
       // Amount of blocks
       block_count: 1024 * 1024,
+      file_path: None,
+      delete_after: true,
     }
   }
 }
 
-impl BlockConfig {
+impl BenchmarkConfig {
   pub fn total_size(&self) -> usize {
     self.block_size * self.block_count
   }
@@ -50,9 +59,9 @@ impl BlockConfig {
 
 pub trait Benchmark {
   fn new(
-    disk: crate::Disk,
+    disk: impl Into<ShallowDisk>,
     mount: usize,
-    block_config: BlockConfig,
+    block_config: BenchmarkConfig,
   ) -> Result<Self, Box<dyn std::error::Error>>
   where
     Self: Sized;

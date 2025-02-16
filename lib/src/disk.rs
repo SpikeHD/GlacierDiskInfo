@@ -99,25 +99,15 @@ impl Disk {
   }
 
   /// Get the mount locations of the disk. A disk may have multiple if there are multiple partitions, or a disk may have none if it is not mounted.
-  pub fn mounts(&self) -> Vec<PathBuf> {
-    let path = self.path.to_string_lossy().to_string();
-    let mounts = fs::read_to_string("/proc/mounts").unwrap_or_default();
-    let mounts = mounts.split("\n");
+  pub fn mounts(&self) -> Result<Vec<PathBuf>, Box<dyn Error>> {
+    get_mounts(&self)
+  }
+}
 
-    mounts
-      .filter_map(|mount| {
-        // We use starts_with as it's possible for multiple mounts to use the same disk, eg:
-        // /dev/sda1
-        // /dev/sda2
-        if !mount.starts_with(&path) {
-          return None;
-        }
-
-        let mount = mount.split_whitespace().collect::<Vec<&str>>();
-
-        mount[1].parse::<PathBuf>().ok()
-      })
-      .collect()
+impl ShallowDisk {
+  /// Get the mount locations of the disk. A disk may have multiple if there are multiple partitions, or a disk may have none if it is not mounted.
+  pub fn mounts(&self) -> Result<Vec<PathBuf>, Box<dyn Error>> {
+    get_mounts(&self)
   }
 }
 
@@ -168,6 +158,29 @@ pub fn get_disk_paths() -> Result<Vec<String>, Box<dyn Error>> {
   }
 
   Ok(disks)
+}
+
+fn get_mounts(path: &impl AsRef<Path>) -> Result<Vec<PathBuf>, Box<dyn Error>> {
+  let path = path.as_ref().to_string_lossy().to_string();
+  let mounts = fs::read_to_string("/proc/mounts")?;
+  let mounts = mounts.split("\n");
+
+  let mounts = mounts
+    .filter_map(|mount| {
+      // We use starts_with as it's possible for multiple mounts to use the same disk, eg:
+      // /dev/sda1
+      // /dev/sda2
+      if !mount.starts_with(&path) {
+        return None;
+      }
+
+      let mount = mount.split_whitespace().collect::<Vec<&str>>();
+
+      mount[1].parse::<PathBuf>().ok()
+    })
+    .collect();
+
+  Ok(mounts)
 }
 
 fn fits_filter(disk: &str) -> bool {

@@ -20,7 +20,7 @@ pub struct ReadSequentialBenchmark {
   pub progress: super::BenchmarkProgress,
 
   // Benchmark block configuration
-  pub block_config: super::BlockConfig,
+  pub bench_config: super::BenchmarkConfig,
 
   pub on_progress: Option<Box<dyn FnMut(super::BenchmarkProgress) + Send + 'static>>,
 }
@@ -32,29 +32,30 @@ impl Debug for ReadSequentialBenchmark {
       .field("mount", &self.mount)
       .field("running", &self.running)
       .field("progress", &self.progress)
-      .field("block_config", &self.block_config)
+      .field("block_config", &self.bench_config)
       .finish()
   }
 }
 
 impl Benchmark for ReadSequentialBenchmark {
   fn new(
-    disk: crate::Disk,
+    disk: impl Into<ShallowDisk>,
     mount: usize,
-    block_config: super::BlockConfig,
+    bench_config: super::BenchmarkConfig,
   ) -> Result<Self, Box<dyn std::error::Error>> {
-    let mounts = disk.mounts();
+    let disk = disk.into();
+    let mounts = disk.mounts()?;
     let mount = mounts
       .get(mount)
       .ok_or(format!("No mount found at index {mount} for disk {disk:?}"))?;
 
     Ok(Self {
-      disk: disk.into(),
+      disk: disk.clone(),
       mount: mount.to_path_buf(),
       running: false,
       progress: super::BenchmarkProgress::default(),
 
-      block_config,
+      bench_config,
 
       on_progress: None,
     })
@@ -69,24 +70,29 @@ impl Benchmark for ReadSequentialBenchmark {
     }
 
     // Create file
-    let mut file = fs::OpenOptions::new()
-      .write(true)
-      .create(true)
-      .read(true)
-      .truncate(true)
-      .open(&file_path)?;
+    let mut file = if let Some(path) = &self.bench_config.file_path {
+      fs::OpenOptions::new().read(true).open(path)?
+    } else {
+      let mut f = fs::OpenOptions::new()
+        .write(true)
+        .create(true)
+        .read(true)
+        .truncate(true)
+        .open(&file_path)?;
 
-    // Fill with random data
-    random_fill(&mut file, self.block_config.total_size())?;
+      // Fill with random data
+      random_fill(&mut f, self.bench_config.total_size())?;
+      // Seek to start
+      f.seek(SeekFrom::Start(0))?;
 
-    // Seek to start
-    file.seek(SeekFrom::Start(0))?;
+      f
+    };
 
     self.running = true;
 
     let start = Instant::now();
 
-    let mut buf = vec![0; self.block_config.block_size];
+    let mut buf = vec![0; self.bench_config.block_size];
     let mut total_reads = 0;
 
     // Benchmark
@@ -94,8 +100,8 @@ impl Benchmark for ReadSequentialBenchmark {
       let n = file.read(&mut buf)?;
       self.progress = BenchmarkProgress {
         elapsed: start.elapsed().as_secs_f64(),
-        avg_speed: self.block_config.total_size() as f64 / start.elapsed().as_secs_f64(),
-        pct: total_reads as f64 / self.block_config.block_count as f64,
+        avg_speed: self.bench_config.total_size() as f64 / start.elapsed().as_secs_f64(),
+        pct: total_reads as f64 / self.bench_config.block_count as f64,
       };
 
       if let Some(f) = self.on_progress.as_mut() {
@@ -113,7 +119,7 @@ impl Benchmark for ReadSequentialBenchmark {
 
     self.progress = BenchmarkProgress {
       elapsed: elapsed.as_secs_f64(),
-      avg_speed: self.block_config.total_size() as f64 / elapsed.as_secs_f64(),
+      avg_speed: self.bench_config.total_size() as f64 / elapsed.as_secs_f64(),
       pct: 1.0,
     };
 
@@ -122,7 +128,9 @@ impl Benchmark for ReadSequentialBenchmark {
     }
 
     // Cleanup
-    fs::remove_file(file_path).unwrap_or_default();
+    if self.bench_config.delete_after {
+      fs::remove_file(file_path).unwrap_or_default();
+    }
 
     self.running = false;
 

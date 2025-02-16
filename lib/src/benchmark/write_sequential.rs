@@ -20,7 +20,7 @@ pub struct WriteSequentialBenchmark {
   pub progress: super::BenchmarkProgress,
 
   // Benchmark block configuration
-  pub block_config: super::BlockConfig,
+  pub bench_config: super::BenchmarkConfig,
 
   pub on_progress: Option<Box<dyn FnMut(super::BenchmarkProgress) + Send + 'static>>,
 }
@@ -32,29 +32,30 @@ impl Debug for WriteSequentialBenchmark {
       .field("mount", &self.mount)
       .field("running", &self.running)
       .field("progress", &self.progress)
-      .field("block_config", &self.block_config)
+      .field("bench_config", &self.bench_config)
       .finish()
   }
 }
 
 impl Benchmark for WriteSequentialBenchmark {
   fn new(
-    disk: crate::Disk,
+    disk: impl Into<ShallowDisk>,
     mount: usize,
-    block_config: super::BlockConfig,
+    bench_config: super::BenchmarkConfig,
   ) -> Result<Self, Box<dyn std::error::Error>> {
-    let mounts = disk.mounts();
+    let disk = disk.into();
+    let mounts = disk.mounts()?;
     let mount = mounts
       .get(mount)
       .ok_or(format!("No mount found at index {mount} for disk {disk:?}"))?;
 
     Ok(Self {
-      disk: disk.into(),
+      disk: disk.clone(),
       mount: mount.to_path_buf(),
       running: false,
       progress: super::BenchmarkProgress::default(),
 
-      block_config,
+      bench_config,
 
       on_progress: None,
     })
@@ -69,12 +70,17 @@ impl Benchmark for WriteSequentialBenchmark {
     }
 
     // Create file
+    let actual = if let Some(path) = &self.bench_config.file_path {
+      path
+    } else {
+      &file_path
+    };
     let mut file = fs::OpenOptions::new()
       .write(true)
       .create(true)
       .read(true)
       .truncate(true)
-      .open(&file_path)?;
+      .open(actual)?;
 
     self.running = true;
 
@@ -82,16 +88,16 @@ impl Benchmark for WriteSequentialBenchmark {
 
     // Benchmark
     let mut urand = File::open("/dev/urandom")?;
-    let mut buf = vec![0; self.block_config.block_size];
+    let mut buf = vec![0; self.bench_config.block_size];
 
-    for (total_writes, _) in (0..self.block_config.block_count).enumerate() {
+    for (total_writes, _) in (0..self.bench_config.block_count).enumerate() {
       urand.read_exact(&mut buf)?;
       file.write_all(&buf)?;
 
       self.progress = BenchmarkProgress {
         elapsed: start.elapsed().as_secs_f64(),
-        avg_speed: self.block_config.total_size() as f64 / start.elapsed().as_secs_f64(),
-        pct: total_writes as f64 / self.block_config.block_count as f64,
+        avg_speed: self.bench_config.total_size() as f64 / start.elapsed().as_secs_f64(),
+        pct: total_writes as f64 / self.bench_config.block_count as f64,
       };
 
       if let Some(f) = self.on_progress.as_mut() {
@@ -105,7 +111,7 @@ impl Benchmark for WriteSequentialBenchmark {
 
     self.progress = BenchmarkProgress {
       elapsed: elapsed.as_secs_f64(),
-      avg_speed: self.block_config.total_size() as f64 / elapsed.as_secs_f64(),
+      avg_speed: self.bench_config.total_size() as f64 / elapsed.as_secs_f64(),
       pct: 1.0,
     };
 
@@ -114,7 +120,9 @@ impl Benchmark for WriteSequentialBenchmark {
     }
 
     // Cleanup
-    fs::remove_file(file_path).unwrap_or_default();
+    if self.bench_config.delete_after {
+      fs::remove_file(file_path).unwrap_or_default();
+    }
 
     self.running = false;
 
