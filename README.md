@@ -62,7 +62,7 @@ Example themes can be found in the `themes` directory. Below is a screenshot of 
 # TODO
 
 - `libglacierdisk`
-  - [ ] Publish on [crates.io](https://crates.io)
+  - [x] Publish on [crates.io](https://crates.io)
   - [x] Fix attribute fetching
   - [ ] Support more unix-like platforms (FreeBSD, OpenBSD, etc.)
     - This would probably entail expanding the `libatasmart` library to support more platforms
