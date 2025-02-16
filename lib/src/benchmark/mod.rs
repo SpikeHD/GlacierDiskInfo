@@ -6,8 +6,10 @@ use std::{
 
 use crate::disk::ShallowDisk;
 
-pub mod read_sequential;
-pub mod write_sequential;
+pub mod read;
+pub mod write;
+
+const FILENAME: &str = "glacierdisk-test.bin";
 
 pub enum BenchmarkMessage {
   Progress(BenchmarkProgress),
@@ -36,6 +38,8 @@ pub struct BenchmarkConfig {
   pub file_path: Option<PathBuf>,
   /// Delete the created test file after the benchmark is complete
   pub delete_after: bool,
+  /// Whether this is a sequential benchmark or a random benchmark
+  pub random: bool,
 }
 
 impl Default for BenchmarkConfig {
@@ -47,6 +51,7 @@ impl Default for BenchmarkConfig {
       block_count: 1024 * 1024,
       file_path: None,
       delete_after: true,
+      random: false,
     }
   }
 }

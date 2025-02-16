@@ -9,7 +9,7 @@ fn main() {
 
   let disk = Disk::new("/dev/sda".into()).unwrap();
   let mut benchmark = ReadBenchmark::new(disk, 0, BenchmarkConfig {
-    random: false,
+    random: true,
     ..BenchmarkConfig::default()
   }).unwrap();
 

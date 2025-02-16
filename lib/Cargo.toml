@@ -13,6 +13,7 @@ categories = ["hardware-support"]
 libatasmart = "0.3.2"
 libatasmart-sys = "0.2.1"
 num_cpus = "1.16.0"
+rand = "0.9.0"
 
 [dev-dependencies]
 sudo = "0.6.0"

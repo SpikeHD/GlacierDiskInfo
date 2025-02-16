@@ -22,7 +22,7 @@ fn main() {
     BenchmarkConfig {
       file_path: Some(bin_file.clone().into()),
       delete_after: false,
-      random: false,
+      random: true,
       ..BenchmarkConfig::default()
     },
   )
@@ -45,7 +45,7 @@ fn main() {
     BenchmarkConfig {
       file_path: Some(bin_file.into()),
       delete_after: true,
-      random: false,
+      random: true,
       ..BenchmarkConfig::default()
     },
   )

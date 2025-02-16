@@ -1,19 +1,19 @@
 use std::{
   fmt::Debug,
-  fs,
-  io::{Read, Seek, SeekFrom},
+  fs::{self, File},
+  io::{Read, Seek, SeekFrom, Write},
   path::PathBuf,
   time::Instant,
 };
 
+use rand::seq::SliceRandom;
+
 use crate::disk::ShallowDisk;
 
-use super::{random_fill, Benchmark, BenchmarkProgress};
-
-const FILENAME: &str = "glacierdisk-test.bin";
+use super::{Benchmark, BenchmarkProgress, FILENAME};
 
 /// A sequential-read benchmark
-pub struct ReadSequentialBenchmark {
+pub struct WriteBenchmark {
   pub disk: ShallowDisk,
   pub mount: PathBuf,
   pub running: bool,
@@ -25,19 +25,19 @@ pub struct ReadSequentialBenchmark {
   pub on_progress: Option<Box<dyn FnMut(super::BenchmarkProgress) + Send + 'static>>,
 }
 
-impl Debug for ReadSequentialBenchmark {
+impl Debug for WriteBenchmark {
   fn fmt(&self, f: &mut std::fmt::Formatter<'_>) -> std::fmt::Result {
-    f.debug_struct("ReadSequentialBenchmark")
+    f.debug_struct("WriteBenchmark")
       .field("disk", &self.disk)
       .field("mount", &self.mount)
       .field("running", &self.running)
       .field("progress", &self.progress)
-      .field("block_config", &self.bench_config)
+      .field("bench_config", &self.bench_config)
       .finish()
   }
 }
 
-impl Benchmark for ReadSequentialBenchmark {
+impl Benchmark for WriteBenchmark {
   fn new(
     disk: impl Into<ShallowDisk>,
     mount: usize,
@@ -70,51 +70,69 @@ impl Benchmark for ReadSequentialBenchmark {
     }
 
     // Create file
-    let mut file = if let Some(path) = &self.bench_config.file_path {
-      fs::OpenOptions::new().read(true).open(path)?
+    let actual = if let Some(path) = &self.bench_config.file_path {
+      path
     } else {
-      let mut f = fs::OpenOptions::new()
-        .write(true)
-        .create(true)
-        .read(true)
-        .truncate(true)
-        .open(&file_path)?;
-
-      // Fill with random data
-      random_fill(&mut f, self.bench_config.total_size())?;
-      // Seek to start
-      f.seek(SeekFrom::Start(0))?;
-
-      f
+      &file_path
     };
+    let mut file = fs::OpenOptions::new()
+      .write(true)
+      .create(true)
+      .read(true)
+      .truncate(true)
+      .open(actual)?;
 
     self.running = true;
 
     let start = Instant::now();
 
-    let mut buf = vec![0; self.bench_config.block_size];
-    let mut total_reads = 0;
-
     // Benchmark
-    loop {
-      let n = file.read(&mut buf)?;
-      self.progress = BenchmarkProgress {
-        elapsed: start.elapsed().as_secs_f64(),
-        avg_speed: self.bench_config.total_size() as f64 / start.elapsed().as_secs_f64(),
-        pct: total_reads as f64 / self.bench_config.block_count as f64,
-      };
+    let mut urand = File::open("/dev/urandom")?;
+    let mut buf = vec![0; self.bench_config.block_size];
 
-      if let Some(f) = self.on_progress.as_mut() {
-        f(self.progress.clone());
+    if self.bench_config.random {
+      let mut rng = rand::rng();
+      let mut block_positions = (0..self.bench_config.block_count).collect::<Vec<usize>>();
+      block_positions.shuffle(&mut rng);
+  
+      for (total_writes, _) in (0..self.bench_config.block_count).enumerate() {
+        let pos = block_positions[total_writes];
+  
+        urand.read_exact(&mut buf)?;
+        file.seek(SeekFrom::Start(pos as u64 * self.bench_config.block_size as u64))?;
+        file.write_all(&buf)?;
+  
+        self.progress = BenchmarkProgress {
+          elapsed: start.elapsed().as_secs_f64(),
+          avg_speed: self.bench_config.total_size() as f64 / start.elapsed().as_secs_f64(),
+          pct: total_writes as f64 / self.bench_config.block_count as f64,
+        };
+  
+        if let Some(f) = self.on_progress.as_mut() {
+          f(self.progress.clone());
+        }
       }
-
-      total_reads += 1;
-
-      if n == 0 {
-        break;
+    } else {
+      for (total_writes, _) in (0..self.bench_config.block_count).enumerate() {
+        urand.read_exact(&mut buf)?;
+        file.write_all(&buf)?;
+  
+        self.progress = BenchmarkProgress {
+          elapsed: start.elapsed().as_secs_f64(),
+          avg_speed: self.bench_config.total_size() as f64 / start.elapsed().as_secs_f64(),
+          pct: total_writes as f64 / self.bench_config.block_count as f64,
+        };
+  
+        if let Some(f) = self.on_progress.as_mut() {
+          f(self.progress.clone());
+        }
       }
     }
 
+    file.flush()?;
+
+    // Seek to start
+    file.seek(SeekFrom::Start(0))?;
     let elapsed = start.elapsed();
 
     self.progress = BenchmarkProgress {
