@@ -1,5 +1,5 @@
 use libglacierdisk::{
-  benchmark::{benchmark::GlacierDiskBenchmark, Benchmark, BenchmarkConfig, BenchmarkType},
+  benchmark::{Benchmark, BenchmarkConfig, BenchmarkType, GlacierDiskBenchmark},
   disk::Disk,
 };
 
@@ -8,11 +8,16 @@ fn main() {
   sudo::escalate_if_needed().expect("Failed to escalate privileges");
 
   let disk = Disk::new("/dev/sda".into()).unwrap();
-  let mut benchmark = GlacierDiskBenchmark::new(disk, 0, BenchmarkConfig {
-    random: false,
-    kind: BenchmarkType::Write,
-    ..BenchmarkConfig::default()
-  }).unwrap();
+  let mut benchmark = GlacierDiskBenchmark::new(
+    disk,
+    0,
+    BenchmarkConfig {
+      random: false,
+      kind: BenchmarkType::Write,
+      ..BenchmarkConfig::default()
+    },
+  )
+  .unwrap();
 
   println!("Running benchmark");
   println!(

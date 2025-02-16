@@ -1,7 +1,5 @@
 use libglacierdisk::{
-  benchmark::{
-    benchmark::GlacierDiskBenchmark, Benchmark, BenchmarkConfig, BenchmarkType
-  },
+  benchmark::{Benchmark, BenchmarkConfig, BenchmarkType, GlacierDiskBenchmark},
   disk::Disk,
 };
 
