@@ -7,8 +7,7 @@ pub mod convert;
 pub mod root;
 pub mod theme;
 
-#[derive(Clone, Debug)]
-#[derive(Default)]
+#[derive(Clone, Debug, Default)]
 pub enum App {
   #[default]
   GlacierDiskInfo,
