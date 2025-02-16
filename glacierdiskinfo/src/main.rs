@@ -9,11 +9,10 @@ use dioxus::{
 };
 use dioxus_desktop::muda::MenuId;
 use libglacierdisk::disk::Disk;
+use shared::{config::{self, load_config}, theme::{self, read_theme_contents}, App};
 use ui::{drive::Drive, drive_tabs::DriveTabs};
 use util::{
-  config::load_config,
   menu, root,
-  theme::{self, read_theme_contents},
 };
 
 use crate::assets::CSS;
@@ -44,13 +43,13 @@ fn main() {
     .with_menu(Some(menu::create_menu()))
     .with_window(window);
 
-  dioxus::LaunchBuilder::new().with_cfg(config).launch(App);
+  dioxus::LaunchBuilder::new().with_cfg(config).launch(Root);
 }
 
 #[component]
-fn App() -> Element {
+fn Root() -> Element {
   let mut theme_css = use_signal(|| {
-    let config = load_config().unwrap_or_default();
+    let config = load_config(App::GlacierDiskInfo).unwrap_or_default();
     let theme = config.get_theme();
 
     match theme {
@@ -67,13 +66,13 @@ fn App() -> Element {
     .to_owned();
 
     if id.starts_with("apply-") {
-      let mut config = util::config::load_config().unwrap_or_default();
+      let mut config = config::load_config(App::GlacierDiskInfo).unwrap_or_default();
       let name = id.strip_prefix("apply-").unwrap_or_default();
 
       println!("Applying theme: {name}");
 
       config.theme = name.to_string();
-      util::config::save_config(&config).unwrap_or_default();
+      config::save_config(App::GlacierDiskInfo, &config).unwrap_or_default();
 
       // Apply the CSS
       if let Some(theme) = config.get_theme() {
@@ -83,7 +82,7 @@ fn App() -> Element {
         theme_css.set("".to_string());
       }
     } else if id == "add-theme" {
-      let theme_path = theme::theme_path();
+      let theme_path = theme::theme_path(App::GlacierDiskInfo);
       open::that_detached(theme_path).unwrap_or_default();
     } else if id == "about" {
       let version = env!("CARGO_PKG_VERSION");

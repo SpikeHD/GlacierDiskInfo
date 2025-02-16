@@ -1,5 +1,5 @@
 [workspace]
-members = ["lib", "glacierdiskinfo"]
+members = ["lib", "shared", "glacierdiskinfo"]
 resolver = "2"
 
 [profile.release]

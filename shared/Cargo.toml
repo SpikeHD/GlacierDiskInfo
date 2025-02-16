@@ -1,0 +1,11 @@
+[package]
+name = "shared"
+version = "0.0.0"
+authors = ["SpikeHD <25207995+SpikeHD@users.noreply.github.com>"]
+edition = "2021"
+
+[dependencies]
+regex = "1.11.1"
+serde = "1.0.217"
+toml = "0.8.20"
+uzers = "0.12.1"

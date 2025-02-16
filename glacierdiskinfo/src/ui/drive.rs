@@ -1,10 +1,10 @@
 use dioxus::prelude::*;
 use libglacierdisk::disk::Disk;
+use shared::convert::bytes_to_readable;
 
 use crate::{
   data::smart::{smart_to_string, DriveStatus},
   ui::{drive_attr_table::DriveAttrTable, drive_info_table::DriveInfoTable},
-  util::conversion::bytes_to_readable,
 };
 
 #[derive(Props, PartialEq, Clone)]

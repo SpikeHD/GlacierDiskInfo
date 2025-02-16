@@ -2,6 +2,8 @@ use std::path::PathBuf;
 
 use regex::Regex;
 
+use crate::App;
+
 use super::dot_config;
 
 #[derive(Debug)]
@@ -10,9 +12,9 @@ pub struct Theme {
   pub name: String,
 }
 
-pub fn themes() -> Result<Vec<String>, Box<dyn std::error::Error>> {
+pub fn themes(app: App) -> Result<Vec<String>, Box<dyn std::error::Error>> {
   let mut themes = vec![];
-  let themes_path = theme_path();
+  let themes_path = theme_path(app);
 
   if themes_path.exists() {
     for entry in std::fs::read_dir(themes_path)? {
@@ -31,17 +33,17 @@ pub fn themes() -> Result<Vec<String>, Box<dyn std::error::Error>> {
   Ok(themes)
 }
 
-pub fn theme_path() -> PathBuf {
+pub fn theme_path(app: App) -> PathBuf {
   let cfg = dot_config();
-  cfg.join("glacierdisk").join("themes")
+  cfg.join(app.to_string()).join("themes")
 }
 
 /**
  * Themes should have a comment with a line like this:
  * /* ThemeName */
  */
-pub fn read_theme_data(filename: String) -> Result<Theme, Box<dyn std::error::Error>> {
-  let root = theme_path();
+pub fn read_theme_data(app: App, filename: String) -> Result<Theme, Box<dyn std::error::Error>> {
+  let root = theme_path(app);
   let path = root.join(&filename);
   let contents = std::fs::read_to_string(&path)?;
   let reg = Regex::new(r"\/\*( |)(.*)( |)\*\/").unwrap();

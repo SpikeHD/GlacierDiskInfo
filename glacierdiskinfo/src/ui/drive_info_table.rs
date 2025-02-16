@@ -3,8 +3,7 @@ use libglacierdisk::{
   attribute::{get_attribute, Convertable},
   disk::Disk,
 };
-
-use crate::util::conversion::{bytes_to_readable, ms_to_readable};
+use shared::convert::{bytes_to_readable, ms_to_readable};
 
 #[derive(Props, PartialEq, Clone)]
 pub struct DriveInfoTableProps {

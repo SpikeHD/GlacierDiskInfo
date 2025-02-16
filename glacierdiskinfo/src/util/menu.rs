@@ -1,4 +1,5 @@
 use dioxus::desktop::muda::{Menu, MenuItem, PredefinedMenuItem, Submenu};
+use shared::App;
 
 use crate::util::theme;
 
@@ -49,7 +50,7 @@ pub fn create_menu() -> Menu {
 
 fn generate_theme_items() -> Vec<Submenu> {
   let mut items = vec![];
-  let themes = match theme::themes() {
+  let themes = match theme::themes(App::GlacierDiskInfo) {
     Ok(t) => t,
     Err(e) => {
       eprintln!("Error reading themes: {e}");
@@ -58,7 +59,7 @@ fn generate_theme_items() -> Vec<Submenu> {
   };
 
   for theme in themes {
-    let theme = theme::read_theme_data(theme);
+    let theme = theme::read_theme_data(App::GlacierDiskInfo, theme);
     let theme = match theme {
       Ok(t) => t,
       Err(e) => {
