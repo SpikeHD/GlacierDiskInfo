@@ -74,8 +74,8 @@ Example themes can be found in the `themes` directory. Below is a screenshot of 
   - [ ] Benchmark support
     - [x] Sequential read
     - [x] Sequential write
-    - [ ] Random read
-    - [ ] Random write
+    - [x] Random read
+    - [x] Random write
     - [ ] Multiple queue depth
 - `glacier-disk-info`
   - [x] Theming

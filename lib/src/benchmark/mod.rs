@@ -12,18 +12,21 @@ use crate::disk::ShallowDisk;
 
 const FILENAME: &str = "glacierdisk-test.bin";
 
+/// The type of benchmark (Read or Write)
 #[derive(Clone, Debug)]
 pub enum BenchmarkType {
   Read,
   Write,
 }
 
+/// The result of a benchmark
 #[derive(Clone, Debug)]
 pub struct BenchmarkResult {
   pub elapsed: Duration,
   pub avg_speed: f64,
 }
 
+/// The configuration for a benchmark. This nclues everything from the block size and count, to the kind of benchmark.
 #[derive(Clone, Debug)]
 pub struct BenchmarkConfig {
   /// Whether this is a read or write benchmark
@@ -69,10 +72,11 @@ pub trait Benchmark {
   ) -> Result<Self, Box<dyn std::error::Error>>
   where
     Self: Sized;
-  /// Run the benchmark. When the benchmark is done, it will both emit and return the final progress.
+  /// Run the benchmark.
   fn run(&mut self) -> Result<BenchmarkResult, Box<dyn std::error::Error>>;
 }
-/// A sequential-read benchmark
+
+/// A configurable benchmark
 pub struct GlacierDiskBenchmark {
   pub disk: ShallowDisk,
   pub mount: PathBuf,
@@ -103,7 +107,7 @@ impl Benchmark for GlacierDiskBenchmark {
     let mounts = disk.mounts()?;
     let mount = mounts
       .get(mount)
-      .ok_or(format!("No mount found at index {mount} for disk {disk:?}"))?;
+      .ok_or(format!("No mounts found for disk {disk:?}"))?;
 
     Ok(Self {
       disk: disk.clone(),
@@ -153,10 +157,9 @@ fn get_file(
     path
   } else {
     let mounts = disk.mounts()?;
-    let mount = mounts.first().ok_or(format!(
-      "No mount found at index {0} for disk {1:?}",
-      0, disk
-    ))?;
+    let mount = mounts
+      .first()
+      .ok_or(format!("No mounts found for disk {disk:?}",))?;
     let mount = mount.to_path_buf();
     let file_name = format!("{}/{}", mount.to_str().unwrap(), FILENAME);
 

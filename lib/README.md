@@ -53,3 +53,32 @@ let first = disks.first()?;
 let attribute = first.get_attribute("total-lbas-read")?;
 println!("{:?}", attribute);
 ```
+
+## Perform a random-write benchmark
+
+```rust
+use libglacierdisk::{
+  benchmark::{Benchmark, BenchmarkConfig, BenchmarkType, GlacierDiskBenchmark},
+};
+
+let disks = libglacierdisk::list_disks()?;
+let first = disks.first()?;
+
+let mut benchmark = GlacierDiskBenchmark::new(
+  // Disk
+  first.clone(),
+  // First mount
+  0,
+  BenchmarkConfig {
+    random: true,
+    kind: BenchmarkType::Write,
+    ..BenchmarkConfig::default()
+  },
+)
+.unwrap();
+
+let result = benchmark.run().unwrap();
+
+println!("Total time: {:.2}s", result.elapsed.as_secs_f32());
+println!("Average speed: {:.2}MB/s", speed_to_mb(result.avg_speed));
+```
