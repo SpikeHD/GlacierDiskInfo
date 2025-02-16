@@ -69,6 +69,12 @@ impl Benchmark for ReadBenchmark {
       fs::remove_file(&file_path).unwrap_or_default();
     }
 
+    let actual_file = if let Some(path) = &self.bench_config.file_path {
+      path
+    } else {
+      &file_path
+    };
+
     // Create file
     let mut file = if let Some(path) = &self.bench_config.file_path {
       fs::OpenOptions::new().read(true).open(path)?
@@ -78,7 +84,7 @@ impl Benchmark for ReadBenchmark {
         .create(true)
         .read(true)
         .truncate(true)
-        .open(&file_path)?;
+        .open(&actual_file)?;
 
       // Fill with random data
       random_fill(&mut f, self.bench_config.total_size())?;
@@ -157,7 +163,7 @@ impl Benchmark for ReadBenchmark {
 
     // Cleanup
     if self.bench_config.delete_after {
-      fs::remove_file(file_path).unwrap_or_default();
+      fs::remove_file(actual_file).unwrap_or_default();
     }
 
     self.running = false;

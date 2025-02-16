@@ -70,7 +70,7 @@ impl Benchmark for WriteBenchmark {
     }
 
     // Create file
-    let actual = if let Some(path) = &self.bench_config.file_path {
+    let actual_path = if let Some(path) = &self.bench_config.file_path {
       path
     } else {
       &file_path
@@ -80,7 +80,7 @@ impl Benchmark for WriteBenchmark {
       .create(true)
       .read(true)
       .truncate(true)
-      .open(actual)?;
+      .open(actual_path)?;
 
     self.running = true;
 
@@ -147,7 +147,7 @@ impl Benchmark for WriteBenchmark {
 
     // Cleanup
     if self.bench_config.delete_after {
-      fs::remove_file(file_path).unwrap_or_default();
+      fs::remove_file(actual_path).unwrap_or_default();
     }
 
     self.running = false;
