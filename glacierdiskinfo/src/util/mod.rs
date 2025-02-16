@@ -1,6 +1,8 @@
-use std::{env, path::PathBuf};
 
-use shared::{config::{self, Config}, theme, App};
+use shared::{
+  config::{self, Config},
+  theme, App,
+};
 
 pub mod menu;
 pub mod root;

@@ -1,4 +1,4 @@
-use std::{env, path::PathBuf};
+use std::{env, fmt::Display, path::PathBuf};
 
 use uzers::User;
 
@@ -7,22 +7,18 @@ pub mod convert;
 pub mod theme;
 
 #[derive(Clone, Debug)]
+#[derive(Default)]
 pub enum App {
+  #[default]
   GlacierDiskInfo,
   GlacierDiskMark,
 }
 
-impl Default for App {
-  fn default() -> Self {
-    App::GlacierDiskInfo
-  }
-}
-
-impl ToString for App {
-  fn to_string(&self) -> String {
+impl Display for App {
+  fn fmt(&self, f: &mut std::fmt::Formatter<'_>) -> std::fmt::Result {
     match self {
-      App::GlacierDiskInfo => "glacierdiskinfo".to_string(),
-      App::GlacierDiskMark => "glacierdiskmark".to_string(),
+      App::GlacierDiskInfo => write!(f, "glacierdiskinfo"),
+      App::GlacierDiskMark => write!(f, "glacierdiskmark"),
     }
   }
 }

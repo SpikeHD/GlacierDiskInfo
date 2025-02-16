@@ -9,11 +9,13 @@ use dioxus::{
 };
 use dioxus_desktop::muda::MenuId;
 use libglacierdisk::disk::Disk;
-use shared::{config::{self, load_config}, theme::{self, read_theme_contents}, App};
-use ui::{drive::Drive, drive_tabs::DriveTabs};
-use util::{
-  menu, root,
+use shared::{
+  config::{self, load_config},
+  theme::{self, read_theme_contents},
+  App,
 };
+use ui::{drive::Drive, drive_tabs::DriveTabs};
+use util::{menu, root};
 
 use crate::assets::CSS;
 
