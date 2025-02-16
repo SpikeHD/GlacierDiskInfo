@@ -1,0 +1,226 @@
+name: Build GlacierDiskMark
+
+on:
+  workflow_dispatch:
+  push:
+    paths:
+      - '.github/workflows/build-mark.yml'
+      - 'lib/**'
+      - 'glacierdiskmark/**'
+      - 'Cargo.toml'
+      - 'Cargo.lock'
+  pull_request:
+    paths:
+      - '.github/workflows/build-mark.yml'
+      - 'lib/**'
+      - 'glacierdiskmark/**'
+      - 'Cargo.toml'
+      - 'Cargo.lock'
+
+concurrency:
+  group: ${{ github.ref }}-${{ github.workflow }}
+  cancel-in-progress: true
+
+env:
+  CARGO_INCREMENTAL: 0
+
+jobs:
+  build:
+    runs-on: ${{ matrix.config.platform }}
+
+    strategy:
+      fail-fast: false
+      matrix:
+        config:
+          - platform: ubuntu-22.04
+            target: 'x86_64-unknown-linux-gnu'
+          # TODO fix these
+          # - platform: ubuntu-22.04
+          #   target: 'aarch64-unknown-linux-gnu'
+          # - platform: ubuntu-22.04
+          #   target: 'armv7-unknown-linux-gnueabihf'
+
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions-rust-lang/setup-rust-toolchain@v1
+
+      - uses: actions/cache@v4
+        with:
+          path: |
+            ~/.cargo/bin/
+            ~/.cargo/registry/index/
+            ~/.cargo/registry/cache/
+            ~/.cargo/git/db/
+            target/
+          key: ${{ runner.os }}-${{ matrix.config.target }}-cargo-${{ hashFiles('**/Cargo.lock') }}
+
+      - name: ARM sources.list
+        if: matrix.config.target == 'aarch64-unknown-linux-gnu' || matrix.config.target == 'armv7-unknown-linux-gnueabihf'
+        run: |
+          # Add [arch=amd64] to the initial entries of the sources.list
+          sudo sed -i 's/^deb /deb [arch=amd64] /' /etc/apt/sources.list
+  
+          echo "deb [arch=armhf,arm64] http://ports.ubuntu.com/ubuntu-ports/ $(lsb_release -cs) main restricted" | sudo tee -a /etc/apt/sources.list
+          echo "deb [arch=armhf,arm64] http://ports.ubuntu.com/ubuntu-ports/ $(lsb_release -cs)-updates main restricted" | sudo tee -a /etc/apt/sources.list
+          echo "deb [arch=armhf,arm64] http://ports.ubuntu.com/ubuntu-ports/ $(lsb_release -cs) universe" | sudo tee -a /etc/apt/sources.list
+          echo "deb [arch=armhf,arm64] http://ports.ubuntu.com/ubuntu-ports/ $(lsb_release -cs)-updates universe" | sudo tee -a /etc/apt/sources.list
+          echo "deb [arch=armhf,arm64] http://ports.ubuntu.com/ubuntu-ports/ $(lsb_release -cs) multiverse" | sudo tee -a /etc/apt/sources.list
+          echo "deb [arch=armhf,arm64] http://ports.ubuntu.com/ubuntu-ports/ $(lsb_release -cs)-updates multiverse" | sudo tee -a /etc/apt/sources.list
+          echo "deb [arch=armhf,arm64] http://ports.ubuntu.com/ubuntu-ports/ $(lsb_release -cs)-backports main restricted universe multiverse" | sudo tee -a /etc/apt/sources.list
+          echo "deb [arch=armhf,arm64] http://ports.ubuntu.com/ubuntu-ports/ $(lsb_release -cs)-security main restricted" | sudo tee -a /etc/apt/sources.list
+          echo "deb [arch=armhf,arm64] http://ports.ubuntu.com/ubuntu-ports/ $(lsb_release -cs)-security universe" | sudo tee -a /etc/apt/sources.list
+          echo "deb [arch=armhf,arm64] http://ports.ubuntu.com/ubuntu-ports/ $(lsb_release -cs)-security multiverse" | sudo tee -a /etc/apt/sources.list
+  
+      # ARM-linux related sources and dpkg config and such
+      - name: ARM setup
+        if: matrix.config.target == 'aarch64-unknown-linux-gnu' || matrix.config.target == 'armv7-unknown-linux-gnueabihf'
+        run: |
+          sudo dpkg --add-architecture arm64
+          sudo dpkg --add-architecture armhf
+          sudo apt-get update
+
+      - name: Install dependencies
+        if: matrix.config.target == 'x86_64-unknown-linux-gnu'
+        run: |
+          sudo apt update 
+          sudo apt-get install -y \
+            libwebkit2gtk-4.1-dev \
+            build-essential \
+            curl \
+            wget \
+            file \
+            libatasmart-dev \
+            libxdo-dev \
+            libssl-dev \
+            libayatana-appindicator3-dev \
+            librsvg2-dev
+
+      - name: (ARM v7) Install dependencies
+        if: matrix.config.target == 'armv7-unknown-linux-gnueabihf'
+        run: |
+          sudo apt update 
+          sudo apt-get install -y \
+            libgtk-3-dev:armhf \
+            libwebkit2gtk-4.1-dev:armhf \
+            build-essential \
+            curl \
+            wget \
+            file \
+            libatasmart-dev \
+            libxdo-dev \
+            libssl-dev \
+            libayatana-appindicator3-dev \
+            librsvg2-dev
+
+      - name: (ARM v8) Install dependencies
+        if: matrix.config.target == 'aarch64-unknown-linux-gnu'
+        run: |
+          sudo apt update 
+          sudo apt-get install -y \
+            libgtk-3-dev:arm64 \
+            libwebkit2gtk-4.1-dev:arm64 \
+            build-essential \
+            curl \
+            wget \
+            file \
+            libatasmart-dev \
+            libxdo-dev \
+            libssl-dev \
+            libayatana-appindicator3-dev \
+            librsvg2-dev
+
+      - name: Add target
+        run: rustup target add ${{ matrix.config.target }}
+
+      - name: Define GIT_SHA
+        run: echo "GIT_SHA=$(git rev-parse --short HEAD)" >> $GITHUB_ENV
+
+      - name: Install binstall
+        run: curl -L --proto '=https' --tlsv1.2 -sSf https://raw.githubusercontent.com/cargo-bins/cargo-binstall/main/install-from-binstall-release.sh | bash
+
+      - name: Install Dioxus CLI
+        run: |
+          cargo binstall dioxus-cli --force
+
+      - name: Build
+        run: |
+          dx bundle --package glacier-disk-mark --package-types "deb" --package-types "rpm" --release --target ${{ matrix.config.target }}
+        env:
+          # Warning are fine
+          RUSTFLAGS: -D warnings
+
+      - name: Get version
+        id: version
+        run: |
+          VERSION=$(grep '^version =' glacierdiskmark/Cargo.toml | sed 's/version = "\(.*\)"/\1/')
+
+      - name: Compress portable
+        run: |
+          tar -czvf GlacierDiskMark-${{ steps.version.outputs.version }}-${{ matrix.config.target }}.tar.gz target/dx/glacier-disk-mark/bundle/linux/glacier-disk-mark
+
+      - name: Upload `.deb`
+        uses: actions/upload-artifact@v4
+        with:
+          name: glacier-disk-mark-${{ matrix.config.target }}-deb
+          path: target/dx/glacier-disk-mark/bundle/linux/bundle/deb/*.deb
+
+      - name: Upload `.rpm`
+        uses: actions/upload-artifact@v4
+        with:
+          name: glacier-disk-mark-${{ matrix.config.target }}-rpm
+          path: target/dx/glacier-disk-mark/bundle/linux/bundle/rpm/*.rpm
+
+      - name: Upload portable
+        uses: actions/upload-artifact@v4
+        with:
+          name: glacier-disk-mark-${{ matrix.config.target }}-portable
+          path: GlacierDiskMark-${{ steps.version.outputs.version }}-${{ matrix.config.target }}.tar.gz
+
+  check-version:
+    runs-on: ubuntu-latest
+    needs: build
+    outputs:
+      version_changed: ${{ steps.version_check.outputs.changed }}
+      new_version: ${{ steps.version_check.outputs.version }}
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Extract new version
+        id: version_check
+        run: |
+          VERSION=$(grep '^version =' glacierdiskmark/Cargo.toml | sed 's/version = "\(.*\)"/\1/')
+          echo "Version: $VERSION"
+          if git tag -l | grep -q "glacier-disk-mark-v$VERSION"; then
+            echo "No new version!"
+            echo "changed=false" >> $GITHUB_OUTPUT
+          else
+            echo "New version!"
+            echo "changed=true" >> $GITHUB_OUTPUT
+            echo "version=$VERSION" >> $GITHUB_OUTPUT
+          fi
+
+  create-release:
+    runs-on: ubuntu-latest
+    needs: check-version
+    if: needs.check-version.outputs.version_changed == 'true'
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      # Download all artifacts from the build job
+      - name: Download artifacts
+        uses: actions/download-artifact@v4
+        with:
+          path: artifacts
+
+      - name: Create GitHub Release
+        uses: softprops/action-gh-release@v2
+        with:
+          files: artifacts/**
+          tag_name: glacier-disk-mark-v${{ needs.check-version.outputs.new_version }}
+          name: GlacierDiskMark GUI v${{ needs.check-version.outputs.new_version }}
+          draft: false
+          prerelease: false
+          body: "This release was automatically created by GitHub Actions."
