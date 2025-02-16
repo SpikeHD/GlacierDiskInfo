@@ -6,7 +6,7 @@ use shared::{
 pub mod menu;
 
 pub fn scaffold_folders() {
-  let app = App::GlacierDiskInfo;
+  let app = App::GlacierDiskMark;
   let theme_path = theme::theme_path(app.clone());
   let config_file = config::config_file(app.clone());
 

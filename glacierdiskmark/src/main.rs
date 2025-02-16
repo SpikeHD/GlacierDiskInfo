@@ -1,4 +1,3 @@
-use data::drives_and_status;
 use dialog::{DialogBox, Message};
 use dioxus::{
   desktop::{
@@ -8,20 +7,16 @@ use dioxus::{
   prelude::*,
 };
 use dioxus_desktop::muda::MenuId;
-use libglacierdisk::disk::Disk;
 use shared::{
   config::{self, load_config},
   theme::{self, read_theme_contents},
   App,
 };
-use ui::{drive::Drive, drive_tabs::DriveTabs};
 use util::menu;
 
 use crate::assets::CSS;
 
 mod assets;
-mod data;
-mod ui;
 mod util;
 
 fn main() {
@@ -36,10 +31,10 @@ fn main() {
   };
 
   let window = WindowBuilder::new()
-    .with_title("GlacierDiskInfo")
+    .with_title("GlacierDiskMark")
     .with_resizable(true)
-    .with_inner_size(LogicalSize::new(1500, 800))
-    .with_min_inner_size(LogicalSize::new(1500, 800));
+    .with_inner_size(LogicalSize::new(1200, 600))
+    .with_min_inner_size(LogicalSize::new(1200, 600));
 
   let config = Config::default()
     .with_menu(Some(menu::create_menu()))
@@ -51,7 +46,7 @@ fn main() {
 #[component]
 fn Root() -> Element {
   let mut theme_css = use_signal(|| {
-    let config = load_config(App::GlacierDiskInfo).unwrap_or_default();
+    let config = load_config(App::GlacierDiskMark).unwrap_or_default();
     let theme = config.get_theme();
 
     match theme {
@@ -68,13 +63,13 @@ fn Root() -> Element {
     .to_owned();
 
     if id.starts_with("apply-") {
-      let mut config = config::load_config(App::GlacierDiskInfo).unwrap_or_default();
+      let mut config = config::load_config(App::GlacierDiskMark).unwrap_or_default();
       let name = id.strip_prefix("apply-").unwrap_or_default();
 
       println!("Applying theme: {name}");
 
       config.theme = name.to_string();
-      config::save_config(App::GlacierDiskInfo, &config).unwrap_or_default();
+      config::save_config(App::GlacierDiskMark, &config).unwrap_or_default();
 
       // Apply the CSS
       if let Some(theme) = config.get_theme() {
@@ -84,21 +79,18 @@ fn Root() -> Element {
         theme_css.set("".to_string());
       }
     } else if id == "add-theme" {
-      let theme_path = theme::theme_path(App::GlacierDiskInfo);
+      let theme_path = theme::theme_path(App::GlacierDiskMark);
       open::that_detached(theme_path).unwrap_or_default();
     } else if id == "about" {
       let version = env!("CARGO_PKG_VERSION");
       let git_sha = option_env!("GIT_SHA").unwrap_or("unknown revision");
 
-      Message::new(format!("GlacierDiskInfo GUI v{version} ({git_sha})\n\nhttps://github.com/SpikeHD/GlacierDiskInfo\n\nCreated by SpikeHD, inspired by CrystalDiskInfo"))
+      Message::new(format!("GlacierDiskMark GUI v{version} ({git_sha})\n\nhttps://github.com/SpikeHD/GlacierDiskMark\n\nCreated by SpikeHD, inspired by CrystalDiskMark"))
         .title("About")
         .show()
         .expect("Failed to show dialog");
     }
   });
-
-  let drives = drives_and_status();
-  let mut selected_drive = use_signal(|| drives[0].0.clone());
 
   rsx! {
       style {
@@ -107,19 +99,6 @@ fn Root() -> Element {
 
       style {
         "{theme_css}"
-      }
-
-      DriveTabs {
-        drives,
-        selected_drive: selected_drive(),
-        on_select: move |disk: Disk| {
-          println!("selected drive: {:?}", disk.path);
-          selected_drive.set(disk);
-        }
-      }
-
-      Drive {
-        selected_drive: selected_drive(),
       }
   }
 }

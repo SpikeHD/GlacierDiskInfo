@@ -5,6 +5,7 @@ authors = ["SpikeHD <25207995+SpikeHD@users.noreply.github.com>"]
 edition = "2021"
 
 [dependencies]
+dialog = "0.3.0"
 regex = "1.11.1"
 serde = "1.0.217"
 toml = "0.8.20"

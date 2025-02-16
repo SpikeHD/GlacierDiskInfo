@@ -1830,7 +1830,21 @@ dependencies = [
  "dirs 6.0.0",
  "libglacierdisk",
  "open",
- "regex",
+ "shared",
+ "sudo",
+]
+
+[[package]]
+name = "glacier-disk-mark"
+version = "0.1.0"
+dependencies = [
+ "base64",
+ "dialog",
+ "dioxus",
+ "dioxus-desktop",
+ "dirs 6.0.0",
+ "libglacierdisk",
+ "open",
  "shared",
  "sudo",
 ]
@@ -3968,6 +3982,7 @@ dependencies = [
 name = "shared"
 version = "0.0.0"
 dependencies = [
+ "dialog",
  "regex",
  "serde",
  "toml",

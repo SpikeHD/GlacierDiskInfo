@@ -4,6 +4,7 @@ use uzers::User;
 
 pub mod config;
 pub mod convert;
+pub mod root;
 pub mod theme;
 
 #[derive(Clone, Debug)]
