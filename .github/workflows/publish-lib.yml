@@ -19,13 +19,15 @@ jobs:
       - name: Extract new version
         id: version_check
         run: |
-          VERSION=$(grep '^version =' lib/Cargo.toml | sed 's/version = "\(.*\)"/\1/')
-          echo "New version: $VERSION"
-          if git tag -l | grep -q "libglacierdisk-v$VERSION"; then
-            echo "changed=false" >> $GITHUB_ENV
+          VERSION=$(grep '^version =' gui/Cargo.toml | sed 's/version = "\(.*\)"/\1/')
+          echo "Version: $VERSION"
+          if git tag -l | grep -q "glacier-disk-info-v$VERSION"; then
+            echo "No new version!"
+            echo "changed=false" >> $GITHUB_OUTPUT
           else
-            echo "changed=true" >> $GITHUB_ENV
-            echo "version=$VERSION" >> $GITHUB_ENV
+            echo "New version!"
+            echo "changed=true" >> $GITHUB_OUTPUT
+            echo "version=$VERSION" >> $GITHUB_OUTPUT
           fi
 
   create-tag:
