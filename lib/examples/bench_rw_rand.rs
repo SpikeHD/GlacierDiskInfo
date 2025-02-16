@@ -1,6 +1,6 @@
 use libglacierdisk::{
   benchmark::{
-    read::ReadBenchmark, write::WriteBenchmark, Benchmark, BenchmarkConfig
+    benchmark::GlacierDiskBenchmark, Benchmark, BenchmarkConfig, BenchmarkType
   },
   disk::Disk,
 };
@@ -16,13 +16,14 @@ fn main() {
   let bin_file = format!("{}/test.bin", mount.to_path_buf().to_str().unwrap());
 
   // Write benchmark
-  let mut write_benchmark = WriteBenchmark::new(
+  let mut write_benchmark = GlacierDiskBenchmark::new(
     disk.clone(),
     0,
     BenchmarkConfig {
       file_path: Some(bin_file.clone().into()),
       delete_after: false,
       random: true,
+      kind: BenchmarkType::Write,
       ..BenchmarkConfig::default()
     },
   )
@@ -39,13 +40,14 @@ fn main() {
     .expect("Failed to run write benchmark");
 
   // Read benchmark
-  let mut read_benchmark = ReadBenchmark::new(
+  let mut read_benchmark = GlacierDiskBenchmark::new(
     disk,
     0,
     BenchmarkConfig {
       file_path: Some(bin_file.into()),
       delete_after: true,
       random: true,
+      kind: BenchmarkType::Read,
       ..BenchmarkConfig::default()
     },
   )
@@ -63,12 +65,12 @@ fn main() {
   println!(
     "Write speed: {:.2}MB/s (took {:.2}s)",
     speed_to_mb(write_result.avg_speed),
-    write_result.elapsed
+    write_result.elapsed.as_secs_f32()
   );
   println!(
     "Read speed: {:.2}MB/s (took {:.2}s)",
     speed_to_mb(read_result.avg_speed),
-    read_result.elapsed
+    read_result.elapsed.as_secs_f32()
   );
 }
 

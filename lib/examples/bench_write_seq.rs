@@ -1,5 +1,5 @@
 use libglacierdisk::{
-  benchmark::{write::WriteBenchmark, Benchmark, BenchmarkConfig},
+  benchmark::{benchmark::GlacierDiskBenchmark, Benchmark, BenchmarkConfig, BenchmarkType},
   disk::Disk,
 };
 
@@ -8,8 +8,9 @@ fn main() {
   sudo::escalate_if_needed().expect("Failed to escalate privileges");
 
   let disk = Disk::new("/dev/sda".into()).unwrap();
-  let mut benchmark = WriteBenchmark::new(disk, 0, BenchmarkConfig {
+  let mut benchmark = GlacierDiskBenchmark::new(disk, 0, BenchmarkConfig {
     random: false,
+    kind: BenchmarkType::Write,
     ..BenchmarkConfig::default()
   }).unwrap();
 
@@ -21,7 +22,7 @@ fn main() {
 
   let result = benchmark.run().unwrap();
 
-  println!("Total time: {:.2}s", result.elapsed);
+  println!("Total time: {:.2}s", result.elapsed.as_secs_f32());
   println!("Average speed: {:.2}MB/s", speed_to_mb(result.avg_speed));
 }
 
