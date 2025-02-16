@@ -1,10 +1,11 @@
 [package]
 name = "libglacierdisk"
-version = "0.5.1"
+version = "0.6.0"
 edition = "2021"
 readme = "README.md"
 license = "MIT"
-description = "A linux library for reading SMART (and other) data from disks"
+description = "A linux library for reading disk data and benchmarking"
+homepage = "https://github.com/SpikeHD/GlacierDiskInfo"
 repository = "https://github.com/SpikeHD/GlacierDiskInfo"
 keywords = ["smart", "disk", "ata", "libatasmart"]
 categories = ["hardware-support"]
