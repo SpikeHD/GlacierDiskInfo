@@ -1,4 +1,4 @@
-name: Build GlacierDiskinfo
+name: Build GlacierDiskInfo
 
 on:
   workflow_dispatch:
