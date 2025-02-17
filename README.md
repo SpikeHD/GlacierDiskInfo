@@ -28,7 +28,33 @@
 
 # Installation
 
-Releases are available on the [releases page](https://github.com/SpikeHD/GlacierDiskInfo/releases) or via [GitHub Actions](https://github.com/SpikeHD/GlacierDiskInfo/actions/workflows/build.yml) artifacts.
+Releases for GlacierDiskInfo and GlacierDiskMark are available on the [releases page](https://github.com/SpikeHD/GlacierDiskInfo/releases) or via [GitHub Actions](https://github.com/SpikeHD/GlacierDiskInfo/actions/workflows/build.yml) artifacts.
+
+<div align="center" style="text-align: center;">
+<table width="100%">
+  <tr>
+    <td>
+      <b>GlacierDiskInfo</b>
+    </td>
+    <td>
+      <b>GlacierDiskMark</b>
+    </td>
+  </tr>
+
+  <tr>
+    <td>
+      <a href="https://github.com/SpikeHD/GlacierDiskInfo/releases/tag/glacierdisk-gui-v0.4.1">
+        Latest GlacierDiskInfo release
+      </a>
+    </td>
+    <td>
+      <a href="https://github.com/SpikeHD/GlacierDiskInfo/releases/tag/glacier-disk-mark-v0.1.0">
+        Latest GlacierDiskMark release
+      </a>
+    </td>
+  </tr>
+</table>
+</div>
 
 > [!NOTE]
 > Maintaining GlacierDiskInfo in a package repository? [Let me know](https://github.com/SpikeHD/GlacierDiskInfo/issues/new) and I will make a list!
