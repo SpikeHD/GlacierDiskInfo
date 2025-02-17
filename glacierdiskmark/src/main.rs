@@ -12,7 +12,7 @@ use shared::{
   theme::{self, read_theme_contents},
   App,
 };
-use ui::buttons::Buttons;
+use ui::{buttons::Buttons, results::Results};
 use util::menu;
 
 use crate::assets::CSS;
@@ -108,6 +108,7 @@ fn Root() -> Element {
 
         // Left-side buttons
         Buttons {}
+        Results {}
       }
   }
 }

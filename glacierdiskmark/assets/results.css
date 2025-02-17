@@ -1,0 +1,24 @@
+.bench-results {
+  display: flex;
+  flex-direction: column;
+  justify-content: space-evenly;
+
+  width: 100%;
+}
+
+.bench-result-row {
+  display: flex;
+  flex-direction: row;
+
+  justify-content: space-evenly;
+
+  height: 20%;
+  width: 100%;
+}
+
+.bench-result-value {
+  width: 45%;
+  font-size: 2.5rem;
+
+  border: 1px solid black;
+}
