@@ -107,9 +107,13 @@ Example themes can be found in the `themes` directory. Below is a screenshot of 
 - `glacier-disk-info`
   - [x] Theming
   - [ ] Flatpak
+  - [ ] Multi-language support
   - [ ] Move to Dioxus [blitz](https://github.com/DioxusLabs/blitz) (whenever that's out/stable-ish)
 - `glacier-disk-mark`
-  - [ ] All of it
+  - [x] Theming
+  - [ ] Flatpak
+  - [ ] Multi-language support
+  - [ ] Move to Dioxus [blitz](https://github.com/DioxusLabs/blitz) (whenever that's out/stable-ish)
 
 # Attributions
 

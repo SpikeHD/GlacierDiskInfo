@@ -12,11 +12,13 @@ use shared::{
   theme::{self, read_theme_contents},
   App,
 };
+use ui::buttons::Buttons;
 use util::menu;
 
 use crate::assets::CSS;
 
 mod assets;
+mod ui;
 mod util;
 
 fn main() {
@@ -99,6 +101,13 @@ fn Root() -> Element {
 
       style {
         "{theme_css}"
+      }
+
+      div {
+        class: "bench-table",
+
+        // Left-side buttons
+        Buttons {}
       }
   }
 }

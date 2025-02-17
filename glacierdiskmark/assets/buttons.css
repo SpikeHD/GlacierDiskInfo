@@ -1,0 +1,19 @@
+.bench-buttons {
+  display: flex;
+  flex-direction: column;
+  justify-content: space-evenly;
+}
+
+.bench-button {
+  display: flex;
+  align-items: center;
+
+  height: 20%;
+  width: 100%;
+}
+
+.bench-button span {
+  width: 100%;
+
+  text-align: center;
+}
