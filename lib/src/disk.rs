@@ -63,6 +63,20 @@ impl Display for Disk {
   }
 }
 
+impl ShallowDisk {
+  /// Create a new Disk from the path (e.g. `"/dev/sda"`)
+  pub fn new(path: PathBuf) -> Result<Self, Box<dyn Error>> {
+    let kind = disk_class(&path);
+    let ata_link = DiskAtaLink::for_disk(&path).unwrap_or_default();
+
+    Ok(Self {
+      path,
+      kind,
+      ata_link,
+    })
+  }
+}
+
 impl Disk {
   /// Create a new Disk from the path (e.g. `"/dev/sda"`)
   pub fn new(path: PathBuf) -> Result<Self, Box<dyn Error>> {

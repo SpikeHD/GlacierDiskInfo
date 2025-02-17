@@ -68,7 +68,7 @@ pub trait Benchmark {
   fn new(
     disk: impl Into<ShallowDisk>,
     mount: usize,
-    block_config: BenchmarkConfig,
+    bench_config: BenchmarkConfig,
   ) -> Result<Self, Box<dyn std::error::Error>>
   where
     Self: Sized;

@@ -7,13 +7,12 @@ use dioxus::{
   prelude::*,
 };
 use dioxus_desktop::muda::MenuId;
+use libglacierdisk::disk::ShallowDisk;
 use shared::{
-  config::{self, load_config},
-  theme::{self, read_theme_contents},
-  App,
+  config::{self, load_config}, convert::bytes_to_readable, theme::{self, read_theme_contents}, App
 };
 use ui::{buttons::Buttons, results::Results};
-use util::menu;
+use util::{bench::run_rw, menu};
 
 use crate::assets::CSS;
 
@@ -94,6 +93,9 @@ fn Root() -> Element {
     }
   });
 
+  // TODO choose disk
+  let disk = use_signal(|| ShallowDisk::new("/dev/sda".into()).expect("Failed to get disk"));
+
   rsx! {
       style {
         r#"{CSS.join("\n")}"#
@@ -107,7 +109,17 @@ fn Root() -> Element {
         class: "bench-table",
 
         // Left-side buttons
-        Buttons {}
+        Buttons {
+          run_configs: move |c| {
+            let disk = disk();
+            println!("Run configs");
+            let results = run_rw(&c, disk).expect("Failed to run benchmarks");
+            println!("=== Results ===");
+            println!("WRITE: {}/s over {:.2}s", bytes_to_readable(results[0].1.avg_speed as u64), results[0].1.elapsed.as_secs_f64());
+            println!("READ: {}/s over {:.2}s", bytes_to_readable(results[1].1.avg_speed as u64), results[1].1.elapsed.as_secs_f64());
+          },
+          test_size: 1024 * 1024 * 1024,
+        }
         Results {}
       }
   }

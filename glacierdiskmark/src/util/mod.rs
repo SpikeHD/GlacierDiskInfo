@@ -3,6 +3,7 @@ use shared::{
   theme, App,
 };
 
+pub mod bench;
 pub mod menu;
 
 pub fn scaffold_folders() {
