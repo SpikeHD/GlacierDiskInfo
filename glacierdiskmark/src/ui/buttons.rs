@@ -1,9 +1,7 @@
 use dioxus::prelude::*;
 
 #[derive(Props, PartialEq, Clone)]
-pub struct ButtonsProps {
-  
-}
+pub struct ButtonsProps {}
 
 #[component]
 pub fn Buttons(props: ButtonsProps) -> Element {
@@ -40,12 +38,13 @@ pub struct ButtonProps {
   pub on_click: EventHandler,
 }
 
+#[component]
 fn Button(props: ButtonProps) -> Element {
   rsx! {
     div {
       class: "bench-button",
       onclick: move |_| props.on_click.call(()),
-      
+
       span {
         "{props.label}"
       }

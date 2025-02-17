@@ -1,9 +1,7 @@
 use dioxus::prelude::*;
 
 #[derive(Props, PartialEq, Clone)]
-pub struct ResultsProps {
-  
-}
+pub struct ResultsProps {}
 
 #[component]
 pub fn Results(props: ResultsProps) -> Element {
