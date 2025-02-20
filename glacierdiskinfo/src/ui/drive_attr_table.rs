@@ -1,16 +1,16 @@
 use dioxus::prelude::*;
 use libglacierdisk::disk::Disk;
 
-use crate::assets::{ico_to_data_uri, CAUTION_ICO, GOOD_ICO};
+use crate::{assets::{ico_to_data_uri, CAUTION_ICO, GOOD_ICO}, data::disk_cache::DiskCache};
 
 #[derive(Props, PartialEq, Clone)]
 pub struct DriveAttrTableProps {
-  pub selected_drive: Disk,
+  pub selected_drive: DiskCache,
 }
 
 #[component]
-pub fn DriveAttrTable(mut props: DriveAttrTableProps) -> Element {
-  let attrs = props.selected_drive.get_all_attributes();
+pub fn DriveAttrTable(props: DriveAttrTableProps) -> Element {
+  let attrs = props.selected_drive.attributes();
   let rows = attrs.iter().map(|attr| {
     let ico = if attr.warn { CAUTION_ICO } else { GOOD_ICO };
 

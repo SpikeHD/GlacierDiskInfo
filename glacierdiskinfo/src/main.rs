@@ -1,4 +1,4 @@
-use data::drives_and_status;
+use data::{disk_cache::DiskCache, drives_and_status, status::Status};
 use dialog::{DialogBox, Message};
 use dioxus::{
   desktop::{
@@ -14,7 +14,7 @@ use shared::{
   theme::{self, read_theme_contents},
   App,
 };
-use ui::{drive::Drive, drive_tabs::DriveTabs};
+use ui::{drive::{self, Drive}, drive_tabs::DriveTabs};
 use util::menu;
 
 use crate::assets::CSS;
@@ -23,6 +23,8 @@ mod assets;
 mod data;
 mod ui;
 mod util;
+
+pub static DRIVES: Global<Vec<(DiskCache, Status)>> = Global::new(|| drives_and_status());
 
 fn main() {
   util::scaffold_folders();
@@ -97,8 +99,7 @@ fn Root() -> Element {
     }
   });
 
-  let drives = drives_and_status();
-  let mut selected_drive = use_signal(|| drives[0].0.clone());
+  let mut selected_drive = use_signal(|| DRIVES.resolve()[0].0.clone());
 
   rsx! {
       style {
@@ -110,10 +111,9 @@ fn Root() -> Element {
       }
 
       DriveTabs {
-        drives,
         selected_drive: selected_drive(),
-        on_select: move |disk: Disk| {
-          println!("selected drive: {:?}", disk.path);
+        on_select: move |disk: DiskCache| {
+          println!("selected drive: {:?}", disk.path());
           selected_drive.set(disk);
         }
       }

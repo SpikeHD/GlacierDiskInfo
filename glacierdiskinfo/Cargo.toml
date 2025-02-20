@@ -1,6 +1,6 @@
 [package]
 name = "glacier-disk-info"
-version = "0.4.2"
+version = "0.5.0"
 authors = ["SpikeHD <25207995+SpikeHD@users.noreply.github.com>"]
 edition = "2021"
 

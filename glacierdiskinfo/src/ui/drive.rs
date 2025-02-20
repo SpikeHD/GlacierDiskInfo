@@ -3,32 +3,29 @@ use libglacierdisk::disk::Disk;
 use shared::convert::bytes_to_readable;
 
 use crate::{
-  data::smart::{smart_to_string, DriveStatus},
+  data::{disk_cache::DiskCache, smart::{smart_to_string, DriveStatus}},
   ui::{drive_attr_table::DriveAttrTable, drive_info_table::DriveInfoTable},
 };
 
 #[derive(Props, PartialEq, Clone)]
 pub struct DriveProps {
-  pub selected_drive: Disk,
+  pub selected_drive: DiskCache,
 }
 
 #[component]
 pub fn Drive(props: DriveProps) -> Element {
-  let mut drive = props.selected_drive.raw_disk();
-  let identity = drive.identify_parse().expect("Failed to get identify info");
-  let size = drive.get_disk_size().expect("Failed to get disk size");
+  let drive = props.selected_drive.clone();
+  let path = drive.path().to_string_lossy().to_string();
+  let identity = drive.identity();
+  let size = drive.size();
   let size = bytes_to_readable(size);
-  let status = smart_to_string(
-    drive
-      .smart_get_overall()
-      .expect("Failed to get smart status"),
-  );
-  let status_class = match DriveStatus::from_smart(status.as_str()) {
+  let status = drive.smart_overall();
+  let status_class = match DriveStatus::from_smart(status) {
     DriveStatus::Good => "good",
     DriveStatus::Caution => "caution",
     DriveStatus::Bad => "bad",
   };
-  let temp = drive.get_temperature().expect("Failed to get temperature");
+  let temp = drive.temperature();
   let temp = (temp as f32 / 1000.) - 273.15;
   let temp = if temp == 0. {
     "--".into()
@@ -42,7 +39,7 @@ pub fn Drive(props: DriveProps) -> Element {
 
       div {
         class: "drive-name",
-        "{identity.model} {size} ({props.selected_drive.path.to_string_lossy()})"
+        "{identity.model} {size} ({path})"
       }
 
       div {

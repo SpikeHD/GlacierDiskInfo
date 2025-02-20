@@ -5,18 +5,20 @@ use libglacierdisk::{
 };
 use shared::convert::{bytes_to_readable, ms_to_readable};
 
+use crate::data::disk_cache::DiskCache;
+
 #[derive(Props, PartialEq, Clone)]
 pub struct DriveInfoTableProps {
-  pub selected_drive: Disk,
+  pub selected_drive: DiskCache,
 }
 
 #[component]
 pub fn DriveInfoTable(props: DriveInfoTableProps) -> Element {
-  let ata = props.selected_drive.ata_link.clone();
-  let mut drive = props.selected_drive.raw_disk();
-  let identity = drive.identify_parse().expect("Failed to get identify info");
-  let lbas_read = get_attribute(&mut drive, "total-lbas-read").unwrap_or_default();
-  let lbas_written = get_attribute(&mut drive, "total-lbas-written").unwrap_or_default();
+  let drive = props.selected_drive;
+  let ata = drive.ata_link();
+  let identity = drive.identity();
+  let lbas_read = drive.total_read();
+  let lbas_written = drive.total_write();
 
   let left_values = [
     ("Firmware", identity.firmware),
@@ -24,40 +26,32 @@ pub fn DriveInfoTable(props: DriveInfoTableProps) -> Element {
     ("Model", identity.model),
     (
       "Drive Path",
-      props.selected_drive.path.to_string_lossy().to_string(),
+      drive.path().to_string_lossy().to_string(),
     ),
-    ("SATA Speed", ata.speed),
-    ("Kind", props.selected_drive.kind.to_string()),
+    ("SATA Speed", ata.speed.clone()),
+    ("Kind", drive.kind().to_string()),
   ];
   let right_values = [
     (
       "Total Read",
-      bytes_to_readable(
-        lbas_read
-          .pretty_unit
-          .convert_to_base(lbas_read.pretty_value),
-      ),
+      bytes_to_readable(lbas_read),
     ),
     (
       "Total Write",
-      bytes_to_readable(
-        lbas_written
-          .pretty_unit
-          .convert_to_base(lbas_written.pretty_value),
-      ),
+      bytes_to_readable(lbas_written),
     ),
     (
       "Powered On",
-      ms_to_readable(drive.get_power_on().unwrap_or(0)),
+      ms_to_readable(drive.power_on()),
     ),
     (
       "Power On Count",
-      drive.get_power_cycle_count().unwrap_or(0).to_string(),
+      drive.power_cycle_count().to_string(),
     ),
     (
       "Average Power On Time",
       ms_to_readable(
-        drive.get_power_on().unwrap_or(0) / drive.get_power_cycle_count().unwrap_or(0),
+        drive.power_on() / drive.power_cycle_count(),
       ),
     ),
   ];

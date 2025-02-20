@@ -1,14 +1,16 @@
+use disk_cache::DiskCache;
 use libglacierdisk::disk::Disk;
 use smart::smart_to_string;
 use status::Status;
 
+pub mod disk_cache;
 pub mod smart;
 pub mod status;
 
-pub fn drives_and_status() -> Vec<(Disk, Status)> {
+pub fn drives_and_status() -> Vec<(DiskCache, Status)> {
   let mut drives = libglacierdisk::list_disks().expect("Failed to list disks");
 
-  let drives: Vec<(Disk, Status)> = drives
+  let drives: Vec<(DiskCache, Status)> = drives
     .iter_mut()
     .filter_map(|d| {
       let mut disk = d.raw_disk();
@@ -26,7 +28,12 @@ pub fn drives_and_status() -> Vec<(Disk, Status)> {
       // convert mkelvin to celsius
       let temp = (temp as f32 / 1000.) - 273.15;
 
-      Some((d.clone(), Status { temp, state }))
+      // Drop the mutex guard, preventing deadlock
+      drop(disk);
+
+      let disk_cache = DiskCache::new(d.clone());
+
+      Some((disk_cache, Status { temp, state }))
     })
     .collect();
 

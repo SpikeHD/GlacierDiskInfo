@@ -27,7 +27,7 @@ impl Convertable for SkSmartAttributeUnit {
 }
 
 /// A struct representing a SMART attribute
-#[derive(Debug)]
+#[derive(Debug, Clone)]
 pub struct Attribute {
   /// Numerical ID of the attribute
   pub id: u8,
@@ -43,6 +43,18 @@ pub struct Attribute {
   pub pretty_value: u64,
 
   pub raw: [u8; 6],
+}
+
+impl PartialEq for Attribute {
+  fn eq(&self, other: &Self) -> bool {
+      self.id == other.id
+      && self.name == other.name
+      && self.threshold == other.threshold
+      && self.warn == other.warn
+      && self.current == other.current
+      && self.worst == other.worst
+      && self.pretty_value == other.pretty_value
+  }
 }
 
 impl Default for Attribute {

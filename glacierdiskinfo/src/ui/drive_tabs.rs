@@ -3,22 +3,22 @@ use libglacierdisk::disk::Disk;
 
 use crate::{
   assets::{ico_to_data_uri, BAD_ICO, CAUTION_ICO, GOOD_ICO},
-  data::{smart::DriveStatus, status::Status},
+  data::{disk_cache::DiskCache, smart::DriveStatus, status::Status}, DRIVES,
 };
 
 #[derive(Props, PartialEq, Clone)]
 pub struct DriveTabsProps {
-  pub drives: Vec<(Disk, Status)>,
-  pub selected_drive: Disk,
-  pub on_select: EventHandler<Disk>,
+  pub selected_drive: DiskCache,
+  pub on_select: EventHandler<DiskCache>,
 }
 
 #[component]
 pub fn DriveTabs(props: DriveTabsProps) -> Element {
-  let tab_renders = props.drives.iter().map(|(disk, status)| {
+  let drives = DRIVES.resolve();
+  let tab_renders = drives.iter().map(|(disk, status)| {
     let disk = disk.clone();
-    let selected_name = props.selected_drive.path.to_string_lossy().to_string();
-    let evt_name = disk.path.to_string_lossy().to_string();
+    let selected_name = props.selected_drive.path().to_string_lossy().to_string();
+    let evt_name = disk.path().to_string_lossy().to_string();
     let temp = if status.temp == 0. { "--".into() } else { status.temp.to_string() };
     let status_class = match DriveStatus::from_smart(status.state.as_str()) {
       DriveStatus::Good => "good",
