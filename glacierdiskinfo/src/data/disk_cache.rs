@@ -38,11 +38,11 @@ pub struct DiskCache {
 
 impl DiskCache {
   pub fn new(mut disk: Disk) -> Self {
-    let total_write = match disk.get_attribute("total_lbas_write") {
+    let total_write = match disk.get_attribute("total-lbas-written") {
       Some(write) => write.pretty_unit.convert_to_base(write.pretty_value),
       None => 0,
     };
-    let total_read = match disk.get_attribute("total_lbas_read") {
+    let total_read = match disk.get_attribute("total-lbas-read") {
       Some(read) => read.pretty_unit.convert_to_base(read.pretty_value),
       None => 0,
     };
