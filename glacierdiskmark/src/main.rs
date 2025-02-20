@@ -9,7 +9,10 @@ use dioxus::{
 use dioxus_desktop::muda::MenuId;
 use libglacierdisk::disk::ShallowDisk;
 use shared::{
-  config::{self, load_config}, convert::bytes_to_readable, theme::{self, read_theme_contents}, App
+  config::{self, load_config},
+  convert::bytes_to_readable,
+  theme::{self, read_theme_contents},
+  App,
 };
 use ui::{buttons::Buttons, results::Results};
 use util::{bench::run_rw, menu};

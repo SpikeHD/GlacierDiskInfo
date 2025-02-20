@@ -1,9 +1,8 @@
 use dioxus::prelude::*;
-use libglacierdisk::disk::Disk;
 use shared::convert::bytes_to_readable;
 
 use crate::{
-  data::{disk_cache::DiskCache, smart::{smart_to_string, DriveStatus}},
+  data::{disk_cache::DiskCache, smart::DriveStatus},
   ui::{drive_attr_table::DriveAttrTable, drive_info_table::DriveInfoTable},
 };
 

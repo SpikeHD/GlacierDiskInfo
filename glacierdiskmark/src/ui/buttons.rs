@@ -82,7 +82,10 @@ fn get_configs(test_size: usize) -> HashMap<String, Vec<BenchmarkConfig>> {
     ..Default::default()
   };
 
-  configs.insert("ALL".into(), vec![seq1m.clone(), seq128k.clone(), rand4k.clone()]);
+  configs.insert(
+    "ALL".into(),
+    vec![seq1m.clone(), seq128k.clone(), rand4k.clone()],
+  );
   configs.insert("SEQ1M".into(), vec![seq1m.clone()]);
   configs.insert("SEQ128K".into(), vec![seq128k.clone()]);
   configs.insert("RAND4K".into(), vec![rand4k.clone()]);

@@ -1,5 +1,4 @@
 use disk_cache::DiskCache;
-use libglacierdisk::disk::Disk;
 use smart::smart_to_string;
 use status::Status;
 

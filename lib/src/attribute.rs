@@ -47,7 +47,7 @@ pub struct Attribute {
 
 impl PartialEq for Attribute {
   fn eq(&self, other: &Self) -> bool {
-      self.id == other.id
+    self.id == other.id
       && self.name == other.name
       && self.threshold == other.threshold
       && self.warn == other.warn

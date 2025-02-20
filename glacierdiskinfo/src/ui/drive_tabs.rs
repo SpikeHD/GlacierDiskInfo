@@ -1,9 +1,9 @@
 use dioxus::prelude::*;
-use libglacierdisk::disk::Disk;
 
 use crate::{
   assets::{ico_to_data_uri, BAD_ICO, CAUTION_ICO, GOOD_ICO},
-  data::{disk_cache::DiskCache, smart::DriveStatus, status::Status}, DRIVES,
+  data::{disk_cache::DiskCache, smart::DriveStatus},
+  DRIVES,
 };
 
 #[derive(Props, PartialEq, Clone)]

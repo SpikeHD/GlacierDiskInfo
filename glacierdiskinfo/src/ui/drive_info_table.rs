@@ -1,8 +1,4 @@
 use dioxus::prelude::*;
-use libglacierdisk::{
-  attribute::{get_attribute, Convertable},
-  disk::Disk,
-};
 use shared::convert::{bytes_to_readable, ms_to_readable};
 
 use crate::data::disk_cache::DiskCache;
@@ -24,35 +20,18 @@ pub fn DriveInfoTable(props: DriveInfoTableProps) -> Element {
     ("Firmware", identity.firmware),
     ("Serial", identity.serial),
     ("Model", identity.model),
-    (
-      "Drive Path",
-      drive.path().to_string_lossy().to_string(),
-    ),
+    ("Drive Path", drive.path().to_string_lossy().to_string()),
     ("SATA Speed", ata.speed.clone()),
     ("Kind", drive.kind().to_string()),
   ];
   let right_values = [
-    (
-      "Total Read",
-      bytes_to_readable(lbas_read),
-    ),
-    (
-      "Total Write",
-      bytes_to_readable(lbas_written),
-    ),
-    (
-      "Powered On",
-      ms_to_readable(drive.power_on()),
-    ),
-    (
-      "Power On Count",
-      drive.power_cycle_count().to_string(),
-    ),
+    ("Total Read", bytes_to_readable(lbas_read)),
+    ("Total Write", bytes_to_readable(lbas_written)),
+    ("Powered On", ms_to_readable(drive.power_on())),
+    ("Power On Count", drive.power_cycle_count().to_string()),
     (
       "Average Power On Time",
-      ms_to_readable(
-        drive.power_on() / drive.power_cycle_count(),
-      ),
+      ms_to_readable(drive.power_on() / drive.power_cycle_count()),
     ),
   ];
   let left_rows = left_values.iter().map(|(name, value)| {

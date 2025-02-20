@@ -1,7 +1,9 @@
 use dioxus::prelude::*;
-use libglacierdisk::disk::Disk;
 
-use crate::{assets::{ico_to_data_uri, CAUTION_ICO, GOOD_ICO}, data::disk_cache::DiskCache};
+use crate::{
+  assets::{ico_to_data_uri, CAUTION_ICO, GOOD_ICO},
+  data::disk_cache::DiskCache,
+};
 
 #[derive(Props, PartialEq, Clone)]
 pub struct DriveAttrTableProps {

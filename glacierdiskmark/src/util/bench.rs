@@ -1,6 +1,7 @@
-use std::path::PathBuf;
-
-use libglacierdisk::{benchmark::{Benchmark, BenchmarkConfig, BenchmarkResult, BenchmarkType, GlacierDiskBenchmark}, disk::ShallowDisk};
+use libglacierdisk::{
+  benchmark::{Benchmark, BenchmarkConfig, BenchmarkResult, BenchmarkType, GlacierDiskBenchmark},
+  disk::ShallowDisk,
+};
 
 #[derive(Clone, Debug)]
 pub enum BenchKind {
@@ -10,7 +11,10 @@ pub enum BenchKind {
   RAND4K,
 }
 
-pub fn run_rw(configs: &(BenchKind, Vec<BenchmarkConfig>), disk: ShallowDisk) -> Result<Vec<(BenchKind, BenchmarkResult)>, Box<dyn std::error::Error>> {
+pub fn run_rw(
+  configs: &(BenchKind, Vec<BenchmarkConfig>),
+  disk: ShallowDisk,
+) -> Result<Vec<(BenchKind, BenchmarkResult)>, Box<dyn std::error::Error>> {
   let mut results = vec![];
   let mounts = disk.mounts()?;
   // TODO use better methodology that "whatever mount is first"
@@ -18,7 +22,7 @@ pub fn run_rw(configs: &(BenchKind, Vec<BenchmarkConfig>), disk: ShallowDisk) ->
     .first()
     .ok_or(format!("No mounts found for disk {disk:?}",))?;
   let (kind, configs) = configs;
-  
+
   for config in configs {
     let w_config = BenchmarkConfig {
       kind: BenchmarkType::Write,
@@ -44,7 +48,6 @@ pub fn run_rw(configs: &(BenchKind, Vec<BenchmarkConfig>), disk: ShallowDisk) ->
     results.push((kind.clone(), w_result));
     results.push((kind.clone(), r_result));
   }
-
 
   Ok(results)
 }

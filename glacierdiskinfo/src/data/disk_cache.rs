@@ -1,6 +1,13 @@
 use std::path::PathBuf;
 
-use libglacierdisk::{ata::DiskAtaLink, attribute::{Attribute, Convertable}, disk::Disk, kind::DiskKind, libatasmart::IdentifyParsedData, libatasmart_sys::SkSmartOverall};
+use libglacierdisk::{
+  ata::DiskAtaLink,
+  attribute::{Attribute, Convertable},
+  disk::Disk,
+  kind::DiskKind,
+  libatasmart::IdentifyParsedData,
+  libatasmart_sys::SkSmartOverall,
+};
 
 use super::smart::smart_to_string;
 
@@ -32,17 +39,11 @@ pub struct DiskCache {
 impl DiskCache {
   pub fn new(mut disk: Disk) -> Self {
     let total_write = match disk.get_attribute("total_lbas_write") {
-      Some(write) => {
-        write.pretty_unit
-          .convert_to_base(write.pretty_value)
-      },
+      Some(write) => write.pretty_unit.convert_to_base(write.pretty_value),
       None => 0,
     };
     let total_read = match disk.get_attribute("total_lbas_read") {
-      Some(read) => {
-        read.pretty_unit
-          .convert_to_base(read.pretty_value)
-      }
+      Some(read) => read.pretty_unit.convert_to_base(read.pretty_value),
       None => 0,
     };
 
@@ -54,7 +55,12 @@ impl DiskCache {
     let power_on = disk.raw_disk().get_power_on().unwrap_or(0);
     let power_cycle_count = disk.raw_disk().get_power_cycle_count().unwrap_or(0);
     let kind = disk.kind.clone();
-    let smart_overall = smart_to_string(disk.raw_disk().smart_get_overall().unwrap_or(SkSmartOverall::SK_SMART_OVERALL_GOOD));
+    let smart_overall = smart_to_string(
+      disk
+        .raw_disk()
+        .smart_get_overall()
+        .unwrap_or(SkSmartOverall::SK_SMART_OVERALL_GOOD),
+    );
 
     Self {
       disk,
@@ -78,11 +84,15 @@ impl DiskCache {
 
   // TODO store in struct
   pub fn identity(&self) -> IdentifyParsedData {
-    let identity = self.disk.raw_disk().identify_parse().unwrap_or(IdentifyParsedData {
-      firmware: "N/A".into(),
-      serial: "N/A".into(),
-      model: "N/A".into()
-    });
+    let identity = self
+      .disk
+      .raw_disk()
+      .identify_parse()
+      .unwrap_or(IdentifyParsedData {
+        firmware: "N/A".into(),
+        serial: "N/A".into(),
+        model: "N/A".into(),
+      });
 
     identity
   }
