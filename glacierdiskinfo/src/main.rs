@@ -91,10 +91,13 @@ fn Root() -> Element {
       let version = env!("CARGO_PKG_VERSION");
       let git_sha = option_env!("GIT_SHA").unwrap_or("unknown revision");
 
-      Message::new(format!("GlacierDiskInfo GUI v{version} ({git_sha})\n\nhttps://github.com/SpikeHD/GlacierDiskInfo\n\nCreated by SpikeHD, inspired by CrystalDiskInfo"))
-        .title("About")
-        .show()
-        .expect("Failed to show dialog");
+      // This can block
+      std::thread::spawn(move || {
+        let _ = dialog::Message::new(format!("GlacierDiskInfo GUI v{version} ({git_sha})\n\nhttps://github.com/SpikeHD/GlacierDiskInfo\n\nCreated by SpikeHD, inspired by CrystalDiskInfo"))
+          .title("About")
+          .show()
+          .expect("Failed to show dialog");
+      });
     }
   });
 
