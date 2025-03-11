@@ -1,10 +1,10 @@
 use dioxus::prelude::*;
 
-#[derive(Props, PartialEq, Clone)]
-pub struct ResultsProps {}
+// #[derive(Props, PartialEq, Clone)]
+// pub struct ResultsProps {}
 
 #[component]
-pub fn Results(props: ResultsProps) -> Element {
+pub fn Results(/* props: ResultsProps */) -> Element {
   rsx! {
     div {
       class: "bench-results",

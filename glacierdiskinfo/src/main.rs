@@ -1,5 +1,5 @@
 use data::{disk_cache::DiskCache, drives_and_status, status::Status};
-use dialog::{DialogBox, Message};
+use dialog::DialogBox;
 use dioxus::{
   desktop::{
     tao::{dpi::LogicalSize, window::WindowBuilder},
@@ -93,7 +93,7 @@ fn Root() -> Element {
 
       // This can block
       std::thread::spawn(move || {
-        let _ = dialog::Message::new(format!("GlacierDiskInfo GUI v{version} ({git_sha})\n\nhttps://github.com/SpikeHD/GlacierDiskInfo\n\nCreated by SpikeHD, inspired by CrystalDiskInfo"))
+        dialog::Message::new(format!("GlacierDiskInfo GUI v{version} ({git_sha})\n\nhttps://github.com/SpikeHD/GlacierDiskInfo\n\nCreated by SpikeHD, inspired by CrystalDiskInfo"))
           .title("About")
           .show()
           .expect("Failed to show dialog");

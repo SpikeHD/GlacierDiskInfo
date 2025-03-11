@@ -22,7 +22,7 @@ pub fn Buttons(props: ButtonsProps) -> Element {
 
       Button {
         label: "All",
-        on_click: move |_| props.run_configs.call((BenchKind::ALL, get_configs(props.test_size).get("ALL").unwrap().to_vec())),
+        on_click: move |_| props.run_configs.call((BenchKind::All, get_configs(props.test_size).get("ALL").unwrap().to_vec())),
       }
 
       Button {
