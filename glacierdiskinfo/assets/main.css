@@ -6,6 +6,8 @@ html, body {
 
   user-select: none;
   overflow-y: hidden;
+
+  font-family: 'Inter', 'Arial', sans-serif;
 }
 
 #main {
