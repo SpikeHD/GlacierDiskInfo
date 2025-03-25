@@ -38,10 +38,10 @@ pub fn disk_class(disk: impl AsRef<Path>) -> DiskKind {
   }
 
   // Check first if it's a USB disk
-  let link = PathBuf::from(format!("/sys/block/{drive}/"));
+  let link = PathBuf::from(format!("/sys/block/{drive}"));
   if link.exists() {
     let link = std::fs::read_link(link).unwrap_or_default();
-    if link.starts_with("/usb") {
+    if link.to_str().unwrap_or_default().contains("/usb") {
       return DiskKind::USB;
     }
   }

@@ -15,7 +15,7 @@ impl DriveStatus {
       "Bad Attribute Now" => DriveStatus::Caution,
       "Bad Sector Many" => DriveStatus::Bad,
       "Bad Status" => DriveStatus::Bad,
-      _ => DriveStatus::Bad,
+      _ => DriveStatus::Caution,
     }
   }
 }

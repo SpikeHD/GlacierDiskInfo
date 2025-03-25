@@ -4,7 +4,7 @@ fn main() -> Result<(), Box<dyn std::error::Error>> {
   let disks = libglacierdisk::list_disks().unwrap();
 
   for disk in disks {
-    disk.raw_disk().dump().unwrap();
+    disk.raw_disk().map(|mut disk| disk.dump());
   }
 
   Ok(())

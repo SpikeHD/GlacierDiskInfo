@@ -3,7 +3,7 @@ fn main() {
 
   let disks = libglacierdisk::list_disks().unwrap();
   let first = disks.first().unwrap().clone();
-  let temp = first.raw_disk().get_temperature().unwrap_or(0);
+  let temp = first.raw_disk().map(|mut disk| disk.get_temperature().unwrap_or(0)).unwrap_or(0);
 
   println!("{:?} mkelvin", temp);
   println!("{:?} celsius", celsius(temp));

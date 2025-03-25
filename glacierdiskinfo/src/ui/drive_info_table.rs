@@ -31,7 +31,7 @@ pub fn DriveInfoTable(props: DriveInfoTableProps) -> Element {
     ("Power On Count", drive.power_cycle_count().to_string()),
     (
       "Average Power On Time",
-      ms_to_readable(drive.power_on() / drive.power_cycle_count()),
+      ms_to_readable(if drive.power_cycle_count() > 0 { drive.power_on() / drive.power_cycle_count() } else { 0 }),
     ),
   ];
   let left_rows = left_values.iter().map(|(name, value)| {

@@ -5,7 +5,7 @@ use libglacierdisk::{
 
 #[derive(Clone, Debug)]
 pub enum BenchKind {
-  ALL,
+  All,
   SEQ1M,
   SEQ128K,
   RAND4K,
