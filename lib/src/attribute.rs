@@ -92,10 +92,12 @@ pub fn get_attribute(disk: &mut Disk, name: impl AsRef<str>) -> Option<Attribute
   };
   // Create poitner to attribute
   let mut a = Box::new(attribute);
-  let result = disk.parse_attributes(
-    fetch_attribute,
-    &mut *a as *mut Attribute as *mut std::ffi::c_void,
-  );
+  let result = unsafe {
+      disk.parse_attributes(
+      fetch_attribute,
+      &mut *a as *mut Attribute as *mut std::ffi::c_void,
+    )
+  };
 
   if result.is_ok() {
     return Some(*a);
@@ -109,10 +111,12 @@ pub fn get_all_attributes(disk: &mut Disk) -> Vec<Attribute> {
   let attributes: Vec<Attribute> = Vec::new();
   let mut a = Box::new(attributes);
 
-  let result = disk.parse_attributes(
-    fetch_all_attributes,
-    &mut *a as *mut Vec<Attribute> as *mut std::ffi::c_void,
-  );
+  let result = unsafe {
+      disk.parse_attributes(
+      fetch_all_attributes,
+      &mut *a as *mut Vec<Attribute> as *mut std::ffi::c_void,
+    )
+  };
 
   if result.is_ok() {
     return *a;
