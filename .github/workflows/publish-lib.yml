@@ -2,6 +2,8 @@ name: Publish Library
 
 on:
   push:
+    branches:
+      - main
     paths:
       - "lib/Cargo.toml"
       - ".github/workflows/publish-lib.yml"
