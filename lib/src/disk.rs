@@ -25,7 +25,7 @@ pub struct Disk {
   pub path: PathBuf,
   pub kind: DiskKind,
   pub ata_link: DiskAtaLink,
-  disk: Rc<Mutex<libatasmart::Disk>>,
+  disk: Option<Rc<Mutex<libatasmart::Disk>>>,
 }
 
 #[derive(Clone, Debug)]
@@ -80,6 +80,16 @@ impl ShallowDisk {
 impl Disk {
   /// Create a new Disk from the path (e.g. `"/dev/sda"`)
   pub fn new(path: PathBuf) -> Result<Self, Box<dyn Error>> {
+    // Special case for USB devices
+    if disk_class(&path) == DiskKind::USB {
+      return Ok(Self {
+        path,
+        kind: DiskKind::USB,
+        ata_link: DiskAtaLink::default(),
+        disk: None,
+      });
+    }
+
     let disk = libatasmart::Disk::new(&path)?;
     let kind = disk_class(&path);
     let ata_link = DiskAtaLink::for_disk(&path).unwrap_or_default();
@@ -88,33 +98,70 @@ impl Disk {
       path,
       kind,
       ata_link,
-      disk: Rc::new(Mutex::new(disk)),
+      disk: Some(Rc::new(Mutex::new(disk))),
     })
   }
 
   /// Get a SMART attribute from the disk
   pub fn get_attribute(&mut self, name: impl AsRef<str>) -> Option<Attribute> {
-    get_attribute(&mut self.raw_disk(), name)
+    if let Some(mut disk) = self.raw_disk() {
+      get_attribute(&mut disk, name)
+    } else {
+      None
+    }
   }
 
   /// Get all SMART attributes from the disk
   pub fn get_all_attributes(&mut self) -> Vec<Attribute> {
-    get_all_attributes(&mut self.raw_disk())
+    if let Some(mut disk) = self.raw_disk() {
+      get_all_attributes(&mut disk)
+    } else {
+      vec![]
+    }
   }
 
   /// Dump all SMART attributes to stdout
   pub fn dump_attributes(&mut self) {
-    self.raw_disk().dump().unwrap_or_default();
+    if let Some(mut disk) = self.raw_disk() {
+      disk.dump().unwrap_or_default();
+    }
   }
 
   /// Get a reference to the raw [`libatasmart::Disk`] struct
-  pub fn raw_disk(&self) -> MutexGuard<libatasmart::Disk> {
-    self.disk.lock().unwrap()
+  pub fn raw_disk(&self) -> Option<MutexGuard<libatasmart::Disk>> {
+    self.disk.as_ref().map(|disk| disk.lock().unwrap())
   }
 
   /// Get the mount locations of the disk. A disk may have multiple if there are multiple partitions, or a disk may have none if it is not mounted.
   pub fn mounts(&self) -> Result<Vec<PathBuf>, Box<dyn Error>> {
     get_mounts(&self)
+  }
+
+  /// Read the `model` via sysfs
+  pub fn model(&self) -> Result<String, Box<dyn Error>> {
+    let model = fs::read_to_string(format!("/sys/block/{}/device/model", self.path.file_name().unwrap_or_default().to_str().unwrap_or_default()))?;
+    Ok(model)
+  }
+
+  /// Read the `vendor` via sysfs
+  pub fn vendor(&self) -> Result<String, Box<dyn Error>> {
+    let vendor = fs::read_to_string(format!("/sys/block/{}/device/vendor", self.path.file_name().unwrap_or_default().to_str().unwrap_or_default()))?;
+    Ok(vendor)
+  }
+
+  /// Read size from either SMART or sysfs
+  pub fn size(&self) -> Result<u64, Box<dyn Error>> {
+    let size = self.raw_disk().map(|mut disk| disk.get_disk_size().unwrap_or(0)).unwrap_or(0);
+
+    // If size is zero, try to read from sysfs
+    if size == 0 {
+      let size = fs::read_to_string(format!("/sys/block/{}/size", self.path.file_name().unwrap_or_default().to_str().unwrap_or_default()))?;
+      // 512 is standard block size
+      let size = size.trim().parse::<u64>().unwrap_or(0) * 512;
+      return Ok(size);
+    }
+
+    Ok(size)
   }
 }
 

@@ -12,27 +12,31 @@ pub fn drives_and_status() -> Vec<(DiskCache, Status)> {
   let drives: Vec<(DiskCache, Status)> = drives
     .iter_mut()
     .filter_map(|d| {
-      let mut disk = d.raw_disk();
-      let smart = match disk.smart_get_overall() {
-        Ok(s) => s,
-        Err(e) => {
-          eprintln!("Error fetching smart status: {e}");
-          return None;
-        }
-      };
-      let state = smart_to_string(smart);
+      if let Some(mut disk) = d.raw_disk() {
+        let smart = match disk.smart_get_overall() {
+          Ok(s) => s,
+          Err(e) => {
+            eprintln!("Error fetching smart status: {e}");
+            return None;
+          }
+        };
+        let state = smart_to_string(smart);
 
-      let temp = disk.get_temperature().unwrap_or(0);
+        let temp = disk.get_temperature().unwrap_or(0);
 
-      // convert mkelvin to celsius
-      let temp = (temp as f32 / 1000.) - 273.15;
+        // convert mkelvin to celsius
+        let temp = (temp as f32 / 1000.) - 273.15;
 
-      // Drop the mutex guard, preventing deadlock
-      drop(disk);
+        // Drop the mutex guard, preventing deadlock
+        drop(disk);
+
+        let disk_cache = DiskCache::new(d.clone());
+
+        return Some((disk_cache, Status { temp, state }));
+      }
 
       let disk_cache = DiskCache::new(d.clone());
-
-      Some((disk_cache, Status { temp, state }))
+      Some((disk_cache, Status { temp: 0., state: "N/A".into() }))
     })
     .collect();
 

@@ -32,7 +32,7 @@ pub fn DriveTabs(props: DriveTabsProps) -> Element {
       "Bad Attribute Now" => CAUTION_ICO,
       "Bad Sector Many" => BAD_ICO,
       "Bad Status" => BAD_ICO,
-      _ => BAD_ICO,
+      _ => CAUTION_ICO,
     };
 
     rsx! {

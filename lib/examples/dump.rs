@@ -5,7 +5,7 @@ fn main() -> Result<(), Box<dyn std::error::Error>> {
   // Dump the first disk
   let disk = disks[0].clone();
 
-  disk.raw_disk().dump().unwrap();
+  disk.raw_disk().map(|mut disk| disk.dump());
 
   Ok(())
 }

@@ -48,17 +48,17 @@ impl DiskCache {
     };
 
     let path = disk.path.clone();
-    let temperature = disk.raw_disk().get_temperature().unwrap_or(0);
-    let size = disk.raw_disk().get_disk_size().unwrap_or(0);
+    let temperature = disk.raw_disk().map(|mut disk| disk.get_temperature().unwrap_or(273150)).unwrap_or(273150);
+    let size = disk.size().unwrap_or(0);
     let attributes = disk.get_all_attributes();
     let ata_link = disk.ata_link.clone();
-    let power_on = disk.raw_disk().get_power_on().unwrap_or(0);
-    let power_cycle_count = disk.raw_disk().get_power_cycle_count().unwrap_or(0);
+    let power_on = disk.raw_disk().map(|mut disk| disk.get_power_on().unwrap_or(0)).unwrap_or(0);
+    let power_cycle_count = disk.raw_disk().map(|mut disk| disk.get_power_cycle_count().unwrap_or(0)).unwrap_or(0);
     let kind = disk.kind.clone();
     let smart_overall = smart_to_string(
       disk
         .raw_disk()
-        .smart_get_overall()
+        .map(|mut disk| disk.smart_get_overall().unwrap_or(SkSmartOverall::SK_SMART_OVERALL_GOOD))
         .unwrap_or(SkSmartOverall::SK_SMART_OVERALL_GOOD),
     );
 
@@ -84,10 +84,23 @@ impl DiskCache {
 
   // TODO store in struct
   pub fn identity(&self) -> IdentifyParsedData {
+    if self.disk.kind == DiskKind::USB {
+      return IdentifyParsedData {
+        firmware: "N/A".into(),
+        serial: "N/A".into(),
+        model: format!("{} {}", self.disk.vendor().unwrap_or("UNK".to_string()), self.disk.model().unwrap_or("UNK".to_string())),
+      };
+    }
+
     let identity = self
       .disk
       .raw_disk()
-      .identify_parse()
+      .map(|mut disk| disk.identify_parse())
+      .unwrap_or(Ok(IdentifyParsedData {
+        firmware: "N/A".into(),
+        serial: "N/A".into(),
+        model: "N/A".into(),
+      }))
       .unwrap_or(IdentifyParsedData {
         firmware: "N/A".into(),
         serial: "N/A".into(),
