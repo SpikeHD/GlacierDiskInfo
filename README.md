@@ -43,7 +43,7 @@ Releases for GlacierDiskInfo and GlacierDiskMark are available on the [releases 
 
   <tr>
     <td>
-      <a href="https://github.com/SpikeHD/GlacierDiskInfo/releases/tag/glacier-disk-info-v0.5.1">
+      <a href="https://github.com/SpikeHD/GlacierDiskInfo/releases/tag/glacier-disk-info-v0.6.0">
         Latest GlacierDiskInfo release
       </a>
     </td>
