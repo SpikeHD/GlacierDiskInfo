@@ -7,6 +7,7 @@ use super::theme::Theme;
 
 pub fn create_menu() -> Menu {
   let menu = Menu::new();
+  let app = Submenu::new("App", true);
   let themes = Submenu::new("Theme", true);
   let items = generate_theme_items();
 
@@ -15,6 +16,11 @@ pub fn create_menu() -> Menu {
       eprintln!("Failed to append menu item: {e}");
     });
   }
+
+  app.append(&MenuItem::with_id("refresh-disks", "Refresh disks", true, None))
+    .unwrap_or_else(|e| {
+      eprintln!("Failed to append menu item: {e}");
+    });
 
   themes
     .append(&PredefinedMenuItem::separator())
@@ -27,6 +33,10 @@ pub fn create_menu() -> Menu {
     .unwrap_or_else(|e| {
       eprintln!("Failed to append menu item: {e}");
     });
+
+  menu.append(&app).unwrap_or_else(|e| {
+    eprintln!("Failed to append menu item: {e}");
+  });
 
   menu.append(&themes).unwrap_or_else(|e| {
     eprintln!("Failed to append menu item: {e}");

@@ -5,7 +5,7 @@ use dioxus::{
     tao::{dpi::LogicalSize, window::WindowBuilder},
     Config,
   },
-  prelude::*,
+  prelude::*, signals::Signal,
 };
 use dioxus_desktop::muda::MenuId;
 use shared::{
@@ -23,7 +23,7 @@ mod data;
 mod ui;
 mod util;
 
-pub static DRIVES: Global<Vec<(DiskCache, Status)>> = Global::new(drives_and_status);
+pub static DRIVES: Global<Signal<Vec<(DiskCache, Status)>>> = Global::new(|| use_signal(drives_and_status));
 
 fn main() {
   util::scaffold_folders();
@@ -68,7 +68,9 @@ fn Root() -> Element {
     }
     .to_owned();
 
-    if id.starts_with("apply-") {
+    if id == "refresh-disks" {
+      DRIVES.resolve().set(drives_and_status());
+    } else if id.starts_with("apply-") {
       let mut config = config::load_config(App::GlacierDiskInfo).unwrap_or_default();
       let name = id.strip_prefix("apply-").unwrap_or_default();
 
@@ -101,7 +103,7 @@ fn Root() -> Element {
     }
   });
 
-  let mut selected_drive = use_signal(|| DRIVES.resolve()[0].0.clone());
+  let mut selected_drive = use_signal(|| DRIVES.resolve()()[0].0.clone());
 
   rsx! {
       style {
