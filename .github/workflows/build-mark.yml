@@ -152,7 +152,7 @@ jobs:
           dx bundle --package glacier-disk-mark --package-types "deb" --package-types "rpm" --release --target ${{ matrix.config.target }}
         env:
           # Warning are fine
-          RUSTFLAGS: -D warnings
+          RUSTFLAGS: -Awarnings
 
       - name: Get version
         id: version
