@@ -3,6 +3,13 @@ use shared::convert::{bytes_to_readable, ms_to_readable};
 
 use crate::data::disk_cache::DiskCache;
 
+#[derive(PartialEq, Clone)]
+enum SerialState {
+  Hidden,
+  Shown,
+  AlwaysShown,
+}
+
 #[derive(Props, PartialEq, Clone)]
 pub struct DriveInfoTableProps {
   pub selected_drive: DiskCache,
@@ -10,6 +17,8 @@ pub struct DriveInfoTableProps {
 
 #[component]
 pub fn DriveInfoTable(props: DriveInfoTableProps) -> Element {
+  let mut serial_state = use_signal(|| SerialState::Hidden);
+
   let drive = props.selected_drive;
   let ata = drive.ata_link();
   let identity = drive.identity();
@@ -43,9 +52,24 @@ pub fn DriveInfoTable(props: DriveInfoTableProps) -> Element {
           "{name}"
         }
 
-        span {
-          class: "drive-info-value",
-          "{value}"
+        if *name == "Serial" {
+          span {
+            onmouseenter: move |_| if serial_state() != SerialState::AlwaysShown { serial_state.set(SerialState::Shown) },
+            onmouseleave: move |_| if serial_state() != SerialState::AlwaysShown { serial_state.set(SerialState::Hidden) },
+            onmousedown: move |_| serial_state.set(SerialState::AlwaysShown),
+            class: "drive-info-value",
+            
+            if serial_state() == SerialState::Shown || serial_state() == SerialState::AlwaysShown {
+              "{value}"
+            } else {
+              "•••••••••••••••••••••••"
+            }
+          }
+        } else {
+          span {
+            class: "drive-info-value",
+            "{value}"
+          }
         }
       }
     }
