@@ -14,7 +14,7 @@ base64 = "0.22.1"
 dialog = "0.3.0"
 dioxus = { version = "0.6.3", features = [] }
 dioxus-desktop = "0.6.3"
-dioxus-native = { git = "https://github.com/DioxusLabs/blitz/", branch = "main" }
+dioxus-native = { git = "https://github.com/DioxusLabs/blitz/", branch = "main", features = ["menu"]}
 dirs = "6.0.0"
 libglacierdisk = { path = "../lib" }
 open = "5.3.2"

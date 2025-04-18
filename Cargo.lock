@@ -534,8 +534,8 @@ dependencies = [
 
 [[package]]
 name = "blitz-dom"
-version = "0.0.0"
-source = "git+https://github.com/DioxusLabs/blitz/?branch=main#0cd27b6791149ad2b425ab26d2f2a7f632b772cf"
+version = "0.1.0-alpha.1"
+source = "git+https://github.com/DioxusLabs/blitz/?branch=main#adec8e5710acb4f129dd9ff6fa95fc73772f2248"
 dependencies = [
  "accesskit",
  "app_units",
@@ -550,7 +550,7 @@ dependencies = [
  "markup5ever 0.15.0",
  "parley",
  "peniko",
- "selectors 0.26.0",
+ "selectors 0.27.0",
  "slab",
  "smallvec",
  "string_cache",
@@ -567,20 +567,19 @@ dependencies = [
 
 [[package]]
 name = "blitz-net"
-version = "0.1.0"
-source = "git+https://github.com/DioxusLabs/blitz/?branch=main#0cd27b6791149ad2b425ab26d2f2a7f632b772cf"
+version = "0.1.0-alpha.1"
+source = "git+https://github.com/DioxusLabs/blitz/?branch=main#adec8e5710acb4f129dd9ff6fa95fc73772f2248"
 dependencies = [
  "blitz-traits",
  "data-url",
  "reqwest",
- "thiserror 1.0.69",
  "tokio",
 ]
 
 [[package]]
 name = "blitz-renderer-vello"
-version = "0.1.0"
-source = "git+https://github.com/DioxusLabs/blitz/?branch=main#0cd27b6791149ad2b425ab26d2f2a7f632b772cf"
+version = "0.1.0-alpha.1"
+source = "git+https://github.com/DioxusLabs/blitz/?branch=main#adec8e5710acb4f129dd9ff6fa95fc73772f2248"
 dependencies = [
  "blitz-dom",
  "blitz-traits",
@@ -600,8 +599,8 @@ dependencies = [
 
 [[package]]
 name = "blitz-shell"
-version = "0.0.0"
-source = "git+https://github.com/DioxusLabs/blitz/?branch=main#0cd27b6791149ad2b425ab26d2f2a7f632b772cf"
+version = "0.1.0-alpha.1"
+source = "git+https://github.com/DioxusLabs/blitz/?branch=main#adec8e5710acb4f129dd9ff6fa95fc73772f2248"
 dependencies = [
  "accesskit",
  "accesskit_winit",
@@ -617,8 +616,8 @@ dependencies = [
 
 [[package]]
 name = "blitz-traits"
-version = "0.1.0"
-source = "git+https://github.com/DioxusLabs/blitz/?branch=main#0cd27b6791149ad2b425ab26d2f2a7f632b772cf"
+version = "0.1.0-alpha.1"
+source = "git+https://github.com/DioxusLabs/blitz/?branch=main#adec8e5710acb4f129dd9ff6fa95fc73772f2248"
 dependencies = [
  "bitflags 2.9.0",
  "bytes",
@@ -1675,8 +1674,8 @@ dependencies = [
 
 [[package]]
 name = "dioxus-native"
-version = "0.0.0"
-source = "git+https://github.com/DioxusLabs/blitz/?branch=main#0cd27b6791149ad2b425ab26d2f2a7f632b772cf"
+version = "0.1.0-alpha.1"
+source = "git+https://github.com/DioxusLabs/blitz/?branch=main#adec8e5710acb4f129dd9ff6fa95fc73772f2248"
 dependencies = [
  "blitz-dom",
  "blitz-net",
@@ -1833,7 +1832,7 @@ version = "0.5.2"
 source = "registry+https://github.com/rust-lang/crates.io-index"
 checksum = "330c60081dcc4c72131f8eb70510f1ac07223e5d4163db481a04a0befcffa412"
 dependencies = [
- "libloading 0.8.6",
+ "libloading 0.7.4",
 ]
 
 [[package]]
@@ -5462,8 +5461,9 @@ dependencies = [
 
 [[package]]
 name = "selectors"
-version = "0.26.0"
-source = "git+https://github.com/servo/stylo?rev=e9412412#e9412412ed5daca6bbbdda5227858b514c1ff488"
+version = "0.27.0"
+source = "registry+https://github.com/rust-lang/crates.io-index"
+checksum = "5b75e048a93e14929e68e37b82e207db957cbb368375a80ed3ca28ac75080856"
 dependencies = [
  "bitflags 2.9.0",
  "cssparser 0.35.0",
@@ -5647,7 +5647,8 @@ dependencies = [
 [[package]]
 name = "servo_arc"
 version = "0.4.0"
-source = "git+https://github.com/servo/stylo?rev=e9412412#e9412412ed5daca6bbbdda5227858b514c1ff488"
+source = "registry+https://github.com/rust-lang/crates.io-index"
+checksum = "ae65c4249478a2647db249fb43e23cec56a2c8974a427e7bd8cb5a1d0964921a"
 dependencies = [
  "serde",
  "stable_deref_trait",
@@ -5944,8 +5945,9 @@ dependencies = [
 
 [[package]]
 name = "stylo"
-version = "0.0.1"
-source = "git+https://github.com/servo/stylo?rev=e9412412#e9412412ed5daca6bbbdda5227858b514c1ff488"
+version = "0.2.1"
+source = "registry+https://github.com/rust-lang/crates.io-index"
+checksum = "bfacf8821bb157fbd6cebaa682f22bcebddc38e4165cdedba0061dae24b241c2"
 dependencies = [
  "app_units",
  "arrayvec",
@@ -5976,7 +5978,7 @@ dependencies = [
  "precomputed-hash",
  "rayon",
  "rayon-core",
- "selectors 0.26.0",
+ "selectors 0.27.0",
  "serde",
  "servo_arc 0.4.0",
  "smallbitvec",
@@ -6002,8 +6004,9 @@ dependencies = [
 
 [[package]]
 name = "stylo_atoms"
-version = "0.1.0"
-source = "git+https://github.com/servo/stylo?rev=e9412412#e9412412ed5daca6bbbdda5227858b514c1ff488"
+version = "0.2.0"
+source = "registry+https://github.com/rust-lang/crates.io-index"
+checksum = "b943c983729930ee70141ab6515604bb33ff5de8d7626024072c38a27c8023bb"
 dependencies = [
  "string_cache",
  "string_cache_codegen",
@@ -6011,13 +6014,15 @@ dependencies = [
 
 [[package]]
 name = "stylo_config"
-version = "0.1.0"
-source = "git+https://github.com/servo/stylo?rev=e9412412#e9412412ed5daca6bbbdda5227858b514c1ff488"
+version = "0.2.0"
+source = "registry+https://github.com/rust-lang/crates.io-index"
+checksum = "b2e53afe5289d75063564e60aa59c591a2c496d3425f2bb2a3002251785e2058"
 
 [[package]]
 name = "stylo_derive"
-version = "0.0.1"
-source = "git+https://github.com/servo/stylo?rev=e9412412#e9412412ed5daca6bbbdda5227858b514c1ff488"
+version = "0.2.0"
+source = "registry+https://github.com/rust-lang/crates.io-index"
+checksum = "e745b58d581ba8eb932825e684634eae9be848fd49c086b3f17ccb7d6c417594"
 dependencies = [
  "darling",
  "proc-macro2",
@@ -6028,8 +6033,9 @@ dependencies = [
 
 [[package]]
 name = "stylo_dom"
-version = "0.1.0"
-source = "git+https://github.com/servo/stylo?rev=e9412412#e9412412ed5daca6bbbdda5227858b514c1ff488"
+version = "0.2.0"
+source = "registry+https://github.com/rust-lang/crates.io-index"
+checksum = "06606e83c4feb986ea601a2c7d625aa5c303ecfc9526494480f6e599b8d6956e"
 dependencies = [
  "bitflags 2.9.0",
  "stylo_malloc_size_of",
@@ -6037,13 +6043,14 @@ dependencies = [
 
 [[package]]
 name = "stylo_malloc_size_of"
-version = "0.0.1"
-source = "git+https://github.com/servo/stylo?rev=e9412412#e9412412ed5daca6bbbdda5227858b514c1ff488"
+version = "0.2.0"
+source = "registry+https://github.com/rust-lang/crates.io-index"
+checksum = "93db6fdbcde7f037f7810873374d85a2b3d37686b046577943818167a6e52d3f"
 dependencies = [
  "app_units",
  "cssparser 0.35.0",
  "euclid",
- "selectors 0.26.0",
+ "selectors 0.27.0",
  "servo_arc 0.4.0",
  "smallbitvec",
  "smallvec",
@@ -6054,13 +6061,14 @@ dependencies = [
 
 [[package]]
 name = "stylo_static_prefs"
-version = "0.1.0"
-source = "git+https://github.com/servo/stylo?rev=e9412412#e9412412ed5daca6bbbdda5227858b514c1ff488"
+version = "0.2.0"
+source = "registry+https://github.com/rust-lang/crates.io-index"
+checksum = "decb57071c4b4d5690a9719fb04a07cf2fab0fa3df99a830ef735192a1a98e5d"
 
 [[package]]
 name = "stylo_taffy"
-version = "0.1.0"
-source = "git+https://github.com/DioxusLabs/blitz/?branch=main#0cd27b6791149ad2b425ab26d2f2a7f632b772cf"
+version = "0.1.0-alpha.1"
+source = "git+https://github.com/DioxusLabs/blitz/?branch=main#adec8e5710acb4f129dd9ff6fa95fc73772f2248"
 dependencies = [
  "stylo",
  "taffy",
@@ -6068,15 +6076,16 @@ dependencies = [
 
 [[package]]
 name = "stylo_traits"
-version = "0.0.1"
-source = "git+https://github.com/servo/stylo?rev=e9412412#e9412412ed5daca6bbbdda5227858b514c1ff488"
+version = "0.2.0"
+source = "registry+https://github.com/rust-lang/crates.io-index"
+checksum = "5f611ebeee90c0d255bf4d4fadc05f964ef019f8aaed307108fa859c826f2753"
 dependencies = [
  "app_units",
  "bitflags 2.9.0",
  "cssparser 0.35.0",
  "euclid",
  "malloc_size_of_derive",
- "selectors 0.26.0",
+ "selectors 0.27.0",
  "serde",
  "servo_arc 0.4.0",
  "stylo_atoms",
@@ -6208,8 +6217,9 @@ dependencies = [
 
 [[package]]
 name = "taffy"
-version = "0.7.3"
-source = "git+https://github.com/dioxuslabs/taffy?rev=ecbcb83d#ecbcb83de8df8532fd4294eb972ec1c3b34d7967"
+version = "0.8.0"
+source = "registry+https://github.com/rust-lang/crates.io-index"
+checksum = "56a844965df28147d726ecc321bf67f287a9bdec5a655f53d4e7e5cad20443dc"
 dependencies = [
  "arrayvec",
  "grid",
@@ -6421,8 +6431,9 @@ checksum = "1f3ccbac311fea05f86f61904b462b55fb3df8837a366dfc601a0161d0532f20"
 
 [[package]]
 name = "to_shmem"
-version = "0.1.0"
-source = "git+https://github.com/servo/stylo?rev=e9412412#e9412412ed5daca6bbbdda5227858b514c1ff488"
+version = "0.2.0"
+source = "registry+https://github.com/rust-lang/crates.io-index"
+checksum = "fb61262d1e7e4cc777e40cb2f101d5fa51f3eeac50c3a7355b2027b9274baa35"
 dependencies = [
  "cssparser 0.35.0",
  "servo_arc 0.4.0",
@@ -6435,7 +6446,8 @@ dependencies = [
 [[package]]
 name = "to_shmem_derive"
 version = "0.1.0"
-source = "git+https://github.com/servo/stylo?rev=e9412412#e9412412ed5daca6bbbdda5227858b514c1ff488"
+source = "registry+https://github.com/rust-lang/crates.io-index"
+checksum = "2ba1f5563024b63bb6acb4558452d9ba737518c1d11fcc1861febe98d1e31cf4"
 dependencies = [
  "darling",
  "proc-macro2",
@@ -7483,7 +7495,7 @@ version = "0.1.9"
 source = "registry+https://github.com/rust-lang/crates.io-index"
 checksum = "cf221c93e13a30d793f7645a0e7762c55d169dbb0a49671918a2319d289b10bb"
 dependencies = [
- "windows-sys 0.59.0",
+ "windows-sys 0.48.0",
 ]
 
 [[package]]
